@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ECommerceAPI.Endpoints.Services;
 
 namespace ECommerceAPI.Controllers
 {
     public class ProductController : ControllerBase
     {
-        private readonly ProductService _service;
+        private readonly ProductServices _service;
 
-        public ProductController(ProductService service) {
+        public ProductController(ProductServices service) {
             _service = service;
         }
 
@@ -70,3 +71,4 @@ namespace ECommerceAPI.Controllers
         
     }
 }
+

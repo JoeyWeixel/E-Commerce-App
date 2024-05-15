@@ -1,3 +1,5 @@
+using ECommerceAPI.Endpoints.ResponseObjects;
+
 namespace ECommerceAPI.Endpoints.Services;
 public class ContactInfoServices
 {
