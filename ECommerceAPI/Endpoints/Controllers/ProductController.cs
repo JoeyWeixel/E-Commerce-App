@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ECommerceAPI.Endpoints.Services;
+using ECommerceAPI.Endpoints.ResponseObjects;
 
 namespace ECommerceAPI.Controllers
 {
@@ -30,7 +31,7 @@ namespace ECommerceAPI.Controllers
         {
             try
             {
-                var product = _service.GetProduct();
+                var product = _service.GetProduct(id);
                 return Ok(product);
             }
             catch (Exception ex)
