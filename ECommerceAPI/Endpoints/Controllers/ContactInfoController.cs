@@ -1,3 +1,4 @@
+using ECommerceAPI.Endpoints.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,18 +8,18 @@ namespace ECommerceAPI.Controllers
     {
         ContactInfoServices ContactInfoServices = new ContactInfoServices();
 
-        [HttpGet("/ContactInfo/{email}")]
-        public IActionResult getContactInfo({ string email})
+        [HttpGet("customers/{id}/contactInfo")]
+        public IActionResult getContactInfo(int id)
         {
             try
             {
-                GetContactInfoResponse contactInfo = ContactInfoServices.getContactInfo(email);
+                GetContactInfoResponse contactInfo = ContactInfoServices.getContactInfo(id);
                 return new OkObjectResult(contactInfo);
-    }
+            }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex.message);
-}
+                return new BadRequestObjectResult(ex);
+            }
         }
     }
 }
