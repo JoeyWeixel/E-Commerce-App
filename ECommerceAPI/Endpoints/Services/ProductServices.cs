@@ -7,10 +7,11 @@ namespace ECommerceAPI.Endpoints.Services
 
         public ProductServices() { }
 
-        public ProductResponse[] GetProducts()
+        public ProductResponse[] GetAllProducts()
         {
             //TODO: Reference database which is yet to be created
             ProductResponse[] products = new ProductResponse[1];
+            return products;
         }
 
         public ProductResponse GetProduct(int id) {
