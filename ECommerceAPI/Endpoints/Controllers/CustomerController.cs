@@ -45,18 +45,17 @@ public class CustomerController : ControllerBase
         }
         catch (Exception ex) { 
             return NotFound();
-        
+
         }
     }
 
     [HttpPost]
     public IActionResult CreateCustomer([FromBody] Customer customer)
     {
-               
+
         try
         {
             _service.Customers.Add(customer);
-            _service.SaveChanges();
             return CreatedAtAction(nameof(GetCustomer), new { id = customer.Id }, customer);
 
 
@@ -65,6 +64,23 @@ public class CustomerController : ControllerBase
         {
             return BadRequest();
         }
-        
+
+    }
+
+
+
+    [HttpDelete]
+    public IActionResult DeleteCustomer(int id)
+    {
+        try
+        {
+            _service.Customers.Remove(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+
+        }
     }
 }
