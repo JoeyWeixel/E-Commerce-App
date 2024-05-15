@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ECommerceAPI.Domain
+using ECommerceAPI.Endpoints.Services
 
 
 
@@ -8,14 +9,14 @@ using ECommerceAPI.Domain
 [ApiController]
 public class CustomerController : ControllerBase
 {
-    private readonly ECommerceService _service;
+    private readonly CustomerService _service;
 
-    public CustomerController(ECommerceService _service)
+    public CustomerController(CustomerService _service)
     {
         _service = _service;
     }
 
-    [HttpGet]
+    [HttpGet("/customer")]
     public IActionResult GetCustomers()
     {
 
@@ -33,7 +34,7 @@ public class CustomerController : ControllerBase
     
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("/customer/{id}")]
     public IActionResult GetCustomer(int id)
     {
         try
@@ -49,7 +50,7 @@ public class CustomerController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost("/customer")]
     public IActionResult CreateCustomer([FromBody] Customer customer)
     {
 
@@ -69,7 +70,7 @@ public class CustomerController : ControllerBase
 
 
 
-    [HttpDelete]
+    [HttpDelete("/customer/{id}")]
     public IActionResult DeleteCustomer(int id)
     {
         try
