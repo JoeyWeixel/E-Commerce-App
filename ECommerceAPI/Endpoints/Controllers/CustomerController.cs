@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using E-Commerce - App.Domain;
+using ECommerceAPI.Domain
+
 
 
 [Route("api/[controller]")]
