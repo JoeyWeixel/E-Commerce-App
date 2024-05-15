@@ -24,7 +24,7 @@ namespace ECommerceAPI.Controllers
             }
         }
 
-        [HttpGet("/product/{id}")]
+        [HttpGet("/products/{id}")]
         public IActionResult GetProduct(int id)
         {
             try
@@ -38,6 +38,35 @@ namespace ECommerceAPI.Controllers
             }
         }
 
+        [HttpPost("/products")]
+        public IActionResult AddProduct(ProductRequest product)
+        {
+            try
+            {
+                _service.AddProduct(product);
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("/products/{id}")]
+        public IActionResult DeleteProduct(int id)
+        {
+            try
+            {
+                _service.DeleteProduct(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
         
     }
 }
