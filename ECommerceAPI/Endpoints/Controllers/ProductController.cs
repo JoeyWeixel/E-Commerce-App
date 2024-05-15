@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ECommerceAPI.Endpoints.Services;
+using ECommerceAPI.Endpoints.ResponseObjects;
 
 namespace ECommerceAPI.Controllers
 {
     public class ProductController : ControllerBase
     {
-        private readonly ProductService _service;
+        private readonly ProductServices _service;
 
-        public ProductController(ProductService service) {
+        public ProductController(ProductServices service) {
             _service = service;
         }
 
@@ -29,7 +31,7 @@ namespace ECommerceAPI.Controllers
         {
             try
             {
-                var product = _service.GetProduct();
+                var product = _service.GetProduct(id);
                 return Ok(product);
             }
             catch (Exception ex)
@@ -70,3 +72,4 @@ namespace ECommerceAPI.Controllers
         
     }
 }
+
