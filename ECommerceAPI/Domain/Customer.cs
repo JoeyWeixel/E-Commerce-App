@@ -1,4 +1,4 @@
-namespace Domain
+﻿namespace ECommerceAPI.Domain
 {
     public class Customer
     {
@@ -7,4 +7,5 @@ namespace Domain
         public PaymentInfo PaymentInfo { get; set; }
         public History History { get; set; }
     }
+}
 }

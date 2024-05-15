@@ -1,4 +1,4 @@
-namespace Domain
+﻿namespace ECommerceAPI.Domain
 {
     public class Product
     {
