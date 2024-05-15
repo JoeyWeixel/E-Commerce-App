@@ -10,7 +10,7 @@ namespace ECommerceAPI.Controllers
             _service = service;
         }
 
-        [HttpGet("./Products")]
+        [HttpGet("/products")]
         public IActionResult GetAllProducts()
         {
             try
@@ -24,5 +24,20 @@ namespace ECommerceAPI.Controllers
             }
         }
 
+        [HttpGet("/product/{id}")]
+        public IActionResult GetProduct(int id)
+        {
+            try
+            {
+                var product = _service.GetProduct();
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
     }
 }
