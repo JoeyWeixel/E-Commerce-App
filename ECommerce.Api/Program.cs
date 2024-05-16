@@ -1,4 +1,8 @@
 using ECommerceAPI.Endpoints.Product;
+using ECommerceAPI.Endpoints.Customer;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ProductService>(); 
+builder.Services.AddSingleton<ProductService>();
+builder.Services.AddSingleton<CustomerService>();
+
 
 var app = builder.Build();
 
