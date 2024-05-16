@@ -14,12 +14,18 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         }
 
         [HttpGet("/products")]
-        public ActionResult<IEnumerable<ProductResponse>> GetAllProducts()
+        public IActionResult GetAllProducts()
         {
-            var products = _service.GetAllProducts();
-            return Ok(products);
+            try
+            {
+                var products = _service.GetAllProducts();
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
 
         [HttpGet("/products/{id}")]
         public IActionResult GetProduct(int id)
