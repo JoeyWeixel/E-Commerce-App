@@ -1,5 +1,7 @@
 using ECommerceAPI.Endpoints.Customer;
 using ECommerceAPI.Endpoints.Product;
+using ECommerceAPI.Endpoints.PaymentInfo;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
