@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ECommerceAPI.Endpoints.Product.RequestResponse;
+﻿using ECommerceAPI.Endpoints.ProductFolder.RequestResponse;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerceAPI.Endpoints.Product
+namespace ECommerceAPI.Endpoints.ProductFolder
 {
+<<<<<<< HEAD:ECommerce.Api/Endpoints/Product/ProductController.cs
+    public class PaymentInfoController : ControllerBase
+=======
+    [ApiController]
     public class ProductController : ControllerBase
+>>>>>>> b71a1defd2f5ce490fc4a063c4eec2b98cf2a951:ECommerce.Api/Endpoints/ProductFolder/ProductController.cs
     {
-        private readonly ProductServices _service;
+        private readonly ProductService _service;
 
-        public ProductController(ProductServices service)
+        public PaymentInfoController(ProductService service)
         {
             _service = service;
         }
@@ -32,6 +37,10 @@ namespace ECommerceAPI.Endpoints.Product
             try
             {
                 var product = _service.GetProduct(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
                 return Ok(product);
             }
             catch (Exception ex)
@@ -45,12 +54,11 @@ namespace ECommerceAPI.Endpoints.Product
         {
             try
             {
-                _service.AddProduct(product);
-                return Ok(product);
+                var newProduct = _service.AddProduct(product);
+                return Created($"/products/{newProduct.Id}", newProduct);
             }
             catch (Exception ex)
             {
-
                 return BadRequest(ex.Message);
             }
         }
@@ -65,11 +73,8 @@ namespace ECommerceAPI.Endpoints.Product
             }
             catch (Exception ex)
             {
-
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }
-

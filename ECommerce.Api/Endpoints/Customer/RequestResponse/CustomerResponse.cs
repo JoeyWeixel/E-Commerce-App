@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Api.Endpoints.Customer.RequestResponse
+﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse
 {
     public class CustomerResponse
     {
