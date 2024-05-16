@@ -1,4 +1,4 @@
-﻿using ECommerce.Api.Endpoints.Customer.RequestResponse;
+﻿using ECommerceAPI.Endpoints.Customer.RequestResponse;
 
 namespace ECommerceAPI.Endpoints.Customer
 {
