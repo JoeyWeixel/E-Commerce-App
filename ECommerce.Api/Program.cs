@@ -15,6 +15,11 @@ builder.Services.AddDbContext<ECommerceContext>(opt =>
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ProductService>();
+builder.Services.AddSingleton<CustomerService>();
+builder.Services.AddSingleton<PaymentInfoService>();
+
+
+
 
 var app = builder.Build();
 
