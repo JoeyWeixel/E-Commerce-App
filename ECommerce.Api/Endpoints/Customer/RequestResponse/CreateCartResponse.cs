@@ -1,6 +1,6 @@
 ﻿using ECommerceAPI.Domain;
 
-namespace ECommerceAPI.Endpoints.ResponseObjects
+namespace ECommerceAPI.Endpoints.Customer.RequestResponse
 {
     public class CreateCartResponse
     {
