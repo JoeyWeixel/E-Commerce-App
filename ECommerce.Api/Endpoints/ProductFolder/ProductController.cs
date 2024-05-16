@@ -8,7 +8,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
     {
         private readonly ProductService _service;
 
-        public PaymentInfoController(ProductService service)
+        public ProductController(ProductService service)
         {
             _service = service;
         }
