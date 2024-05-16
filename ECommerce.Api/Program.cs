@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ECommerceContext>(opt =>
-    opt.UseInMemoryDatabase("TodoList"));
+    opt.UseInMemoryDatabase("ECommerce"));
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ProductService>();
