@@ -47,7 +47,7 @@ namespace ECommerceAPI.Endpoints.Customer
             }
             catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
 
             }
         }
@@ -102,7 +102,7 @@ namespace ECommerceAPI.Endpoints.Customer
         }
 
         [HttpPost("/{id}/orders")]
-        public IActionResult AddOrder(OrderRequest order)
+        public IActionResult AddOrder(int id, OrderRequest order)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace ECommerceAPI.Endpoints.Customer
         }
 
         [HttpGet("/{id}/orders")]
-        public IActionResult GetAllOrders()
+        public IActionResult GetAllOrders(int id)
         {
             try
             {

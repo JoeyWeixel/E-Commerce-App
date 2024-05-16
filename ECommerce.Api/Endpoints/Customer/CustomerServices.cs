@@ -15,15 +15,28 @@ namespace ECommerceAPI.Endpoints.Customer
 
         public IEnumerable<CustomerResponse> GetAllCustomers()
         {
-            //TODO: Reference database which is yet to be created
-            var products = new List<CustomerResponse>();
-            return products;
+            var customers = new List<CustomerResponse>();
+            foreach (Domain.Customer customer in _db.Customers)
+            {
+                customers.Add(new CustomerResponse
+                {
+                    Id = customer.Id,
+                    ContactInfo = customer.ContactInfo,
+                    Cart = customer.Cart
+                });
+            }
+            return customers;
         }
 
         public CustomerResponse GetCustomer(int id)
         {
-            //TODO query database
-            return new CustomerResponse();
+            Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == id);
+            return (new CustomerResponse
+                {
+                    Id = customer.Id,
+                    ContactInfo = customer.ContactInfo,
+                    Cart = customer.Cart
+                });
         }
 
         public void DeleteCustomer(int id)
