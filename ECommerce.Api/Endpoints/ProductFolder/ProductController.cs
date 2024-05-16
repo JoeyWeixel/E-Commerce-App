@@ -14,30 +14,24 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         }
 
         [HttpGet("/products")]
-        public IActionResult GetAllProducts()
+        public ActionResult<IEnumerable<ProductResponse>> GetAllProducts()
         {
-            try
-            {
-                var products = _service.GetAllProducts();
-                return Ok(products);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var products = _service.GetAllProducts();
+            return Ok(products);
         }
+
 
         [HttpGet("/products/{id}")]
         public IActionResult GetProduct(int id)
         {
             try
             {
-                var products = _service.GetProduct(id);
-                if (products == null)
+                var product = _service.GetProduct(id);
+                if (product == null)
                 {
                     return NotFound();
                 }
-                return Ok(products);
+                return Ok(product);
             }
             catch (Exception ex)
             {
@@ -50,6 +44,10 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         {
             try
             {
+                if (product == null)
+                {
+                    return BadRequest("Product is null.");
+                }
                 var newProduct = _service.AddProduct(product);
                 return Created($"/products/{newProduct.Id}", newProduct);
             }

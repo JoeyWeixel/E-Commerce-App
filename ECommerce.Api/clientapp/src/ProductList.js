@@ -2,41 +2,12 @@
 
 function ProductList() {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
-        console.log('Fetching products...');
-        fetch('https://localhost:5001/api/Product')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Products fetched:', data);
-                setProducts(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching products:', error);
-                setError(error);
-                setLoading(false);
-            });
+        fetch('/api/products')
+            .then(response => response.json())
+            .then(data => setProducts(data));
     }, []);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error fetching products: {error.message}</div>;
-    }
-
-    if (products.length === 0) {
-        return <div>No products available</div>;
-    }
 
     return (
         <div>
