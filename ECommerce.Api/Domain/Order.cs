@@ -6,8 +6,7 @@ namespace ECommerce.Api.Domain
     {
         public int Id { get; set; }
         public Cart Cart { get; set; }
-        public bool IsDelivered { get; set; }
-        public System.DateTime DeliveryDate { get; set; }
+        public System.DateTime ?DeliveryDate { get; set; }
         public System.DateTime OrderDate { get; set; }
 
     }
