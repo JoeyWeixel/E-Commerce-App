@@ -1,5 +1,5 @@
-using ECommerce.Api.Domain;
-using ECommerceAPI.Endpoints.Product;
+using ECommerceAPI.Domain;
+using ECommerceAPI.Endpoints.ProductFolder;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

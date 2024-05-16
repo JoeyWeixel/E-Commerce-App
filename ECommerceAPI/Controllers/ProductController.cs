@@ -37,18 +37,4 @@ namespace ECommerceAPI.Controllers
             }
         }
     }
-
-    [HttpDelete("{id}")]
-    public IActionResult DeleteProduct(int id)
-    {
-        try
-        {
-            var products = productServices.DeleteProduct();
-            return new OkObjectResult(products);
-        }
-        catch (Exception e)
-        {
-            return new BadRequestObjectResult(e.Message);
-        }
-    }
 }

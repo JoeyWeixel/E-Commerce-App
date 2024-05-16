@@ -1,10 +1,8 @@
-﻿using ECommerceAPI.Domain;
-
-namespace ECommerceAPI.Endpoints.ResponseObjects
+﻿namespace ECommerceAPI.Endpoints.ResponseObjects
 {
     public class CreateCartRequest
     {
-        public Dictionary<Product, int> Products { get; set; }
+        public Dictionary<GetProductsResponse, int> Products { get; set; }
 
         public int CustomerID { get; set; }
     }

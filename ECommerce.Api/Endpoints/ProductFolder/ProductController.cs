@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ECommerceAPI.Endpoints.Product.RequestResponse;
+﻿using ECommerceAPI.Endpoints.ProductFolder.RequestResponse;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerceAPI.Endpoints.Product
+namespace ECommerceAPI.Endpoints.ProductFolder
 {
+    [ApiController]
     public class ProductController : ControllerBase
     {
         private readonly ProductService _service;
@@ -32,6 +33,10 @@ namespace ECommerceAPI.Endpoints.Product
             try
             {
                 var product = _service.GetProduct(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
                 return Ok(product);
             }
             catch (Exception ex)
@@ -46,11 +51,10 @@ namespace ECommerceAPI.Endpoints.Product
             try
             {
                 var newProduct = _service.AddProduct(product);
-                return Created($"products/{newProduct.Id}",newProduct);
+                return Created($"/products/{newProduct.Id}", newProduct);
             }
             catch (Exception ex)
             {
-
                 return BadRequest(ex.Message);
             }
         }
@@ -65,11 +69,8 @@ namespace ECommerceAPI.Endpoints.Product
             }
             catch (Exception ex)
             {
-
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }
-
