@@ -32,12 +32,12 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         {
             try
             {
-                var product = _service.GetProduct(id);
-                if (product == null)
+                var products = _service.GetProduct(id);
+                if (products == null)
                 {
                     return NotFound();
                 }
-                return Ok(product);
+                return Ok(products);
             }
             catch (Exception ex)
             {
