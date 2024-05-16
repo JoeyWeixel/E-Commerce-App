@@ -1,6 +1,6 @@
-﻿namespace ECommerceAPI.Domain
+﻿namespace ECommerce.Api.Endpoints.Customer.RequestResponse
 {
-    public class Customer
+    public class CustomerRequest
     {
         public string Id { get; set; }
         public Cart Cart { get; set; }
@@ -9,4 +9,3 @@
         //public History History { get; set; }
     }
 }
-
