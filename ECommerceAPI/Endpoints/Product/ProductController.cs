@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ECommerceAPI.Endpoints.Services;
-using ECommerceAPI.Endpoints.ResponseObjects;
+using ECommerceAPI.Endpoints.Product.RequestResponse;
 
-namespace ECommerceAPI.Controllers
+namespace ECommerceAPI.Endpoints.Product
 {
     public class ProductController : ControllerBase
     {
         private readonly ProductServices _service;
 
-        public ProductController(ProductServices service) {
+        public ProductController(ProductServices service)
+        {
             _service = service;
         }
 
@@ -69,7 +69,7 @@ namespace ECommerceAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
     }
 }
 

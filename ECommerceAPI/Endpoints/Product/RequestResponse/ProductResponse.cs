@@ -1,4 +1,4 @@
-﻿namespace ECommerceAPI.Endpoints.ResponseObjects
+﻿namespace ECommerceAPI.Endpoints.Product.RequestResponse
 {
     public class ProductResponse
     {
