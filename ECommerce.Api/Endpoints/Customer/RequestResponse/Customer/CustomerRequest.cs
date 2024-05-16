@@ -1,4 +1,4 @@
-﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse
+﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse.Customer
 {
     public class CustomerRequest
     {
@@ -6,6 +6,6 @@
         public Cart Cart { get; set; }
         public ContactInfo ContactInfo { get; set; }
         public PaymentInfo PaymentInfo { get; set; }
-        public History History { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

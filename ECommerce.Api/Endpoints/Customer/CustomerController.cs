@@ -1,20 +1,23 @@
 
 using Microsoft.AspNetCore.Mvc;
-using ECommerceAPI.Endpoints.Customer.RequestResponse;
+using ECommerceAPI.Endpoints.Customer.RequestResponse.Customer;
+using ECommerceAPI.Endpoints.Customer.RequestResponse.Order;
 
 
 namespace ECommerceAPI.Endpoints.Customer
 {
+
+    [ApiController]
+    [Route("/customers")]
     public class CustomerController : ControllerBase
     {
         private readonly CustomerService _service;
-
         public CustomerController(CustomerService service)
         {
             _service = service;
         }
 
-        [HttpGet("/customer")]
+        [HttpGet("")]
         public IActionResult GetCustomers()
         {
 
@@ -32,7 +35,7 @@ namespace ECommerceAPI.Endpoints.Customer
 
         }
 
-        [HttpGet("/customer/{id}")]
+        [HttpGet("/{id}")]
         public IActionResult GetCustomer(int id)
         {
             try
@@ -49,7 +52,7 @@ namespace ECommerceAPI.Endpoints.Customer
             }
         }
 
-        [HttpPost("/customer")]
+        [HttpPost("")]
         public IActionResult CreateCustomer(CustomerRequest customer)
         {
 
@@ -69,7 +72,7 @@ namespace ECommerceAPI.Endpoints.Customer
 
 
 
-        [HttpDelete("/customer/{id}")]
+        [HttpDelete("/{id}")]
         public IActionResult DeleteCustomer(int id)
         {
             try
@@ -83,6 +86,66 @@ namespace ECommerceAPI.Endpoints.Customer
 
             }
         }
+
+        [HttpGet("/{customerId}/orders/{orderId}/paymentinfo")]
+        public IActionResult GetPaymentInfo(int customerId, int orderId)
+        {
+            try
+            {
+                var paymentinfo = _service.GetPaymentInfo(customerId, orderId);
+                return Ok(paymentinfo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("/{id}/orders")]
+        public IActionResult AddOrder(OrderRequest order)
+        {
+            try
+            {
+                var newOrder = _service.AddOrder(order);
+                return Created($"/customers/{id}/orders/{newOrder.Id}", newOrder);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("/{customerId}/orders/{orderId}")]
+        public IActionResult GetOrder(int customerId, int orderId)
+        {
+            try
+            {
+                var order = _service.GetOrder(customerId, orderId);
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("/{id}/orders")]
+        public IActionResult GetAllOrders()
+        {
+            try
+            {
+                var orders = _service.GetAllOrders(id);
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
         #region 
         [HttpGet("/customer{id}/contact-info")]

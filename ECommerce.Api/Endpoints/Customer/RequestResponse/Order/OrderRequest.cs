@@ -1,4 +1,4 @@
-﻿namespace ECommerceAPI.Endpoints.Order.RequestResponse
+﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse.Order
 {
     public class OrderRequest
     {
