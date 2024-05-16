@@ -3,11 +3,11 @@ using ECommerceAPI.Endpoints.Product.RequestResponse;
 
 namespace ECommerceAPI.Endpoints.Product
 {
-    public class ProductController : ControllerBase
+    public class PaymentInfoController : ControllerBase
     {
         private readonly ProductService _service;
 
-        public ProductController(ProductService service)
+        public PaymentInfoController(ProductService service)
         {
             _service = service;
         }

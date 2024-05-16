@@ -3,7 +3,7 @@
     public class CustomerResponse
     {
 
-        public string Id { get; set; }
+        public int Id { get; set; }
         public Cart Cart { get; set; }
         public ContactInfo ContactInfo { get; set; }
     }
