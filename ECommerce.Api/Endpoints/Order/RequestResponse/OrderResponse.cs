@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Api.Endpoints.Order.RequestResponse
+﻿using ECommerceAPI.Domain;
+
+namespace ECommerce.Api.Endpoints.Order.RequestResponse
 {
     public class OrderResponse
     {

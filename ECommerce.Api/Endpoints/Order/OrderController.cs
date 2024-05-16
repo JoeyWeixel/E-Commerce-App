@@ -1,4 +1,5 @@
-﻿using ECommerce.Api.Domain;
+﻿using ECommerce.Api.Endpoints.Order;
+using ECommerce.Api.Endpoints.Order.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Endpoints.History
@@ -16,7 +17,7 @@ namespace ECommerce.Api.Endpoints.History
             try
             {
                 var newOrder = _service.AddOrder(order);
-                return Created($"/history/{newOrder.id}",newOrder);
+                return Created($"/history/{newOrder.Id}",newOrder);
             }
             catch (System.Exception ex)
             {
