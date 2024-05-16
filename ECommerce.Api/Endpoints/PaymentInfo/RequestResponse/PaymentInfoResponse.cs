@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Api.Endpoints.PaymentInfo.RequestResponse
+﻿namespace ECommerceAPI.Endpoints.PaymentInfo.RequestResponse
 {
     public class PaymentInfoResponse
     {

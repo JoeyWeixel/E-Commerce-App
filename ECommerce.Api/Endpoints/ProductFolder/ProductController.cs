@@ -3,12 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceAPI.Endpoints.ProductFolder
 {
-<<<<<<< HEAD:ECommerce.Api/Endpoints/Product/ProductController.cs
-    public class PaymentInfoController : ControllerBase
-=======
-    [ApiController]
+
     public class ProductController : ControllerBase
->>>>>>> b71a1defd2f5ce490fc4a063c4eec2b98cf2a951:ECommerce.Api/Endpoints/ProductFolder/ProductController.cs
     {
         private readonly ProductService _service;
 

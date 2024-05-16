@@ -1,6 +1,6 @@
-﻿using ECommerce.Api.Endpoints.PaymentInfo.RequestResponse;
+﻿using ECommerceAPI.Endpoints.PaymentInfo.RequestResponse;
 
-namespace ECommerceAPI.Endpoints.Product
+namespace ECommerceAPI.Endpoints.PaymentInfo
 {
     public class PaymentInfoService
     {

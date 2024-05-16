@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ECommerce.Api.Endpoints.PaymentInfo.RequestResponse;
+
+using ECommerceAPI.Endpoints.PaymentInfo.RequestResponse;
+
 
 namespace ECommerceAPI.Endpoints.PaymentInfo
 {
@@ -13,12 +15,12 @@ namespace ECommerceAPI.Endpoints.PaymentInfo
         }
 
         [HttpGet("/paymentinfo/{id}")]
-        public IActionResult GetProduct(int id)
+        public IActionResult GetPaymentInfo(int id)
         {
             try
             {
-                var product = _service.GetPaymentInfo(id);
-                return Ok(product);
+                var paymentinfo = _service.GetPaymentInfo(id);
+                return Ok(paymentinfo);
             }
             catch (Exception ex)
             {
