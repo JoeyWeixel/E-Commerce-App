@@ -1,4 +1,4 @@
-namespace ECommerceAPI.Endpoints.Customer.RequestResponse;
+namespace ECommerceAPI.Endpoints.ResponseObjects;
 
 public class GetContactInfoResponse
 {
