@@ -1,25 +1,27 @@
-﻿using ECommerceAPI.Endpoints.ResponseObjects;
+﻿using ECommerceAPI.Endpoints.Product.RequestResponse;
 
-namespace ECommerceAPI.Endpoints.Services
+namespace ECommerceAPI.Endpoints.Product
 {
     public class ProductServices
     {
 
         public ProductServices() { }
 
-        public ProductResponse[] GetAllProducts()
+        public IEnumerable<ProductResponse> GetAllProducts()
         {
             //TODO: Reference database which is yet to be created
-            ProductResponse[] products = new ProductResponse[1];
+            var products = new List<ProductResponse>();
             return products;
         }
 
-        public ProductResponse GetProduct(int id) {
+        public ProductResponse GetProduct(int id)
+        {
             //TODO query database
             return new ProductResponse();
         }
 
-        public void DeleteProduct(int id){
+        public void DeleteProduct(int id)
+        {
             //TODO
         }
 
