@@ -8,18 +8,5 @@
         public int numInStock { get; set; }
         public double Price { get; private set; }
 
-        public Product()
-        {
-                
-        }
-
-        public void SetPrice(double price)
-        {
-            if(price < 0)
-            {
-                throw new ArgumentException("Price Cant be Negative"); 
-            }
-            Price = price; 
-        }
     }
 }
