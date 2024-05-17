@@ -1,9 +1,10 @@
 
+using ECommerceAPI.Endpoints.Customer;
 using ECommerceAPI.Endpoints.Customer.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace ECommerceAPI.Endpoints.Customer
+namespace ECommerceAPI.Endpoints.Product
 {
 
     [ApiController]
@@ -143,26 +144,9 @@ namespace ECommerceAPI.Endpoints.Customer
             }
         }
         #region 
-        [HttpGet("/customer{id}/contact-info")]
-        public IActionResult GetCustomers()
-        {
-
-            try
-            {
-                var customers = _service.GetAllCustomers();
-                return Ok(customers);
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
-
-        }
 
         [HttpGet("/customer{id}/contact-info")]
-        public IActionResult GetCustomer(Guid id)
+        public IActionResult GetContactInfo(Guid id)
         {
             try
             {
@@ -174,41 +158,6 @@ namespace ECommerceAPI.Endpoints.Customer
             catch (Exception ex)
             {
                 return NotFound();
-
-            }
-        }
-
-        [HttpPost("/customer{id}/contact-info")]
-        public IActionResult CreateCustomer(CustomerRequest customer)
-        {
-
-            try
-            {
-                _service.AddCustomer(customer);
-                return CreatedAtAction(nameof(GetCustomer), new { id = customer.Id }, customer);
-
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest();
-            }
-
-        }
-
-
-
-        [HttpDelete("/customer{id}/contact-info")]
-        public IActionResult DeleteCustomer(int id)
-        {
-            try
-            {
-                _service.DeleteCustomer(id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest();
 
             }
         }
