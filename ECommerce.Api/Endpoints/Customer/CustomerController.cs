@@ -162,7 +162,7 @@ namespace ECommerceAPI.Endpoints.Customer
         }
 
         [HttpGet("/customer{id}/contact-info")]
-        public IActionResult GetCustomer(int id)
+        public IActionResult GetCustomer(Guid id)
         {
             try
             {
