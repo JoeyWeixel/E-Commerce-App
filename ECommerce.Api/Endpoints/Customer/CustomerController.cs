@@ -143,10 +143,6 @@ namespace ECommerceAPI.Endpoints.Customer
                 return BadRequest(ex.Message);
             }
         }
-
-
-
-
         #region 
         [HttpGet("/customer{id}/contact-info")]
         public IActionResult GetCustomers()

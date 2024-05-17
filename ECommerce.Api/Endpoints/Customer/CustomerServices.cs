@@ -41,7 +41,7 @@ namespace ECommerceAPI.Endpoints.Customer
 
         public void DeleteCustomer(int id)
         {
-            //TODO
+            
         }
 
         public CustomerResponse AddCustomer(CustomerRequest customerRequest)
