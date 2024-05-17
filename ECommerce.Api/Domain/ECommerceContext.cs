@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceAPI.Domain
-
 {
     public class ECommerceContext : DbContext
     {

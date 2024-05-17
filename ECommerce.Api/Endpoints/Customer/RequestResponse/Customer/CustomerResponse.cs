@@ -1,10 +1,9 @@
-﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse.Customer
+﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse
 {
     public class CustomerResponse
     {
 
-        public int Id { get; set; }
-        public Cart Cart { get; set; }
-        public ContactInfo ContactInfo { get; set; }
+        public Guid Id { get; set; }
+        public ContactInfoResponse ContactInfo { get; set; }
     }
 }

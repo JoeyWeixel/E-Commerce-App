@@ -1,9 +1,7 @@
-﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse.Cart
+﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse
 {
-    public class CreateCartRequest
+    public class CartRequest
     {
-        public Dictionary<GetProductsResponse, int> Products { get; set; }
-
-        public int CustomerID { get; set; }
+        public decimal TotalPrice { get; set; }
     }
 }

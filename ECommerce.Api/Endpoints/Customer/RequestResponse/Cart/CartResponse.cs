@@ -1,12 +1,12 @@
 ﻿using ECommerceAPI.Domain;
+using ECommerceAPI.Endpoints.Product.RequestResponse;
 
-namespace ECommerceAPI.Endpoints.Customer.RequestResponse.Cart
+namespace ECommerceAPI.Endpoints.Customer.RequestResponse
 {
     public class CartResponse
     {
-        public Dictionary<Product, int> Products { get; set; }
-        public int Id { get; set; }
+        public Dictionary<ProductResponse, int> Products { get; set; }
+        public Guid Id { get; set; }
         public decimal TotalPrice { get; set; }
-        public Customer Customer { get; set; }
     }
 }

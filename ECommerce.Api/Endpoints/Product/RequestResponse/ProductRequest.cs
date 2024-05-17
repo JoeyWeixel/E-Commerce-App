@@ -1,4 +1,4 @@
-﻿namespace ECommerceAPI.Endpoints.ProductFolder.RequestResponse
+﻿namespace ECommerceAPI.Endpoints.Product.RequestResponse
 {
     public class ProductRequest
     {

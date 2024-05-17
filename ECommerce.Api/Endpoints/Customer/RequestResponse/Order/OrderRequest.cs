@@ -1,9 +1,7 @@
-﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse.Order
+﻿namespace ECommerceAPI.Endpoints.Customer.RequestResponse
 {
     public class OrderRequest
     {
-        public int Id { get; set; }
-        public Domain.Cart Cart { get; set; }
         public DateTime OrderDate { get; set; }
 
     }

@@ -1,7 +1,5 @@
 
 using Microsoft.AspNetCore.Mvc;
-using ECommerceAPI.Endpoints.Customer.RequestResponse.Customer;
-using ECommerceAPI.Endpoints.Customer.RequestResponse.Order;
 
 
 namespace ECommerceAPI.Endpoints.Customer
