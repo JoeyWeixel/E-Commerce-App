@@ -53,7 +53,7 @@ namespace ECommerceAPI.Endpoints.Customer
             _db.Customers.Remove(customer);
         }
 
-        public CustomerResponse AddCustomer(CustomerRequest customerRequest)
+        public Domain.Customer AddCustomer(CustomerRequest customerRequest)
         {
             var newCustomer = new Domain.Customer
             {
@@ -66,25 +66,14 @@ namespace ECommerceAPI.Endpoints.Customer
                     Address = customerRequest.ContactInfo.Address
                 },
                 Cart = new Cart(),
-                Orders = new List<Order>()
+                Orders = []
 
             };
             _db.Customers.Add(newCustomer);
-            return new CustomerResponse
-            {
-                Id = newCustomer.Id,
-                ContactInfo = new ContactInfoResponse
-                {
-                    Name = newCustomer.ContactInfo.Name,
-                    Email = newCustomer.ContactInfo.Email,
-                    PhoneNumber = newCustomer.ContactInfo.PhoneNumber,
-                    Address = newCustomer.ContactInfo.Address
-                }
-
-            };
+            return newCustomer;
         }
 
-        public IEnumerable<OrderResponse> GetAllOrdersForCustomer(Guid customerId)
+        public IEnumerable<OrderResponse> GetAllOrders(Guid customerId)
         {
             Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == customerId);
 
@@ -102,7 +91,7 @@ namespace ECommerceAPI.Endpoints.Customer
             return orders;
         }
 
-        public OrderResponse GetOrderForCustomer(Guid customerId, Guid orderId)
+        public OrderResponse GetOrder(Guid customerId, Guid orderId)
         {
             Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == customerId);
 
@@ -129,7 +118,7 @@ namespace ECommerceAPI.Endpoints.Customer
             };
             return newOrder;
         }
-        public PaymentInfoResponse GetPaymentInfo(int id)
+        public PaymentInfoResponse GetPaymentInfo(Guid customerId, Guid paymentId)
         {
             return new PaymentInfoResponse();
         }

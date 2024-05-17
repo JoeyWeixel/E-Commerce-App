@@ -1,4 +1,5 @@
 
+using ECommerceAPI.Endpoints.Customer.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -34,7 +35,7 @@ namespace ECommerceAPI.Endpoints.Customer
         }
 
         [HttpGet("/{id}")]
-        public IActionResult GetCustomer(int id)
+        public IActionResult GetCustomer(Guid id)
         {
             try
             {
@@ -56,8 +57,8 @@ namespace ECommerceAPI.Endpoints.Customer
 
             try
             {
-                _service.AddCustomer(customer);
-                return CreatedAtAction(nameof(GetCustomer), new { id = customer.Id }, customer);
+                Domain.Customer newCustomer = _service.AddCustomer(customer);
+                return CreatedAtAction(nameof(GetCustomer), new { id = newCustomer.Id }, newCustomer);
 
 
             }
@@ -71,7 +72,7 @@ namespace ECommerceAPI.Endpoints.Customer
 
 
         [HttpDelete("/{id}")]
-        public IActionResult DeleteCustomer(int id)
+        public IActionResult DeleteCustomer(Guid id)
         {
             try
             {
@@ -86,11 +87,11 @@ namespace ECommerceAPI.Endpoints.Customer
         }
 
         [HttpGet("/{customerId}/orders/{orderId}/paymentinfo")]
-        public IActionResult GetPaymentInfo(int customerId, int orderId)
+        public IActionResult GetPaymentInfo(Guid customerId, Guid paymentId)
         {
             try
             {
-                var paymentinfo = _service.GetPaymentInfo(customerId, orderId);
+                var paymentinfo = _service.GetPaymentInfo(customerId, paymentId);
                 return Ok(paymentinfo);
             }
             catch (Exception ex)
@@ -99,13 +100,13 @@ namespace ECommerceAPI.Endpoints.Customer
             }
         }
 
-        [HttpPost("/{id}/orders")]
-        public IActionResult AddOrder(int id, OrderRequest order)
+        [HttpPost("/{customerId}/orders")]
+        public IActionResult AddOrder(Guid customerId, OrderRequest order)
         {
             try
             {
-                var newOrder = _service.AddOrder(order);
-                return Created($"/customers/{id}/orders/{newOrder.Id}", newOrder);
+                var newOrder = _service.AddOrder(customerId, order);
+                return Created($"/customers/{customerId}/orders/{newOrder.Id}", newOrder);
             }
             catch (Exception ex)
             {
@@ -115,7 +116,7 @@ namespace ECommerceAPI.Endpoints.Customer
         }
 
         [HttpGet("/{customerId}/orders/{orderId}")]
-        public IActionResult GetOrder(int customerId, int orderId)
+        public IActionResult GetOrder(Guid customerId, Guid orderId)
         {
             try
             {
@@ -129,7 +130,7 @@ namespace ECommerceAPI.Endpoints.Customer
         }
 
         [HttpGet("/{id}/orders")]
-        public IActionResult GetAllOrders(int id)
+        public IActionResult GetAllOrders(Guid id)
         {
             try
             {

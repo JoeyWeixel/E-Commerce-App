@@ -1,4 +1,5 @@
-﻿using ECommerceAPI.Endpoints.ProductFolder.RequestResponse;
+﻿using ECommerceAPI.Endpoints.Product.RequestResponse;
+using ECommerceAPI.Endpoints.ProductFolder.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceAPI.Endpoints.ProductFolder
@@ -28,7 +29,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         }
 
         [HttpGet("/products/{id}")]
-        public IActionResult GetProduct(int id)
+        public IActionResult GetProduct(Guid id)
         {
             try
             {
@@ -60,7 +61,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         }
 
         [HttpDelete("/products/{id}")]
-        public IActionResult DeleteProduct(int id)
+        public IActionResult DeleteProduct(Guid id)
         {
             try
             {
