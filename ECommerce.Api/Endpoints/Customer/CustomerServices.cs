@@ -1,6 +1,5 @@
 ﻿using ECommerceAPI.Domain;
-using ECommerceAPI.Endpoints.Customer.RequestResponse.Customer;
-using ECommerceAPI.Endpoints.Customer.RequestResponse.Order;
+using ECommerceAPI.Endpoints.Customer.RequestResponse;
 using ECommerceAPI.Endpoints.PaymentInfo.RequestResponse;
 
 namespace ECommerceAPI.Endpoints.Customer
@@ -15,39 +14,71 @@ namespace ECommerceAPI.Endpoints.Customer
 
         public IEnumerable<CustomerResponse> GetAllCustomers()
         {
-            //TODO: Reference database which is yet to be created
-            var products = new List<CustomerResponse>();
-            return products;
-        }
-
-        public CustomerResponse GetCustomer(int id)
-        {
-            //TODO query database
-            return new CustomerResponse();
-        }
-
-        public void DeleteCustomer(int id)
-        {
-            //TODO
-        }
-
-        public CustomerResponse AddCustomer(CustomerRequest customerRequest)
-        {
-
-
-            return new CustomerResponse
+            var customers = new List<CustomerResponse>();
+            foreach (Domain.Customer customer in _db.Customers)
             {
-                Id = customerRequest.Id,
-                ContactInfo = customerRequest.ContactInfo,
+                customers.Add(new CustomerResponse
+                {
+                    Id = customer.Id,
+                    ContactInfo = new ContactInfoResponse {
+                        Name = customer.ContactInfo.Name,
+                        Email = customer.ContactInfo.Email,
+                        PhoneNumber = customer.ContactInfo.PhoneNumber,
+                        Address = customer.ContactInfo.Address
+                    }
+                });
+            }
+            return customers;
+        }
+
+        public CustomerResponse GetCustomer(Guid id)
+        {
+            Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == id);
+            return (new CustomerResponse
+                {
+                    Id = customer.Id,
+                ContactInfo = new ContactInfoResponse
+                {
+                    Name = customer.ContactInfo.Name,
+                    Email = customer.ContactInfo.Email,
+                    PhoneNumber = customer.ContactInfo.PhoneNumber,
+                    Address = customer.ContactInfo.Address
+                }
+                });
+        }
+
+        public void DeleteCustomer(Guid id)
+        {
+            var customer = _db.Customers.First(c => c.Id == id);
+            _db.Customers.Remove(customer);
+        }
+
+        public Domain.Customer AddCustomer(CustomerRequest customerRequest)
+        {
+            var newCustomer = new Domain.Customer
+            {
+                Id = new Guid(),
+                ContactInfo = new ContactInfo
+                {
+                    Name = customerRequest.ContactInfo.Name,
+                    Email = customerRequest.ContactInfo.Email,
+                    PhoneNumber = customerRequest.ContactInfo.PhoneNumber,
+                    Address = customerRequest.ContactInfo.Address
+                },
+                Cart = new Cart(),
+                Orders = []
 
             };
+            _db.Customers.Add(newCustomer);
+            return newCustomer;
         }
 
-        public IEnumerable<OrderResponse> GetAllOrders()
+        public IEnumerable<OrderResponse> GetAllOrders(Guid customerId)
         {
+            Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == customerId);
 
             var orders = new List<OrderResponse>();
-            foreach (Domain.Order order in _db.Orders)
+            foreach (Domain.Order order in customer.Orders)
             {
                 orders.Add(new OrderResponse
                 {
@@ -60,9 +91,11 @@ namespace ECommerceAPI.Endpoints.Customer
             return orders;
         }
 
-        public OrderResponse GetOrder(int id)
+        public OrderResponse GetOrder(Guid customerId, Guid orderId)
         {
-            var order = _db.Orders.FirstOrDefault(o => o.Id == id);
+            Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == customerId);
+
+            var order = customer.Orders.Find(o => o.Id == orderId);
             var orderResponse = new OrderResponse
             {
                 Id = order.Id,
@@ -73,19 +106,20 @@ namespace ECommerceAPI.Endpoints.Customer
             return orderResponse;
         }
 
-        public Domain.Order AddOrder(OrderRequest order)
+        public Domain.Order AddOrder(Guid customerId, OrderRequest order)
         {
+           var customer = _db.Customers.Find((Domain.Customer c) => c.Id == customerId);
+
             var newOrder = new Domain.Order
             {
-                Id = order.Id,
-                Cart = order.Cart,
-                OrderDate = order.OrderDate
+                Id = new Guid(),
+                Cart = customer.Cart,
+                OrderDate = DateTime.Now
             };
             return newOrder;
         }
-        public PaymentInfoResponse GetPaymentInfo(int id)
+        public PaymentInfoResponse GetPaymentInfo(Guid customerId, Guid paymentId)
         {
-            //TODO query database
             return new PaymentInfoResponse();
         }
     }

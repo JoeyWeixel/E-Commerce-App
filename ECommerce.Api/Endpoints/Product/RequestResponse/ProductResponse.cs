@@ -1,8 +1,8 @@
-﻿namespace ECommerceAPI.Endpoints.ProductFolder.RequestResponse
+﻿namespace ECommerceAPI.Endpoints.Product.RequestResponse
 {
     public class ProductResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int numInStock { get; set; }

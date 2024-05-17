@@ -1,11 +1,11 @@
 ﻿using ECommerceAPI.Domain;
-using ECommerceAPI.Endpoints.ProductFolder.RequestResponse;
+using ECommerceAPI.Endpoints.Product.RequestResponse;
 
 namespace ECommerceAPI.Endpoints.ProductFolder
 {
     public class ProductService
     {
-        private readonly List<Product> _products = new List<Product>();
+        private readonly List<Domain.Product> _products = new List<Domain.Product>();
         private static int _nextId = 1;
 
         public ProductService() { }
@@ -22,7 +22,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
             }).ToList();
         }
 
-        public ProductResponse GetProduct(int id)
+        public ProductResponse GetProduct(Guid id)
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
             if (product == null)
@@ -40,7 +40,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
             };
         }
 
-        public void DeleteProduct(int id)
+        public void DeleteProduct(Guid id)
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
             if (product != null)
@@ -51,9 +51,9 @@ namespace ECommerceAPI.Endpoints.ProductFolder
 
         public ProductResponse AddProduct(ProductRequest productRequest)
         {
-            var product = new Product
+            var product = new Domain.Product
             {
-                Id = _nextId++,
+                Id = new Guid(),
                 Name = productRequest.Name,
                 Description = productRequest.Description,
                 numInStock = productRequest.numInStock,
