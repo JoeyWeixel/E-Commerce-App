@@ -21,7 +21,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
             }).ToList();
         }
 
-        public ProductResponse GetProduct(Guid id)
+        public ProductResponse GetProduct(int id)
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
             if (product == null)
@@ -39,7 +39,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
             };
         }
 
-        public void DeleteProduct(Guid id)
+        public void DeleteProduct(int id)
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
             if (product != null)
@@ -52,7 +52,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         {
             var product = new Domain.Product
             {
-                Id = new Guid(),
+                Id = _nextId++,
                 Name = productRequest.Name,
                 Description = productRequest.Description,
                 numInStock = productRequest.numInStock,

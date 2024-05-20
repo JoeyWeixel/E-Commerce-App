@@ -28,7 +28,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         }
 
         [HttpGet("/products/{id}")]
-        public IActionResult GetProduct(Guid id)
+        public IActionResult GetProduct(int id)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         }
 
         [HttpDelete("/products/{id}")]
-        public IActionResult DeleteProduct(Guid id)
+        public IActionResult DeleteProduct(int id)
         {
             try
             {

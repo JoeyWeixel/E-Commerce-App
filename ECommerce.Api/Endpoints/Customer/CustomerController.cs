@@ -1,6 +1,5 @@
 using ECommerceAPI.Endpoints.CustomerEndpoint;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -36,7 +35,7 @@ namespace ECommerceAPI.Endpoints.Product
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCustomer(Guid id)
+        public IActionResult GetCustomer(int id)
         {
             try
             {
@@ -69,7 +68,7 @@ namespace ECommerceAPI.Endpoints.Product
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCustomer(Guid id)
+        public IActionResult DeleteCustomer(int id)
         {
             try
             {
@@ -84,7 +83,7 @@ namespace ECommerceAPI.Endpoints.Product
         }
 
         [HttpGet("{customerId}/orders/{orderId}/paymentinfo")]
-        public IActionResult GetPaymentInfo(Guid customerId, Guid paymentId)
+        public IActionResult GetPaymentInfo(int customerId, int paymentId)
         {
             try
             {
@@ -98,7 +97,7 @@ namespace ECommerceAPI.Endpoints.Product
         }
 
         [HttpPost("{customerId}/orders")]
-        public IActionResult AddOrder(Guid customerId, OrderRequest order)
+        public IActionResult AddOrder(int customerId, OrderRequest order)
         {
             try
             {
@@ -113,7 +112,7 @@ namespace ECommerceAPI.Endpoints.Product
         }
 
         [HttpGet("{customerId}/orders/{orderId}")]
-        public IActionResult GetOrder(Guid customerId, Guid orderId)
+        public IActionResult GetOrder(int customerId, int orderId)
         {
             try
             {
@@ -127,7 +126,7 @@ namespace ECommerceAPI.Endpoints.Product
         }
 
         [HttpGet("{id}/orders")]
-        public IActionResult GetAllOrders(Guid id)
+        public IActionResult GetAllOrders(int id)
         {
             try
             {
@@ -142,7 +141,7 @@ namespace ECommerceAPI.Endpoints.Product
         #region 
 
         [HttpGet("/customer{id}/contact-info")]
-        public IActionResult GetContactInfo(Guid id)
+        public IActionResult GetContactInfo(int id)
         {
             try
             {

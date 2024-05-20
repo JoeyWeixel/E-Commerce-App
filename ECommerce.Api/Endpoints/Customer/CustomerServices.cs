@@ -7,6 +7,8 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
     {
 
         ECommerceContext _db;
+        private static int _nextCustomerId = 1;
+
         public CustomerService(ECommerceContext db)
         {
             _db = db;
@@ -32,7 +34,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             return customers;
         }
 
-        public CustomerResponse GetCustomer(Guid id)
+        public CustomerResponse GetCustomer(int id)
         {
             Customer customer = _db.Customers.Find((Customer c) => c.Id == id);
             return (new CustomerResponse
@@ -48,7 +50,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             });
         }
 
-        public void DeleteCustomer(Guid id)
+        public void DeleteCustomer(int id)
         {
             var customer = _db.Customers.First(c => c.Id == id);
             _db.Customers.Remove(customer);
@@ -58,7 +60,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         {
             var newCustomer = new Customer
             {
-                Id = new Guid(),
+                Id = _nextCustomerId++,
                 ContactInfo = new ContactInfo
                 {
                     Name = customerRequest.ContactInfo.Name,
@@ -74,7 +76,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             return newCustomer;
         }
 
-        public IEnumerable<OrderResponse> GetAllOrders(Guid customerId)
+        public IEnumerable<OrderResponse> GetAllOrders(int customerId)
         {
             Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == customerId);
 
@@ -92,7 +94,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             return orders;
         }
 
-        public OrderResponse GetOrder(Guid customerId, Guid orderId)
+        public OrderResponse GetOrder(int customerId, int orderId)
         {
             Domain.Customer customer = _db.Customers.Find((Customer c) => c.Id == customerId);
 
@@ -107,19 +109,19 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             return orderResponse;
         }
 
-        public Domain.Order AddOrder(Guid customerId, OrderRequest order)
+        public Domain.Order AddOrder(int customerId, OrderRequest order)
         {
             var customer = _db.Customers.Find((Customer c) => c.Id == customerId);
 
             var newOrder = new Order
             {
-                Id = new Guid(),
+                Id = new int(),
                 Cart = customer.Cart,
                 OrderDate = DateTime.Now
             };
             return newOrder;
         }
-        public PaymentInfoResponse GetPaymentInfo(Guid customerId, Guid paymentId)
+        public PaymentInfoResponse GetPaymentInfo(int customerId, int paymentId)
         {
             return new PaymentInfoResponse();
         }
