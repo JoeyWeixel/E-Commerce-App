@@ -48,13 +48,14 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             });
         }
 
-        public void DeleteCustomer(Guid id)
+        public CustomerResponse DeleteCustomer(Guid id)
         {
             var customer = _db.Customers.First(c => c.Id == id);
             _db.Customers.Remove(customer);
+            return new CustomerResponse(customer);
         }
 
-        public Customer AddCustomer(CustomerRequest customerRequest)
+        public CustomerResponse AddCustomer(CustomerRequest customerRequest)
         {
             var newCustomer = new Customer
             {
@@ -71,7 +72,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             };
             _db.Customers.Add(newCustomer);
-            return newCustomer;
+            return new CustomerResponse(newCustomer);
         }
 
         public IEnumerable<OrderResponse> GetAllOrders(Guid customerId)
