@@ -1,5 +1,4 @@
-﻿using ECommerceAPI.Domain;
-using ECommerceAPI.Endpoints.Product.RequestResponse;
+﻿using ECommerceAPI.Endpoints.Product.RequestResponse;
 
 namespace ECommerceAPI.Endpoints.ProductFolder
 {

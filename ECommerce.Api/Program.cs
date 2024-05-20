@@ -1,8 +1,7 @@
-using ECommerceAPI.Endpoints.Customer;
-using ECommerceAPI.Endpoints.PaymentInfo;
 using ECommerceAPI.Domain;
-using Microsoft.EntityFrameworkCore;
+using ECommerceAPI.Endpoints.CustomerEndpoint;
 using ECommerceAPI.Endpoints.ProductFolder;
+using Microsoft.EntityFrameworkCore;
 
 
 
