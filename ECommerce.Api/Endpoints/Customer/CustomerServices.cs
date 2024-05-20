@@ -1,5 +1,7 @@
 ﻿using ECommerceAPI.Domain;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
+using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
+
 
 namespace ECommerceAPI.Endpoints.CustomerEndpoint
 {
@@ -8,6 +10,8 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         ECommerceContext _db;
         private static int _nextCustomerId = 1;
+
+        private readonly Dictionary<int, CartResponse> _customerCarts = new Dictionary<int, CartResponse>();
 
         public CustomerService(ECommerceContext db)
         {
@@ -125,6 +129,52 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         {
             return new PaymentInfoResponse();
         }
-    }
 
+        public CartResponse GetCart(int customerId)
+        {
+            if (!_customerCarts.ContainsKey(customerId))
+            {
+                _customerCarts[customerId] = new CartResponse { Id = customerId };
+            }
+            return _customerCarts[customerId];
+        }
+
+        public void AddProductToCart(int customerId, ProductResponse product, int quantity)
+        {
+            var cart = GetCart(customerId);
+            if (cart.Products.ContainsKey(product))
+            {
+                cart.Products[product] += quantity;
+            }
+            else
+            {
+                cart.Products[product] = quantity;
+            }
+            UpdateTotalPrice(cart);
+        }
+
+        public void RemoveProductFromCart(int customerId, ProductResponse product, int quantity)
+        {
+            var cart = GetCart(customerId);
+            if (cart.Products.ContainsKey(product))
+            {
+                cart.Products[product] -= quantity;
+                if (cart.Products[product] <= 0)
+                {
+                    cart.Products.Remove(product);
+                }
+                UpdateTotalPrice(cart);
+            }
+        }
+
+        public CartResponse GetCustomerCart(int customerId)
+        {
+            return GetCart(customerId);
+        }
+
+        private void UpdateTotalPrice(CartResponse cart)
+        {
+            cart.TotalPrice = cart.Products.Sum(p => p.Key.Price * p.Value);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using ECommerceAPI.Endpoints.Product.RequestResponse;
+﻿using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 
 namespace ECommerceAPI.Endpoints.ProductFolder
 {
