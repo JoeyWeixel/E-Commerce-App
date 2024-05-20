@@ -1,5 +1,6 @@
 using ECommerceAPI.Endpoints.CustomerEndpoint;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -59,8 +60,9 @@ namespace ECommerceAPI.Endpoints.Product
                 var newCustomer = _service.AddCustomer(customer);
                 return Created($"Customers/{newCustomer.Id}", newCustomer);
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return StatusCode(500);
             }
         }
@@ -82,7 +84,7 @@ namespace ECommerceAPI.Endpoints.Product
             }
         }
 
-        [HttpGet("{customerId}/orders/{orderId}/paymentinfo")]
+        [HttpGet("{customerId}/payment-info/{paymentId}")]
         public IActionResult GetPaymentInfo(int customerId, int paymentId)
         {
             try
@@ -93,6 +95,19 @@ namespace ECommerceAPI.Endpoints.Product
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("{customerId}/payment-info")]
+        public IActionResult AddPaymentInfo(int customerId, PaymentInfoRequest paymentInfo)
+        {
+            try { 
+                var response = _service.AddPaymentInfo(customerId, paymentInfo);
+                return Ok(response);
+            }
+            catch
+            {
+                return StatusCode(500);
             }
         }
 
@@ -138,7 +153,6 @@ namespace ECommerceAPI.Endpoints.Product
                 return BadRequest(ex.Message);
             }
         }
-        #region 
 
         [HttpGet("/customer{id}/contact-info")]
         public IActionResult GetContactInfo(int id)
@@ -156,8 +170,6 @@ namespace ECommerceAPI.Endpoints.Product
 
             }
         }
-
-        #endregion
 
     }
 
