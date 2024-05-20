@@ -1,26 +1,27 @@
 ﻿using ECommerceAPI.Domain;
-using ECommerceAPI.Endpoints.Customer.RequestResponse;
-using ECommerceAPI.Endpoints.PaymentInfo.RequestResponse;
+using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
 
-namespace ECommerceAPI.Endpoints.Customer
+namespace ECommerceAPI.Endpoints.CustomerEndpoint
 {
     public class CustomerService
     {
 
         ECommerceContext _db;
-        public CustomerService(ECommerceContext db) { 
+        public CustomerService(ECommerceContext db)
+        {
             _db = db;
         }
 
         public IEnumerable<CustomerResponse> GetAllCustomers()
         {
             var customers = new List<CustomerResponse>();
-            foreach (Domain.Customer customer in _db.Customers)
+            foreach (Customer customer in _db.Customers)
             {
                 customers.Add(new CustomerResponse
                 {
                     Id = customer.Id,
-                    ContactInfo = new ContactInfoResponse {
+                    ContactInfo = new ContactInfoResponse
+                    {
                         Name = customer.ContactInfo.Name,
                         Email = customer.ContactInfo.Email,
                         PhoneNumber = customer.ContactInfo.PhoneNumber,
@@ -33,10 +34,10 @@ namespace ECommerceAPI.Endpoints.Customer
 
         public CustomerResponse GetCustomer(Guid id)
         {
-            Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == id);
+            Customer customer = _db.Customers.Find((Customer c) => c.Id == id);
             return (new CustomerResponse
-                {
-                    Id = customer.Id,
+            {
+                Id = customer.Id,
                 ContactInfo = new ContactInfoResponse
                 {
                     Name = customer.ContactInfo.Name,
@@ -44,7 +45,7 @@ namespace ECommerceAPI.Endpoints.Customer
                     PhoneNumber = customer.ContactInfo.PhoneNumber,
                     Address = customer.ContactInfo.Address
                 }
-                });
+            });
         }
 
         public void DeleteCustomer(Guid id)
@@ -53,9 +54,9 @@ namespace ECommerceAPI.Endpoints.Customer
             _db.Customers.Remove(customer);
         }
 
-        public Domain.Customer AddCustomer(CustomerRequest customerRequest)
+        public Customer AddCustomer(CustomerRequest customerRequest)
         {
-            var newCustomer = new Domain.Customer
+            var newCustomer = new Customer
             {
                 Id = new Guid(),
                 ContactInfo = new ContactInfo
@@ -93,7 +94,7 @@ namespace ECommerceAPI.Endpoints.Customer
 
         public OrderResponse GetOrder(Guid customerId, Guid orderId)
         {
-            Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == customerId);
+            Domain.Customer customer = _db.Customers.Find((Customer c) => c.Id == customerId);
 
             var order = customer.Orders.Find(o => o.Id == orderId);
             var orderResponse = new OrderResponse
@@ -108,9 +109,9 @@ namespace ECommerceAPI.Endpoints.Customer
 
         public Domain.Order AddOrder(Guid customerId, OrderRequest order)
         {
-           var customer = _db.Customers.Find((Domain.Customer c) => c.Id == customerId);
+            var customer = _db.Customers.Find((Customer c) => c.Id == customerId);
 
-            var newOrder = new Domain.Order
+            var newOrder = new Order
             {
                 Id = new Guid(),
                 Cart = customer.Cart,

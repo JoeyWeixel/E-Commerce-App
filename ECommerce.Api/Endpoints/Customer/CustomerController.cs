@@ -1,6 +1,6 @@
-
-using ECommerceAPI.Endpoints.Customer;
-using ECommerceAPI.Endpoints.Customer.RequestResponse;
+using ECommerceAPI.Endpoints.CustomerEndpoint;
+using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -17,7 +17,7 @@ namespace ECommerceAPI.Endpoints.Product
             _service = service;
         }
 
-        [HttpGet("")]
+        [HttpGet]
         public IActionResult GetCustomers()
         {
 
@@ -35,7 +35,7 @@ namespace ECommerceAPI.Endpoints.Product
 
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetCustomer(Guid id)
         {
             try
@@ -52,27 +52,23 @@ namespace ECommerceAPI.Endpoints.Product
             }
         }
 
-        [HttpPost("")]
+        [HttpPost]
         public IActionResult CreateCustomer(CustomerRequest customer)
         {
-
             try
             {
-                Domain.Customer newCustomer = _service.AddCustomer(customer);
-                return CreatedAtAction(nameof(GetCustomer), new { id = newCustomer.Id }, newCustomer);
-
-
+                var newCustomer = _service.AddCustomer(customer);
+                return Created($"Customers/{newCustomer.Id}", newCustomer);
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest();
+                return StatusCode(500);
             }
-
         }
 
 
 
-        [HttpDelete("/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteCustomer(Guid id)
         {
             try
@@ -87,7 +83,7 @@ namespace ECommerceAPI.Endpoints.Product
             }
         }
 
-        [HttpGet("/{customerId}/orders/{orderId}/paymentinfo")]
+        [HttpGet("{customerId}/orders/{orderId}/paymentinfo")]
         public IActionResult GetPaymentInfo(Guid customerId, Guid paymentId)
         {
             try
@@ -101,7 +97,7 @@ namespace ECommerceAPI.Endpoints.Product
             }
         }
 
-        [HttpPost("/{customerId}/orders")]
+        [HttpPost("{customerId}/orders")]
         public IActionResult AddOrder(Guid customerId, OrderRequest order)
         {
             try
@@ -116,7 +112,7 @@ namespace ECommerceAPI.Endpoints.Product
             }
         }
 
-        [HttpGet("/{customerId}/orders/{orderId}")]
+        [HttpGet("{customerId}/orders/{orderId}")]
         public IActionResult GetOrder(Guid customerId, Guid orderId)
         {
             try
@@ -130,7 +126,7 @@ namespace ECommerceAPI.Endpoints.Product
             }
         }
 
-        [HttpGet("/{id}/orders")]
+        [HttpGet("{id}/orders")]
         public IActionResult GetAllOrders(Guid id)
         {
             try
