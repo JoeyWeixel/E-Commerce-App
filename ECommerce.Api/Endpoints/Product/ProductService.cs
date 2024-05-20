@@ -1,17 +1,23 @@
-﻿using ECommerceAPI.Endpoints.Product.RequestResponse;
+﻿using ECommerceAPI.Domain;
+using ECommerceAPI.Endpoints.Product.RequestResponse;
+using Microsoft.EntityFrameworkCore;
 
-namespace ECommerceAPI.Endpoints.ProductFolder
+namespace ECommerceAPI.Endpoints.ProductEndpoint
 {
     public class ProductService
     {
         private readonly List<Domain.Product> _products = new List<Domain.Product>();
         private static int _nextId = 1;
 
-        public ProductService() { }
+        ECommerceContext _db;
+
+        public ProductService(ECommerceContext db) {
+            var _db = db;
+        }
 
         public IEnumerable<ProductResponse> GetAllProducts()
         {
-            return _products.Select(product => new ProductResponse
+            return _db.Products.Select(product => new ProductResponse
             {
                 Id = product.Id,
                 Name = product.Name,
@@ -21,9 +27,9 @@ namespace ECommerceAPI.Endpoints.ProductFolder
             }).ToList();
         }
 
-        public ProductResponse GetProduct(Guid id)
+        public ProductResponse GetProduct(int id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            var product = _db.Products.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 return null;
@@ -39,9 +45,9 @@ namespace ECommerceAPI.Endpoints.ProductFolder
             };
         }
 
-        public void DeleteProduct(Guid id)
+        public void DeleteProduct(int id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            var product = _db.Products.FirstOrDefault(p => p.Id == id);
             if (product != null)
             {
                 _products.Remove(product);
@@ -52,14 +58,15 @@ namespace ECommerceAPI.Endpoints.ProductFolder
         {
             var product = new Domain.Product
             {
-                Id = new Guid(),
+                Id = _nextId,
                 Name = productRequest.Name,
                 Description = productRequest.Description,
                 numInStock = productRequest.numInStock,
                 Price = productRequest.Price
             };
+            _nextId++;
 
-            _products.Add(product);
+            _db.Products.Add(product);
 
             return new ProductResponse
             {

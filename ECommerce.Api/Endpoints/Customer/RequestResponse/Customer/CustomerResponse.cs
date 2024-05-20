@@ -5,7 +5,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
     public class CustomerResponse
     {
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public ContactInfoResponse ContactInfo { get; set; }
         public CustomerResponse(Customer customer)
         {
