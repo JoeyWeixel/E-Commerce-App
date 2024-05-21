@@ -2,6 +2,5 @@
 {
     public class CartRequest
     {
-        public decimal TotalPrice { get; set; }
     }
 }

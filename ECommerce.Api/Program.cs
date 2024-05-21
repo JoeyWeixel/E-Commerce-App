@@ -1,6 +1,6 @@
 using ECommerceAPI.Domain;
 using ECommerceAPI.Endpoints.CustomerEndpoint;
-using ECommerceAPI.Endpoints.ProductFolder;
+using ECommerceAPI.Endpoints.ProductEndpoint;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -16,7 +16,7 @@ builder.Services.AddDbContext<ECommerceContext>(opt =>
     opt.UseInMemoryDatabase("ECommerce"));
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ProductService>();
+builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<CustomerService>();
 
 var app = builder.Build();

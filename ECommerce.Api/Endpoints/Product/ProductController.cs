@@ -1,7 +1,7 @@
 ﻿using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerceAPI.Endpoints.ProductFolder
+namespace ECommerceAPI.Endpoints.ProductEndpoint
 {
 
     public class ProductController : ControllerBase

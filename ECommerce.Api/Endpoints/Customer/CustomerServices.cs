@@ -2,12 +2,12 @@
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
 using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceAPI.Endpoints.CustomerEndpoint
 {
     public class CustomerService
     {
-
         ECommerceContext _db;
         private static int _nextCustomerId = 1;
 
@@ -21,46 +21,28 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         public IEnumerable<CustomerResponse> GetAllCustomers()
         {
             var customers = new List<CustomerResponse>();
-            foreach (Customer customer in _db.Customers)
+            foreach (Customer customer in _db.Customers.Include(customer => customer.ContactInfo))
             {
-                customers.Add(new CustomerResponse
-                {
-                    Id = customer.Id,
-                    ContactInfo = new ContactInfoResponse
-                    {
-                        Name = customer.ContactInfo.Name,
-                        Email = customer.ContactInfo.Email,
-                        PhoneNumber = customer.ContactInfo.PhoneNumber,
-                        Address = customer.ContactInfo.Address
-                    }
-                });
+                customers.Add(new CustomerResponse(customer));
             }
             return customers;
         }
 
         public CustomerResponse GetCustomer(int id)
         {
-            Customer customer = _db.Customers.Find((Customer c) => c.Id == id);
-            return (new CustomerResponse
-            {
-                Id = customer.Id,
-                ContactInfo = new ContactInfoResponse
-                {
-                    Name = customer.ContactInfo.Name,
-                    Email = customer.ContactInfo.Email,
-                    PhoneNumber = customer.ContactInfo.PhoneNumber,
-                    Address = customer.ContactInfo.Address
-                }
-            });
+            Customer customer = _db.Customers.Include(customer => customer.ContactInfo).SingleOrDefault(customer => customer.Id == id);
+            return new CustomerResponse(customer);
         }
 
-        public void DeleteCustomer(int id)
+        public CustomerResponse DeleteCustomer(int id)
         {
             var customer = _db.Customers.First(c => c.Id == id);
             _db.Customers.Remove(customer);
+            _db.SaveChanges();
+            return new CustomerResponse(customer);
         }
 
-        public Customer AddCustomer(CustomerRequest customerRequest)
+        public CustomerResponse AddCustomer(CustomerRequest customerRequest)
         {
             var newCustomer = new Customer
             {
@@ -73,19 +55,20 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                     Address = customerRequest.ContactInfo.Address
                 },
                 Cart = new Cart(),
-                Orders = []
-
+                Orders = [],
+                PaymentInfos = []
             };
             _db.Customers.Add(newCustomer);
-            return newCustomer;
+            _db.SaveChanges();
+            return new CustomerResponse(newCustomer);
         }
 
         public IEnumerable<OrderResponse> GetAllOrders(int customerId)
         {
-            Domain.Customer customer = _db.Customers.Find((Domain.Customer c) => c.Id == customerId);
+            Customer customer = _db.Customers.Find((Customer c) => c.Id == customerId);
 
             var orders = new List<OrderResponse>();
-            foreach (Domain.Order order in customer.Orders)
+            foreach (Order order in customer.Orders)
             {
                 orders.Add(new OrderResponse
                 {
@@ -100,7 +83,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public OrderResponse GetOrder(int customerId, int orderId)
         {
-            Domain.Customer customer = _db.Customers.Find((Customer c) => c.Id == customerId);
+            Customer customer = _db.Customers.Include(customer => customer.Orders).SingleOrDefault((Customer c) => c.Id == customerId);
 
             var order = customer.Orders.Find(o => o.Id == orderId);
             var orderResponse = new OrderResponse
@@ -113,25 +96,46 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             return orderResponse;
         }
 
-        public Domain.Order AddOrder(int customerId, OrderRequest order)
+        public Order AddOrder(int customerId, OrderRequest order)
         {
-            var customer = _db.Customers.Find((Customer c) => c.Id == customerId);
+            Customer customer = _db.Customers.Include(customer => customer.Orders).SingleOrDefault((Customer c) => c.Id == customerId);
 
             var newOrder = new Order
             {
-                Id = new int(),
+                Id = customer.Orders.Max(o => o.Id) + 1,
                 Cart = customer.Cart,
                 OrderDate = DateTime.Now
             };
+            customer.Cart = new Cart();
+            _db.SaveChanges();
             return newOrder;
         }
         public PaymentInfoResponse GetPaymentInfo(int customerId, int paymentId)
         {
-            return new PaymentInfoResponse();
+            List<PaymentInfo> paymentInfos = _db.Customers.Include(customer => customer.PaymentInfos).SingleOrDefault((Customer c) => c.Id == customerId).PaymentInfos;
+            PaymentInfo paymentInfo = paymentInfos.SingleOrDefault(paymentInfo => paymentInfo.Id == paymentId);
+
+            return new PaymentInfoResponse(paymentInfo);
+        }
+
+        public PaymentInfoResponse AddPaymentInfo(int customerId, PaymentInfoRequest request)
+        {
+            List<PaymentInfo> paymentInfos = _db.Customers.Include(customer => customer.PaymentInfos).SingleOrDefault((Customer c) => c.Id == customerId).PaymentInfos;
+            PaymentInfo paymentInfo = new PaymentInfo
+            {
+                Name = request.Name,
+                PaymentMethod = request.PaymentMethod,
+                Email = request.Email,
+                Address = request.Address
+            };
+            paymentInfos.Add(paymentInfo);
+            _db.SaveChanges();
+            return new PaymentInfoResponse(paymentInfo);
         }
 
         public CartResponse GetCart(int customerId)
         {
+            Cart cart = _db.Customers.Include(customer => customer.Cart).SingleOrDefault((Customer c) => c.Id == customerId).Cart;
             if (!_customerCarts.ContainsKey(customerId))
             {
                 _customerCarts[customerId] = new CartResponse { Id = customerId };
