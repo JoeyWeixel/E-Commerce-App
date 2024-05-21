@@ -1,4 +1,4 @@
-﻿using ECommerceAPI.Domain
+﻿using ECommerceAPI.Domain;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
 using Microsoft.EntityFrameworkCore;
 
@@ -159,7 +159,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 Quantity = 1
             };
 
-            _db.SaveChanges()
+            _db.SaveChanges();
 
             return new PurchaseProductResponse(newPurchaseProduct);
         }
