@@ -2,7 +2,17 @@ import React from "react";
 import "../Styles/HomeStyle.css";
 import Product from "../Components/Products";
 
-const HomePage: React.FC = () => {
+interface ProductType {
+  id: number;
+  name: string;
+  description: string;
+  numInStock: number;
+  price: number;
+}
+
+const HomePage: React.FC<{
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
+}> = ({ setCart }) => {
   return (
     <div className="home">
       <div className="home__container">
@@ -29,9 +39,9 @@ const HomePage: React.FC = () => {
         <div className="home__row">
           <Product
             id={4903850}
-            title="Snake Extract Ointment"
-            price={8.99}
-            image="https://saffronskins.com/cdn/shop/products/5409.jpg?v=1670228006"
+            title="Samsung LC49RG90SSUXEN 49' Curved LED Gaming Monitor"
+            price={199.99}
+            image="https://images-na.ssl-images-amazon.com/images/I/71Swqqe7XAL._AC_SX466_.jpg"
           />
           <Product
             id={23445930}

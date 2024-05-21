@@ -53,6 +53,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
             {
                 _products.Remove(product);
             }
+            _db.SaveChanges();
         }
 
         public ProductResponse AddProduct(ProductRequest productRequest)
@@ -68,7 +69,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
             _nextId++;
 
             _db.Products.Add(product);
-
+            _db.SaveChanges();
             return new ProductResponse
             {
                 Id = product.Id,
