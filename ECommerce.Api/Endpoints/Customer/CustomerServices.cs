@@ -1,4 +1,4 @@
-﻿using ECommerceAPI.Domain;
+﻿using ECommerceAPI.Domain
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
 using Microsoft.EntityFrameworkCore;
 
@@ -65,7 +65,9 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         {
             Customer customer = _db.Customers
                 .Include(customer => customer.Orders)
-                .ThenInclude(order => order.Cart)
+                .ThenInclude(order => order.DeliveryDate)
+                .Include(customer => customer.Orders)
+                .ThenInclude(order => order.OrderDate)
                 .SingleOrDefault(customer => customer.Id == customerId);
 
             var orders = new List<OrderResponse>();
@@ -74,14 +76,12 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 orders.Add(new OrderResponse
                 {
                     Id = order.Id,
-                    Cart = order.Cart,
                     DeliveryDate = order.DeliveryDate,
                     OrderDate = order.OrderDate,
                 });
             }
             return orders;
         }
-
         public OrderResponse GetOrder(int customerId, int orderId)
         {
             Customer customer = _db.Customers.Include(customer => customer.Orders).SingleOrDefault((Customer c) => c.Id == customerId);
@@ -90,16 +90,16 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             var orderResponse = new OrderResponse
             {
                 Id = order.Id,
-                Cart = order.Cart,
                 DeliveryDate = order.DeliveryDate,
                 OrderDate = order.OrderDate,
             };
             return orderResponse;
         }
-
         public Order AddOrder(int customerId, OrderRequest order)
         {
-            Customer customer = _db.Customers.Include(customer => customer.Orders).SingleOrDefault((Customer c) => c.Id == customerId);
+            Customer customer = _db.Customers
+                .Include(customer => customer.Orders)
+                .SingleOrDefault((Customer c) => c.Id == customerId);
 
             var newOrder = new Order
             {
@@ -113,15 +113,23 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         }
         public PaymentInfoResponse GetPaymentInfo(int customerId, int paymentId)
         {
-            List<PaymentInfo> paymentInfos = _db.Customers.Include(customer => customer.PaymentInfos).SingleOrDefault((Customer c) => c.Id == customerId).PaymentInfos;
-            PaymentInfo paymentInfo = paymentInfos.SingleOrDefault(paymentInfo => paymentInfo.Id == paymentId);
+            List<PaymentInfo> paymentInfos = _db.Customers
+                .Include(customer => customer.PaymentInfos)
+                .SingleOrDefault((Customer c) => c.Id == customerId)
+                .PaymentInfos;
+
+            PaymentInfo paymentInfo = paymentInfos
+                .SingleOrDefault(paymentInfo => paymentInfo.Id == paymentId);
 
             return new PaymentInfoResponse(paymentInfo);
         }
-
         public PaymentInfoResponse AddPaymentInfo(int customerId, PaymentInfoRequest request)
         {
-            List<PaymentInfo> paymentInfos = _db.Customers.Include(customer => customer.PaymentInfos).SingleOrDefault((Customer c) => c.Id == customerId).PaymentInfos;
+            List<PaymentInfo> paymentInfos = _db.Customers
+                .Include(customer => customer.PaymentInfos)
+                .SingleOrDefault((Customer c) => c.Id == customerId)
+                .PaymentInfos;
+
             PaymentInfo paymentInfo = new PaymentInfo
             {
                 Name = request.Name,
@@ -129,9 +137,29 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 Email = request.Email,
                 Address = request.Address
             };
+
             paymentInfos.Add(paymentInfo);
             _db.SaveChanges();
+
             return new PaymentInfoResponse(paymentInfo);
+        }
+
+        public PurchaseProductResponse AddPurchaseProductResponse(int customerId, int cartId, int productId, PurchaseProductRequest request)
+        {
+            var customer = _db.Customers
+                .Include(customer => customer.Cart)
+                .ThenInclude(cart => cart.Products)
+                .Where(customer => customer.Id == customerId).ToList().First();
+            var cartProducts = customer.Cart.Products;
+
+            var newPurchaseProduct = new PurchaseProduct
+            {
+                CartId = cartId,
+                ProductId = productId,
+                Quantity = 1
+            };
+
+            return new PurchaseProductResponse();
         }
     }
 
