@@ -1,31 +1,69 @@
-import React from 'react';
-import '../Styles/ProductsStyle.css'; // Ensure this path is correct
+// src/Components/Products.tsx
+import React, { useEffect, useState } from 'react';
+import '../Styles/ProductsStyle.css';
 
-interface ProductProps {
+interface ProductType {
   id: number;
-  title: string;
-  image: string;
+  name: string;
+  description: string;
+  numInStock: number;
   price: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Product: React.FC<ProductProps> = ({ id, title, image, price }) => {
-  
-    return (
+interface ProductProps {
+  product: ProductType;
+  addToCart: (product: ProductType) => void;
+}
 
-    
+const Product: React.FC<ProductProps> = ({ product, addToCart }) => {
+  const handleAddToCart = () => {
+    addToCart(product);
+  };
+
+  return (
     <div className="product">
       <div className="product__info">
-        <p>{title}</p>
+        <p>{product.name}</p>
         <p className="product__price">
           <small>$</small>
-          <strong>{price}</strong>
+          <strong>{product.price}</strong>
         </p>
+        <p>{product.description}</p>
       </div>
-      <img src={image} alt={title} />
-      <button>Add to Basket</button>
+      <img src="https://via.placeholder.com/150" alt={product.name} />
+      <button onClick={handleAddToCart}>Add to Basket</button>
     </div>
   );
 };
 
-export default Product;
+interface ProductsProps {
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
+}
+
+const Products: React.FC<ProductsProps> = ({ setCart }) => {
+  const [products, setProducts] = useState<ProductType[]>([]);
+
+  useEffect(() => {
+    // Fetch products from the API
+    fetch('https://localhost:5131/Product') // Ensure this matches your actual API endpoint
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+  }, []);
+
+  const addToCart = (product: ProductType) => {
+    setCart(prevCart => [...prevCart, product]);
+  };
+
+  return (
+    <div className="products-page">
+      <div className="products">
+        {products.map(product => (
+          <Product key={product.id} product={product} addToCart={addToCart} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Products;
