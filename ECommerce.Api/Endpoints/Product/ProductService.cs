@@ -11,7 +11,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
         ECommerceContext _db;
 
         public ProductService(ECommerceContext db) {
-            var _db = db;
+            _db = db;
         }
 
         public IEnumerable<ProductResponse> GetAllProducts()

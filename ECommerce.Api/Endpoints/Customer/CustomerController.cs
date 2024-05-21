@@ -219,7 +219,5 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
 
             }
         }
-        }
     }
-
 }
