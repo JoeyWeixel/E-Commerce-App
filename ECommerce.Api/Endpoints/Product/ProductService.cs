@@ -5,7 +5,6 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
 {
     public class ProductService
     {
-        private readonly List<Product> _products = new List<Product>();
         private static int _nextId = 1;
 
         ECommerceContext _db;
@@ -49,7 +48,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
             var product = _db.Products.FirstOrDefault(p => p.Id == id);
             if (product != null)
             {
-                _products.Remove(product);
+                _db.Products.Remove(product);
             }
             _db.SaveChanges();
         }
