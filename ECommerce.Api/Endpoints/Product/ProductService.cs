@@ -1,12 +1,11 @@
 ﻿using ECommerceAPI.Domain;
-using ECommerceAPI.Endpoints.Product.RequestResponse;
-using Microsoft.EntityFrameworkCore;
+using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 
 namespace ECommerceAPI.Endpoints.ProductEndpoint
 {
     public class ProductService
     {
-        private readonly List<Domain.Product> _products = new List<Domain.Product>();
+        private readonly List<Product> _products = new List<Product>();
         private static int _nextId = 1;
 
         ECommerceContext _db;
@@ -56,7 +55,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
 
         public ProductResponse AddProduct(ProductRequest productRequest)
         {
-            var product = new Domain.Product
+            var product = new Product
             {
                 Id = _nextId,
                 Name = productRequest.Name,

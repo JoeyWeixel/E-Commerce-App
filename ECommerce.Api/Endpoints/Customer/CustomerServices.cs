@@ -26,7 +26,9 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public CustomerResponse GetCustomer(int id)
         {
-            Customer customer = _db.Customers.Include(customer => customer.ContactInfo).SingleOrDefault(customer => customer.Id == id);
+            Customer customer = _db.Customers
+                .Include(customer => customer.ContactInfo)
+                .SingleOrDefault(customer => customer.Id == id);
             return (new CustomerResponse(customer));
         }
 
@@ -61,7 +63,10 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public IEnumerable<OrderResponse> GetAllOrders(int customerId)
         {
-            Domain.Customer customer = _db.Customers.Find((Customer c) => c.Id == customerId);
+            Customer customer = _db.Customers
+                .Include(customer => customer.Orders)
+                .ThenInclude(order => order.Cart)
+                .SingleOrDefault(customer => customer.Id == customerId);
 
             var orders = new List<OrderResponse>();
             foreach (Order order in customer.Orders)

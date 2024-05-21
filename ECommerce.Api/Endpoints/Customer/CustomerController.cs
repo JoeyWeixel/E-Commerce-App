@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace ECommerceAPI.Endpoints.Product
+namespace ECommerceAPI.Endpoints.ProductEndpoint
 {
 
     [ApiController]
