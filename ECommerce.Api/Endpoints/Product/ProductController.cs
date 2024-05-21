@@ -1,4 +1,4 @@
-﻿using ECommerceAPI.Endpoints.Product.RequestResponse;
+﻿using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceAPI.Endpoints.ProductEndpoint

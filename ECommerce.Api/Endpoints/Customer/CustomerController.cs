@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace ECommerceAPI.Endpoints.Product
+namespace ECommerceAPI.Endpoints.ProductEndpoint
 {
 
     [ApiController]
@@ -154,7 +154,7 @@ namespace ECommerceAPI.Endpoints.Product
             }
         }
 
-        [HttpGet("/customer{id}/contact-info")]
+        [HttpGet("{id}/contact-info")]
         public IActionResult GetContactInfo(int id)
         {
             try
@@ -171,6 +171,53 @@ namespace ECommerceAPI.Endpoints.Product
             }
         }
 
-    }
+        [HttpPost("{customerId}/cart/{cartId}/products/{productId}")]
+        public IActionResult AddPurchaseProduct(int customerId, int cartId, PurchaseProductRequest request)
+        {
+            try
+            {
+                var pProduct = _service.AddPurchaseProduct(customerId, cartId, request);
 
+                return Ok(pProduct);
+            }
+            catch
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+        [HttpPatch("{customerId}/cart/{cartId}/products/{productId}")]
+        public IActionResult EditPurchaseProduct(int customerId, int cartId, int productId, int newQuantity)
+        {
+            try
+            {
+                var pProduct = _service.EditPurchaseProduct(customerId, cartId, productId, newQuantity);
+
+                return Ok(pProduct);
+
+            }
+            catch
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+        [HttpGet("{customerId}/cart/{cartId}/products/{productId}")]
+        public IActionResult DeletePurchaseProduct(int customerId, int cartId, int productId)
+        {
+            try
+            {
+                var pProduct = _service.DeletePurchaseProduct(customerId, cartId, productId);
+
+                return Ok(pProduct);
+            }
+            catch
+            {
+                return StatusCode(500);
+
+            }
+        }
+    }
 }
