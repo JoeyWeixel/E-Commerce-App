@@ -1,4 +1,3 @@
-// src/Components/Products.tsx
 import React, { useEffect, useState } from 'react';
 import '../Styles/ProductsStyle.css';
 
@@ -45,12 +44,18 @@ const Products: React.FC<ProductsProps> = ({ setCart }) => {
 
   useEffect(() => {
     // Fetch products from the API
-    fetch('https://localhost:5131/Product') // Ensure this matches your actual API endpoint
-      .then(response => response.json())
+    fetch('https://localhost:5131/products') // Ensure this matches your actual API endpoint
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
   }, []);
 
+  
   const addToCart = (product: ProductType) => {
     setCart(prevCart => [...prevCart, product]);
   };
