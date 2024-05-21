@@ -1,6 +1,9 @@
 using ECommerceAPI.Endpoints.CustomerEndpoint;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
-using Microsoft.AspNetCore.Http.HttpResults;
+using ECommerceAPI.Endpoints.ProductEndpoint;
+using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
+
+
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -101,7 +104,8 @@ namespace ECommerceAPI.Endpoints.Product
         [HttpPost("{customerId}/payment-info")]
         public IActionResult AddPaymentInfo(int customerId, PaymentInfoRequest paymentInfo)
         {
-            try { 
+            try
+            {
                 var response = _service.AddPaymentInfo(customerId, paymentInfo);
                 return Ok(response);
             }
@@ -170,7 +174,37 @@ namespace ECommerceAPI.Endpoints.Product
 
             }
         }
+        [HttpGet("{customerId}/cart")]
+        public ActionResult<CartResponse> GetCart(int customerId)
+        {
+            var cart = _service.GetCustomerCart(customerId);
+            return Ok(cart);
+        }
 
+        [HttpPost("{customerId}/cart/add")]
+        public IActionResult AddProductToCart(int customerId, [FromBody] ProductRequest request)
+        {
+            var product = new ProductResponse
+            {
+                Id = request.Id,
+                Name = request.Name,
+                Price = request.Price
+            };
+            _service.AddProductToCart(customerId, product, request.numInStock);
+            return NoContent();
+        }
+
+        [HttpPost("{customerId}/cart/remove")]
+        public IActionResult RemoveProductFromCart(int customerId, [FromBody] ProductRequest request)
+        {
+            var product = new ProductResponse
+            {
+                Id = request.Id,
+                Name = request.Name,
+                Price = request.Price
+            };
+            _service.RemoveProductFromCart(customerId, product, request.numInStock);
+            return NoContent();
+        }
     }
-
 }
