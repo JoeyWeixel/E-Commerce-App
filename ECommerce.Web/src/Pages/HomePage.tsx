@@ -1,6 +1,6 @@
-import React from 'react';
-import '../Styles/HomeStyle.css';
-import Product from '../Components/Products';
+import React from "react";
+import "../Styles/HomeStyle.css";
+import Product from "../Components/Products";
 
 const HomePage: React.FC = () => {
   return (
@@ -29,9 +29,9 @@ const HomePage: React.FC = () => {
         <div className="home__row">
           <Product
             id={4903850}
-            title="Samsung LC49RG90SSUXEN 49' Curved LED Gaming Monitor"
-            price={199.99}
-            image="https://images-na.ssl-images-amazon.com/images/I/71Swqqe7XAL._AC_SX466_.jpg"
+            title="Snake Extract Ointment"
+            price={8.99}
+            image="https://saffronskins.com/cdn/shop/products/5409.jpg?v=1670228006"
           />
           <Product
             id={23445930}
@@ -58,6 +58,6 @@ const HomePage: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default HomePage;

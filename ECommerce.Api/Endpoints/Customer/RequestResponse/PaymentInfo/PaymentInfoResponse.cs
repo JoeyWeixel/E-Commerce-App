@@ -16,6 +16,5 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
             Address = paymentInfo.Address;
         }
         public PaymentInfoResponse() { }
-
     }
 }

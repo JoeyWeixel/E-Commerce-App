@@ -1,9 +1,9 @@
-
-import React from 'react';
-import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './Pages/HomePage';
-import Header from './Components/Header';
+import React from "react";
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./Pages/HomePage";
+import CartPage from "./Pages/CartPage";
+import Header from "./Components/Header";
 
 const App: React.FC = () => {
   return (
@@ -16,6 +16,15 @@ const App: React.FC = () => {
               <>
                 <Header />
                 <HomePage />
+              </>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <>
+                <Header />
+                <CartPage />
               </>
             }
           />

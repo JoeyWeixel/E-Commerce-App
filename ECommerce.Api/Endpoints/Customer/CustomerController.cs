@@ -177,34 +177,58 @@ namespace ECommerceAPI.Endpoints.Product
         [HttpGet("{customerId}/cart")]
         public ActionResult<CartResponse> GetCart(int customerId)
         {
-            var cart = _service.GetCustomerCart(customerId);
-            return Ok(cart);
+            try
+            {
+                var cart = _service.GetCustomerCart(customerId);
+                return Ok(cart);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+
+            }
+
         }
 
         [HttpPost("{customerId}/cart/add")]
         public IActionResult AddProductToCart(int customerId, [FromBody] ProductRequest request)
         {
-            var product = new ProductResponse
+            try
             {
-                Id = request.Id,
-                Name = request.Name,
-                Price = request.Price
-            };
-            _service.AddProductToCart(customerId, product, request.numInStock);
-            return NoContent();
+                var product = new ProductResponse
+                {
+                    Id = request.Id,
+                    Name = request.Name,
+                    Price = request.Price
+                };
+                _service.AddProductToCart(customerId, product, request.numInStock);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
-        [HttpPost("{customerId}/cart/remove")]
+        [HttpDelete("{customerId}/cart/remove")]
         public IActionResult RemoveProductFromCart(int customerId, [FromBody] ProductRequest request)
         {
-            var product = new ProductResponse
+            try
             {
-                Id = request.Id,
-                Name = request.Name,
-                Price = request.Price
-            };
-            _service.RemoveProductFromCart(customerId, product, request.numInStock);
-            return NoContent();
+                var product = new ProductResponse
+                {
+                    Id = request.Id,
+                    Name = request.Name,
+                    Price = request.Price
+                };
+                _service.RemoveProductFromCart(customerId, product, request.numInStock);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+
+            }
         }
     }
 }
