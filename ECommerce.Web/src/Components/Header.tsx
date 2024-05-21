@@ -1,10 +1,14 @@
-
+// src/Components/Header.tsx
 import React from 'react';
 import '../Styles/HeaderStyle.css';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  cartItemCount: number;
+}
+
+const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
   return (
     <div className="header">
       <img
@@ -29,11 +33,9 @@ const Header: React.FC = () => {
           <span className="header__optionLineTwo">& Orders</span>
         </div>
 
-  
-
         <div className="header__optionBasket">
           <ShoppingBasketIcon />
-          <span className="header__optionLineTwo header__basketCount">0</span>
+          <span className="header__optionLineTwo header__basketCount">{cartItemCount}</span>
         </div>
       </div>
     </div>
