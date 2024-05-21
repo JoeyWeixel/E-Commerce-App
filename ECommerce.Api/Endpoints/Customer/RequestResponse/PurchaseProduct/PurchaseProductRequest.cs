@@ -1,7 +1,4 @@
-﻿using ECommerceAPI.Domain;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-
-namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
+﻿namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
 {
     public class PurchaseProductRequest
     {
