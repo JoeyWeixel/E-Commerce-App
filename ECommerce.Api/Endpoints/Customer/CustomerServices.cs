@@ -82,6 +82,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
             return orders;
         }
+
         public OrderResponse GetOrder(int customerId, int orderId)
         {
             Customer customer = _db.Customers.Include(customer => customer.Orders).SingleOrDefault((Customer c) => c.Id == customerId);
@@ -95,6 +96,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             };
             return orderResponse;
         }
+
         public Order AddOrder(int customerId, OrderRequest order)
         {
             Customer customer = _db.Customers
@@ -111,6 +113,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             _db.SaveChanges();
             return newOrder;
         }
+
         public PaymentInfoResponse GetPaymentInfo(int customerId, int paymentId)
         {
             List<PaymentInfo> paymentInfos = _db.Customers
@@ -123,6 +126,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             return new PaymentInfoResponse(paymentInfo);
         }
+
         public PaymentInfoResponse AddPaymentInfo(int customerId, PaymentInfoRequest request)
         {
             List<PaymentInfo> paymentInfos = _db.Customers
@@ -143,6 +147,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             return new PaymentInfoResponse(paymentInfo);
         }
+
         public PurchaseProductResponse AddPurchaseProduct(int customerId, PurchaseProductRequest request)
         {
             var customer = _db.Customers
@@ -162,6 +167,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             return new PurchaseProductResponse(newPurchaseProduct);
         }
+
         public PurchaseProductResponse EditPurchaseProduct(int customerId, int productId, int newQuantity)
         {
             var purchaseProduct = from c in _db.Customers
