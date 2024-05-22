@@ -10,7 +10,6 @@
         {
             Products = new List<PurchaseProduct>();
             Id = customerId;
-            TotalPrice = 0;
         }
         public Cart() { }
     }
