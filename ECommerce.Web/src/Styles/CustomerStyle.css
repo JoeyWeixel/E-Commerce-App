@@ -1,0 +1,31 @@
+.customer-page{
+    height:inherit;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+.customer-card{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 60% 40%;
+    width: 75vw;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    background-color: #2F2F2F;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.customer-card img{
+    height: 100px;
+    border-radius: 50%;
+}
+
+.customer-card p{
+    font-size: 20px;
+}

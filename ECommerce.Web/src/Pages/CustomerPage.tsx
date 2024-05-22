@@ -1,11 +1,22 @@
-import CustomerType from "../Components/Customer"
+import CustomerCard from "../Components/Customer"
+import { CustomerType } from "../Components/Customer";
+import "../Styles/CustomerStyle.css"
 
-const CustomerPage: React.FC<number> = ({ }) => {
+type CustomerPageProps = {
+    customers: CustomerType[]
+}
+
+const CustomerPage: React.FC<CustomerPageProps> = ({ customers }) => {
+
 
     return (
-        <div className="customer-page">
-            
-        </div>
+        <>
+            <div className="customer-page">
+                {customers.map(x => 
+                    <CustomerCard customer={x} />
+                )}
+            </div>
+        </>
     );
 };
 
