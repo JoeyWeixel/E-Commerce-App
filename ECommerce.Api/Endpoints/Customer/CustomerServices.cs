@@ -82,6 +82,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
             return orders;
         }
+
         public OrderResponse GetOrder(int customerId, int orderId)
         {
             Customer customer = _db.Customers.Include(customer => customer.Orders).SingleOrDefault((Customer c) => c.Id == customerId);
@@ -95,6 +96,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             };
             return orderResponse;
         }
+
         public Order AddOrder(int customerId, OrderRequest order)
         {
             Customer customer = _db.Customers
@@ -111,6 +113,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             _db.SaveChanges();
             return newOrder;
         }
+
         public PaymentInfoResponse GetPaymentInfo(int customerId, int paymentId)
         {
             List<PaymentInfo> paymentInfos = _db.Customers
@@ -123,6 +126,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             return new PaymentInfoResponse(paymentInfo);
         }
+
         public PaymentInfoResponse AddPaymentInfo(int customerId, PaymentInfoRequest request)
         {
             List<PaymentInfo> paymentInfos = _db.Customers
@@ -144,7 +148,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             return new PaymentInfoResponse(paymentInfo);
         }
 
-        public PurchaseProductResponse AddPurchaseProduct(int customerId, int cartId, PurchaseProductRequest request)
+        public PurchaseProductResponse AddPurchaseProduct(int customerId, PurchaseProductRequest request)
         {
             var customer = _db.Customers
                 .Include(customer => customer.Cart)
@@ -154,7 +158,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             var newPurchaseProduct = new PurchaseProduct
             {
-                CartId = cartId,
+                CartId = customerId,
                 ProductId = request.ProductId,
                 Quantity = 1
             };
@@ -163,13 +167,14 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             return new PurchaseProductResponse(newPurchaseProduct);
         }
-        public PurchaseProductResponse EditPurchaseProduct(int customerId, int cartId, int productId, int newQuantity)
+
+        public PurchaseProductResponse EditPurchaseProduct(int customerId, int productId, int newQuantity)
         {
             var purchaseProduct = from c in _db.Customers
                                   where c.Id == customerId
                                   select (
                                       from p in c.Cart.Products
-                                      where p.ProductId == productId && p.CartId == cartId
+                                      where p.ProductId == productId && p.CartId == customerId
                                       select p
                                       );
 
@@ -182,29 +187,30 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             _db.SaveChanges();
             return new PurchaseProductResponse
             {
-                CartId = cartId,
+                CartId = customerId,
                 ProductId = productId,
-                Quantity= newQuantity
+                Quantity = newQuantity
             };
-            
+
         }
 
-        public PurchaseProductResponse DeletePurchaseProduct(int customerId, int cartId, int productId)
+        public PurchaseProductResponse DeletePurchaseProduct(int customerId, int productId)
         {
             var purchaseProduct = from c in _db.Customers
                                   where c.Id == customerId
                                   select (
                                       from p in c.Cart.Products
-                                      where p.ProductId == productId && p.CartId == cartId
+                                      where p.ProductId == productId && p.CartId == customerId
                                       select p
                                       );
             _db.Remove(purchaseProduct);
             _db.SaveChanges();
-            
-            return new PurchaseProductResponse { 
-                CartId= cartId,
-                ProductId= productId,
-                Quantity= 0
+
+            return new PurchaseProductResponse
+            {
+                CartId = customerId,
+                ProductId = productId,
+                Quantity = 0
             };
         }
     }
