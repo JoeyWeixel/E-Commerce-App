@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, CardContent, Typography } from "@material-ui/core";
+import { Button, Card, CardContent, Typography } from "@mui/material";
 
 interface CartItemProps {
   item: {

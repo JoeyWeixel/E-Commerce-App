@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CartItem from "./CartItem";
 import "../Styles/CartStyle.css";
 
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button } from "@mui/material";
 
 interface CartProps {
   initialItems: {
