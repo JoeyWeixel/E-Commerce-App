@@ -16,14 +16,20 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
     history("/cart");
   };
 
+  const routeHome = () => {
+    history('/');
+  };
+
   return (
     <div className="header">
-      <img
+        <Button variant="contained" color="primary" onClick={routeHome}>
+        <img
         className="header__logo"
         src="https://media.licdn.com/dms/image/D5603AQFHz0FdYA9DqQ/profile-displayphoto-shrink_200_200/0/1694185994992?e=2147483647&v=beta&t=2UQTFQe-wXVnR3Pp41Yeo0Iva2lbzMiv0mSpuMzJvJM"
         alt="Logo"
       />
-
+          </Button>
+  
       <div className="header__search">
         <input className="header__searchInput" type="text" />
         <SearchIcon className="header__searchIcon" />
