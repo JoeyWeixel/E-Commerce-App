@@ -1,5 +1,7 @@
 ﻿using ECommerceAPI.Domain;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
+using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceAPI.Endpoints.CustomerEndpoint
@@ -214,5 +216,4 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             };
         }
     }
-
 }

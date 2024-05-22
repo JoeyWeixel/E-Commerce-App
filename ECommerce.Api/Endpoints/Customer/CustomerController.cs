@@ -1,9 +1,8 @@
-using ECommerceAPI.Endpoints.CustomerEndpoint;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
+using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
-
-namespace ECommerceAPI.Endpoints.ProductEndpoint
+namespace ECommerceAPI.Endpoints.CustomerEndpoint
 {
 
     [ApiController]
@@ -11,6 +10,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
     public class CustomerController : ControllerBase
     {
         private readonly CustomerService _service;
+
         public CustomerController(CustomerService service)
         {
             _service = service;
@@ -31,7 +31,6 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
                 return BadRequest(ex.Message);
 
             }
-
         }
 
         [HttpGet("{id}")]
@@ -100,6 +99,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
         [HttpPost("{customerId}/payment-info")]
         public IActionResult AddPaymentInfo(int customerId, PaymentInfoRequest paymentInfo)
         {
+
             try
             {
                 var response = _service.AddPaymentInfo(customerId, paymentInfo);

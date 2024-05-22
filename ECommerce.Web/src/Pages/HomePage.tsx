@@ -1,6 +1,6 @@
 // src/Pages/HomePage.tsx
-import '../Styles/HomeStyle.css';
-import Products from '../Components/Products';
+import "../Styles/HomeStyle.css";
+import Products from "../Components/Products";
 
 interface ProductType {
   id: number;
@@ -10,7 +10,9 @@ interface ProductType {
   price: number;
 }
 
-const HomePage: React.FC<{ setCart: React.Dispatch<React.SetStateAction<ProductType[]>> }> = ({ setCart }) => {
+const HomePage: React.FC<{
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
+}> = ({ setCart }) => {
   return (
     <div className="home">
       <div className="home__container">
