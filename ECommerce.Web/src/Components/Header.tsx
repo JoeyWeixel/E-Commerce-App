@@ -20,6 +20,10 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
     history('/');
   };
 
+  const routeCustomers = () => {
+    history("customers");
+  };
+
   return (
     <div className="header">
         <Button variant="contained" color="primary" onClick={routeHome}>
@@ -37,8 +41,10 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
 
       <div className="header__nav">
         <div className="header__option">
-          <span className="header__optionLineOne">Hello Guest</span>
-          <span className="header__optionLineTwo">Sign In</span>
+          <Button variant="contained" color="default" onClick={() => routeCustomers()}>
+            <span className="header__optionLineOne">Hello Guest</span>
+            <span className="header__optionLineTwo">Sign In</span>
+          </Button>
         </div>
 
         <div className="header__option">
