@@ -30,8 +30,10 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public CustomerResponse GetCustomer(int id)
         {
-            Customer customer = _db.Customers.Include(customer => customer.ContactInfo).SingleOrDefault(customer => customer.Id == id);
-            return new CustomerResponse(customer);
+            Customer customer = _db.Customers
+                .Include(customer => customer.ContactInfo)
+                .SingleOrDefault(customer => customer.Id == id);
+            return (new CustomerResponse(customer));
         }
 
         public CustomerResponse DeleteCustomer(int id)
@@ -65,7 +67,12 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public IEnumerable<OrderResponse> GetAllOrders(int customerId)
         {
-            Customer customer = _db.Customers.Find((Customer c) => c.Id == customerId);
+            Customer customer = _db.Customers
+                .Include(customer => customer.Orders)
+                .ThenInclude(order => order.DeliveryDate)
+                .Include(customer => customer.Orders)
+                .ThenInclude(order => order.OrderDate)
+                .SingleOrDefault(customer => customer.Id == customerId);
 
             var orders = new List<OrderResponse>();
             foreach (Order order in customer.Orders)
@@ -73,7 +80,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 orders.Add(new OrderResponse
                 {
                     Id = order.Id,
-                    Cart = order.Cart,
                     DeliveryDate = order.DeliveryDate,
                     OrderDate = order.OrderDate,
                 });
@@ -89,7 +95,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             var orderResponse = new OrderResponse
             {
                 Id = order.Id,
-                Cart = order.Cart,
                 DeliveryDate = order.DeliveryDate,
                 OrderDate = order.OrderDate,
             };
@@ -98,7 +103,9 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public Order AddOrder(int customerId, OrderRequest order)
         {
-            Customer customer = _db.Customers.Include(customer => customer.Orders).SingleOrDefault((Customer c) => c.Id == customerId);
+            Customer customer = _db.Customers
+                .Include(customer => customer.Orders)
+                .SingleOrDefault((Customer c) => c.Id == customerId);
 
             var newOrder = new Order
             {
@@ -110,17 +117,27 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             _db.SaveChanges();
             return newOrder;
         }
+
         public PaymentInfoResponse GetPaymentInfo(int customerId, int paymentId)
         {
-            List<PaymentInfo> paymentInfos = _db.Customers.Include(customer => customer.PaymentInfos).SingleOrDefault((Customer c) => c.Id == customerId).PaymentInfos;
-            PaymentInfo paymentInfo = paymentInfos.SingleOrDefault(paymentInfo => paymentInfo.Id == paymentId);
+            List<PaymentInfo> paymentInfos = _db.Customers
+                .Include(customer => customer.PaymentInfos)
+                .SingleOrDefault((Customer c) => c.Id == customerId)
+                .PaymentInfos;
+
+            PaymentInfo paymentInfo = paymentInfos
+                .SingleOrDefault(paymentInfo => paymentInfo.Id == paymentId);
 
             return new PaymentInfoResponse(paymentInfo);
         }
 
         public PaymentInfoResponse AddPaymentInfo(int customerId, PaymentInfoRequest request)
         {
-            List<PaymentInfo> paymentInfos = _db.Customers.Include(customer => customer.PaymentInfos).SingleOrDefault((Customer c) => c.Id == customerId).PaymentInfos;
+            List<PaymentInfo> paymentInfos = _db.Customers
+                .Include(customer => customer.PaymentInfos)
+                .SingleOrDefault((Customer c) => c.Id == customerId)
+                .PaymentInfos;
+
             PaymentInfo paymentInfo = new PaymentInfo
             {
                 Name = request.Name,
@@ -128,57 +145,78 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 Email = request.Email,
                 Address = request.Address
             };
+
             paymentInfos.Add(paymentInfo);
             _db.SaveChanges();
+
             return new PaymentInfoResponse(paymentInfo);
         }
 
-        public CartResponse GetCart(int customerId)
+        public PurchaseProductResponse AddPurchaseProduct(int customerId, PurchaseProductRequest request)
         {
-            Cart cart = _db.Customers.Include(customer => customer.Cart).SingleOrDefault((Customer c) => c.Id == customerId).Cart;
-            if (!_customerCarts.ContainsKey(customerId))
+            var customer = _db.Customers
+                .Include(customer => customer.Cart)
+                .ThenInclude(cart => cart.Products)
+                .Where(customer => customer.Id == customerId).ToList().First();
+            var cartProducts = customer.Cart.Products;
+
+            var newPurchaseProduct = new PurchaseProduct
             {
-                _customerCarts[customerId] = new CartResponse { Id = customerId };
-            }
-            return _customerCarts[customerId];
+                CartId = customerId,
+                ProductId = request.ProductId,
+                Quantity = 1
+            };
+
+            _db.SaveChanges();
+
+            return new PurchaseProductResponse(newPurchaseProduct);
         }
 
-        public void AddProductToCart(int customerId, ProductResponse product, int quantity)
+        public PurchaseProductResponse EditPurchaseProduct(int customerId, int productId, int newQuantity)
         {
-            var cart = GetCart(customerId);
-            if (cart.Products.ContainsKey(product))
+            var purchaseProduct = from c in _db.Customers
+                                  where c.Id == customerId
+                                  select (
+                                      from p in c.Cart.Products
+                                      where p.ProductId == productId && p.CartId == customerId
+                                      select p
+                                      );
+
+
+            foreach (PurchaseProduct product in purchaseProduct)
             {
-                cart.Products[product] += quantity;
+                product.Quantity = newQuantity;
             }
-            else
+
+            _db.SaveChanges();
+            return new PurchaseProductResponse
             {
-                cart.Products[product] = quantity;
-            }
-            UpdateTotalPrice(cart);
+                CartId = customerId,
+                ProductId = productId,
+                Quantity = newQuantity
+            };
+
         }
 
-        public void RemoveProductFromCart(int customerId, ProductResponse product, int quantity)
+        public PurchaseProductResponse DeletePurchaseProduct(int customerId, int productId)
         {
-            var cart = GetCart(customerId);
-            if (cart.Products.ContainsKey(product))
+            var purchaseProduct = from c in _db.Customers
+                                  where c.Id == customerId
+                                  select (
+                                      from p in c.Cart.Products
+                                      where p.ProductId == productId && p.CartId == customerId
+                                      select p
+                                      );
+            _db.Remove(purchaseProduct);
+            _db.SaveChanges();
+
+            return new PurchaseProductResponse
             {
-                cart.Products[product] -= quantity;
-                if (cart.Products[product] <= 0)
-                {
-                    cart.Products.Remove(product);
-                }
-                UpdateTotalPrice(cart);
-            }
-        }
-
-        public CartResponse GetCustomerCart(int customerId)
-        {
-            return GetCart(customerId);
-        }
-
-        private void UpdateTotalPrice(CartResponse cart)
-        {
-            cart.TotalPrice = cart.Products.Sum(p => p.Key.Price * p.Value);
+                CartId = customerId,
+                ProductId = productId,
+                Quantity = 0
+            };
         }
     }
+
 }

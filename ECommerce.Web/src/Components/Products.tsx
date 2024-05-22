@@ -44,7 +44,7 @@ const Products: React.FC<ProductsProps> = ({ setCart }) => {
 
   useEffect(() => {
     // Fetch products from the API
-    fetch('https://localhost:5131/products') // Ensure this matches your actual API endpoint
+    fetch('http://localhost:5131/products') 
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -55,7 +55,7 @@ const Products: React.FC<ProductsProps> = ({ setCart }) => {
       .catch(error => console.error('Error fetching products:', error));
   }, []);
 
-  
+
   const addToCart = (product: ProductType) => {
     setCart(prevCart => [...prevCart, product]);
   };

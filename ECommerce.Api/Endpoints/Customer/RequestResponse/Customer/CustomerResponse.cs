@@ -10,7 +10,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
         public CustomerResponse(Customer customer)
         {
             Id = customer.Id;
-            ContactInfo = new ContactInfoResponse(customer.ContactInfo);    
+            ContactInfo = new ContactInfoResponse(customer.ContactInfo);
         }
         public CustomerResponse() { }
     }

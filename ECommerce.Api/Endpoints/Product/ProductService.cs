@@ -6,14 +6,13 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
 {
     public class ProductService
     {
-        private readonly List<Domain.Product> _products = new List<Domain.Product>();
         private static int _nextId = 1;
 
         ECommerceContext _db;
 
         public ProductService(ECommerceContext db)
         {
-            var _db = db;
+            _db = db;
         }
 
         public IEnumerable<ProductResponse> GetAllProducts()
@@ -51,14 +50,14 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
             var product = _db.Products.FirstOrDefault(p => p.Id == id);
             if (product != null)
             {
-                _products.Remove(product);
+                _db.Products.Remove(product);
             }
             _db.SaveChanges();
         }
 
         public ProductResponse AddProduct(ProductRequest productRequest)
         {
-            var product = new Domain.Product
+            var product = new Product
             {
                 Id = _nextId,
                 Name = productRequest.Name,
