@@ -9,7 +9,8 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
 
         ECommerceContext _db;
 
-        public ProductService(ECommerceContext db) {
+        public ProductService(ECommerceContext db)
+        {
             _db = db;
         }
 

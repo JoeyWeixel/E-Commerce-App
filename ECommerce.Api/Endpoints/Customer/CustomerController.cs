@@ -1,6 +1,5 @@
 using ECommerceAPI.Endpoints.CustomerEndpoint;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -101,7 +100,8 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
         [HttpPost("{customerId}/payment-info")]
         public IActionResult AddPaymentInfo(int customerId, PaymentInfoRequest paymentInfo)
         {
-            try { 
+            try
+            {
                 var response = _service.AddPaymentInfo(customerId, paymentInfo);
                 return Ok(response);
             }
@@ -171,12 +171,12 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
             }
         }
 
-        [HttpPost("{customerId}/cart/{cartId}/products/{productId}")]
-        public IActionResult AddPurchaseProduct(int customerId, int cartId, PurchaseProductRequest request)
+        [HttpPost("{customerId}/cart/products/{productId}")]
+        public IActionResult AddPurchaseProduct(int customerId, PurchaseProductRequest request)
         {
             try
             {
-                var pProduct = _service.AddPurchaseProduct(customerId, cartId, request);
+                var pProduct = _service.AddPurchaseProduct(customerId, request);
 
                 return Ok(pProduct);
             }
@@ -187,12 +187,12 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
             }
         }
 
-        [HttpPatch("{customerId}/cart/{cartId}/products/{productId}")]
-        public IActionResult EditPurchaseProduct(int customerId, int cartId, int productId, int newQuantity)
+        [HttpPatch("{customerId}/cart/products/{productId}")]
+        public IActionResult EditPurchaseProduct(int customerId, int productId, int newQuantity)
         {
             try
             {
-                var pProduct = _service.EditPurchaseProduct(customerId, cartId, productId, newQuantity);
+                var pProduct = _service.EditPurchaseProduct(customerId, productId, newQuantity);
 
                 return Ok(pProduct);
 
@@ -204,12 +204,12 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
             }
         }
 
-        [HttpGet("{customerId}/cart/{cartId}/products/{productId}")]
-        public IActionResult DeletePurchaseProduct(int customerId, int cartId, int productId)
+        [HttpGet("{customerId}/cart/products/{productId}")]
+        public IActionResult DeletePurchaseProduct(int customerId, int productId)
         {
             try
             {
-                var pProduct = _service.DeletePurchaseProduct(customerId, cartId, productId);
+                var pProduct = _service.DeletePurchaseProduct(customerId, productId);
 
                 return Ok(pProduct);
             }
