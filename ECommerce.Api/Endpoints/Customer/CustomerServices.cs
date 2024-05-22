@@ -1,6 +1,5 @@
 ﻿using ECommerceAPI.Domain;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
-using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,12 +17,11 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public IEnumerable<CustomerResponse> GetAllCustomers()
         {
-            var customers = new List<CustomerResponse>();
-            foreach (Customer customer in _db.Customers.Include(customer => customer.ContactInfo))
-            {
-                customers.Add(new CustomerResponse(customer));
-            }
-            return customers;
+            var customers = _db.Customers
+                .Include(customer => customer.ContactInfo)
+                .ToList();
+
+            return customers.Select(customer => new CustomerResponse(customer)).ToList();
         }
 
         public CustomerResponse GetCustomer(int id)
@@ -152,49 +150,78 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public PurchaseProductResponse AddPurchaseProduct(int customerId, PurchaseProductRequest request)
         {
+            // Step 1: Retrieve the customer and their cart
             var customer = _db.Customers
-                .Include(customer => customer.Cart)
+                .Include(c => c.Cart)
                 .ThenInclude(cart => cart.Products)
-                .Where(customer => customer.Id == customerId).ToList().First();
-            var cartProducts = customer.Cart.Products;
+                .FirstOrDefault(c => c.Id == customerId);
 
-            var newPurchaseProduct = new PurchaseProduct
+            if (customer == null)
             {
-                CartId = customerId,
-                ProductId = request.ProductId,
-                Quantity = 1
-            };
+                throw new Exception("Customer not found.");
+            }
 
-            _db.SaveChanges();
+            var cart = customer.Cart;
 
-            return new PurchaseProductResponse(newPurchaseProduct);
-        }
+            // Step 2: Check if the product already exists in the cart
+            var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
 
-        public PurchaseProductResponse EditPurchaseProduct(int customerId, int productId, int newQuantity)
-        {
-            var purchaseProduct = from c in _db.Customers
-                                  where c.Id == customerId
-                                  select (
-                                      from p in c.Cart.Products
-                                      where p.ProductId == productId && p.CartId == customerId
-                                      select p
-                                      );
-
-
-            foreach (PurchaseProduct product in purchaseProduct)
+            if (existingProduct != null)
             {
-                product.Quantity = newQuantity;
+                existingProduct.Quantity += request.Quantity;
+            }
+            else
+            {
+                var newPurchaseProduct = new PurchaseProduct
+                {
+                    CartId = customerId,
+                    ProductId = request.ProductId,
+                    Quantity = request.Quantity
+                };
+
+                cart.Products.Add(newPurchaseProduct);
             }
 
             _db.SaveChanges();
-            return new PurchaseProductResponse
+
+            // Step 3: Return the updated cart including the list of products
+            return new PurchaseProductResponse(existingProduct ?? new PurchaseProduct
             {
                 CartId = customerId,
-                ProductId = productId,
-                Quantity = newQuantity
-            };
-
+                ProductId = request.ProductId,
+                Quantity = request.Quantity
+            });
         }
+
+        public CartResponse GetCart(int customerId)
+        {
+            var customer = _db.Customers
+                .Include(c => c.Cart)
+                .ThenInclude(cart => cart.Products)
+                .FirstOrDefault(c => c.Id == customerId);
+
+            if (customer == null)
+            {
+                throw new Exception("Customer not found.");
+            }
+
+            var cart = customer.Cart;
+
+            var cartResponse = new CartResponse(customer.Id);
+
+            foreach (var product in cart.Products)
+            {
+                cartResponse.AddProduct(product);
+            }
+
+            return cartResponse;
+        }
+
+
+
+
+
+
 
         public PurchaseProductResponse DeletePurchaseProduct(int customerId, int productId)
         {

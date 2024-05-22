@@ -15,7 +15,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
             TotalPrice = 0;
 
         }
-        public CartResponse() { }
+        public CartResponse(Cart cart) { }
 
         public void AddProduct(PurchaseProduct product)
         {
