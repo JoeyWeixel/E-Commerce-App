@@ -1,5 +1,6 @@
-﻿using ECommerceAPI.Domain;
 using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
+using ECommerceAPI.Domain;
+
 
 namespace ECommerceAPI.Endpoints.ProductEndpoint
 {

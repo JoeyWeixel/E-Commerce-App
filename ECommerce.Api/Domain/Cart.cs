@@ -12,7 +12,6 @@
             Id = customerId;
             TotalPrice = 0;
         }
-
         public Cart() { }
     }
 }
