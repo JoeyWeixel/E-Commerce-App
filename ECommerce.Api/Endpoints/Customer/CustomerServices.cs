@@ -11,8 +11,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         ECommerceContext _db;
         private static int _nextCustomerId = 1;
 
-        private readonly Dictionary<int, CartResponse> _customerCarts = new Dictionary<int, CartResponse>();
-
         public CustomerService(ECommerceContext db)
         {
             _db = db;
@@ -218,5 +216,4 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             };
         }
     }
-
 }

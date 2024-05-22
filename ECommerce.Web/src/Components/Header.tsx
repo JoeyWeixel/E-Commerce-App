@@ -1,9 +1,9 @@
 import React from "react";
 import "../Styles/HeaderStyle.css";
 import SearchIcon from "@mui/icons-material/Search";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Button } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 interface HeaderProps {
   cartItemCount: number;
@@ -44,7 +44,9 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
           <Button variant="contained" color="primary" onClick={routeChange}>
             <ShoppingBasketIcon />
           </Button>
-          <span className="header__optionLineTwo header__basketCount">0</span>
+          <span className="header__optionLineTwo header__basketCount">
+            {cartItemCount}
+          </span>
         </div>
       </div>
     </div>

@@ -29,7 +29,7 @@ function App() {
             }
           />
           <Route
-            path="/"
+            path="/cart"
             element={
               <>
                 <Header cartItemCount={cart.length} />

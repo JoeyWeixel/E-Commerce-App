@@ -1,9 +1,8 @@
-using ECommerceAPI.Endpoints.CustomerEndpoint;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
+using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 using Microsoft.AspNetCore.Mvc;
 
-
-namespace ECommerceAPI.Endpoints.ProductEndpoint
+namespace ECommerceAPI.Endpoints.CustomerEndpoint
 {
 
     [ApiController]
@@ -11,6 +10,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
     public class CustomerController : ControllerBase
     {
         private readonly CustomerService _service;
+
         public CustomerController(CustomerService service)
         {
             _service = service;
@@ -31,7 +31,6 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
                 return BadRequest(ex.Message);
 
             }
-
         }
 
         [HttpGet("{id}")]
@@ -100,126 +99,125 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
         [HttpPost("{customerId}/payment-info")]
         public IActionResult AddPaymentInfo(int customerId, PaymentInfoRequest paymentInfo)
         {
+
             try
             {
-                try
-                {
-                    var response = _service.AddPaymentInfo(customerId, paymentInfo);
-                    return Ok(response);
-                }
-                catch
-                {
-                    return StatusCode(500);
-                }
+                var response = _service.AddPaymentInfo(customerId, paymentInfo);
+                return Ok(response);
             }
+            catch
+            {
+                return StatusCode(500);
+            }
+        }
 
         [HttpPost("{customerId}/orders")]
-            public IActionResult AddOrder(int customerId, OrderRequest order)
+        public IActionResult AddOrder(int customerId, OrderRequest order)
+        {
+            try
             {
-                try
-                {
-                    var newOrder = _service.AddOrder(customerId, order);
-                    return Created($"/customers/{customerId}/orders/{newOrder.Id}", newOrder);
-                }
-                catch (Exception ex)
-                {
-
-                    return BadRequest(ex.Message);
-                }
+                var newOrder = _service.AddOrder(customerId, order);
+                return Created($"/customers/{customerId}/orders/{newOrder.Id}", newOrder);
             }
-
-            [HttpGet("{customerId}/orders/{orderId}")]
-            public IActionResult GetOrder(int customerId, int orderId)
+            catch (Exception ex)
             {
-                try
-                {
-                    var order = _service.GetOrder(customerId, orderId);
-                    return Ok(order);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
+
+                return BadRequest(ex.Message);
             }
+        }
 
-            [HttpGet("{id}/orders")]
-            public IActionResult GetAllOrders(int id)
+        [HttpGet("{customerId}/orders/{orderId}")]
+        public IActionResult GetOrder(int customerId, int orderId)
+        {
+            try
             {
-                try
-                {
-                    var orders = _service.GetAllOrders(id);
-                    return Ok(orders);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
+                var order = _service.GetOrder(customerId, orderId);
+                return Ok(order);
             }
-
-            [HttpGet("{id}/contact-info")]
-            public IActionResult GetContactInfo(int id)
+            catch (Exception ex)
             {
-                try
-                {
-                    var customer = _service.GetCustomer(id);
-
-                    return Ok(customer);
-
-                }
-                catch (Exception ex)
-                {
-                    return NotFound();
-
-                }
+                return BadRequest(ex.Message);
             }
+        }
 
-            [HttpPost("{customerId}/cart/products/{productId}")]
-            public IActionResult AddPurchaseProduct(int customerId, PurchaseProductRequest request)
+        [HttpGet("{id}/orders")]
+        public IActionResult GetAllOrders(int id)
+        {
+            try
             {
-                try
-                {
-                    var pProduct = _service.AddPurchaseProduct(customerId, request);
-
-                    return Ok(pProduct);
-                }
-                catch
-                {
-                    return StatusCode(500);
-
-                }
+                var orders = _service.GetAllOrders(id);
+                return Ok(orders);
             }
-
-            [HttpPatch("{customerId}/cart/products/{productId}")]
-            public IActionResult EditPurchaseProduct(int customerId, int productId, int newQuantity)
+            catch (Exception ex)
             {
-                try
-                {
-                    var pProduct = _service.EditPurchaseProduct(customerId, productId, newQuantity);
-
-                    return Ok(pProduct);
-
-                }
-                catch
-                {
-                    return StatusCode(500);
-
-                }
+                return BadRequest(ex.Message);
             }
+        }
 
-            [HttpGet("{customerId}/cart/products/{productId}")]
-            public IActionResult DeletePurchaseProduct(int customerId, int productId)
+        [HttpGet("{id}/contact-info")]
+        public IActionResult GetContactInfo(int id)
+        {
+            try
             {
-                try
-                {
-                    var pProduct = _service.DeletePurchaseProduct(customerId, productId);
+                var customer = _service.GetCustomer(id);
 
-                    return Ok(pProduct);
-                }
-                catch
-                {
-                    return StatusCode(500);
+                return Ok(customer);
 
-                }
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+
+            }
+        }
+
+        [HttpPost("{customerId}/cart/products/{productId}")]
+        public IActionResult AddPurchaseProduct(int customerId, PurchaseProductRequest request)
+        {
+            try
+            {
+                var pProduct = _service.AddPurchaseProduct(customerId, request);
+
+                return Ok(pProduct);
+            }
+            catch
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+        [HttpPatch("{customerId}/cart/products/{productId}")]
+        public IActionResult EditPurchaseProduct(int customerId, int productId, int newQuantity)
+        {
+            try
+            {
+                var pProduct = _service.EditPurchaseProduct(customerId, productId, newQuantity);
+
+                return Ok(pProduct);
+
+            }
+            catch
+            {
+                return StatusCode(500);
+
+            }
+        }
+
+        [HttpGet("{customerId}/cart/products/{productId}")]
+        public IActionResult DeletePurchaseProduct(int customerId, int productId)
+        {
+            try
+            {
+                var pProduct = _service.DeletePurchaseProduct(customerId, productId);
+
+                return Ok(pProduct);
+            }
+            catch
+            {
+                return StatusCode(500);
+
             }
         }
     }
+}

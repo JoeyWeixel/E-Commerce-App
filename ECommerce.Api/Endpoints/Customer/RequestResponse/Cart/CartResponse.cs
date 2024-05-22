@@ -1,17 +1,32 @@
-﻿using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
+﻿using ECommerceAPI.Domain;
 
 namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
 {
     public class CartResponse
     {
-        public Dictionary<ProductResponse, int> Products { get; set; }
+        public List<PurchaseProduct> Products { get; set; }
         public int Id { get; set; }
         public double TotalPrice { get; set; }
 
-        // Constructor to initialize the Products dictionary
-        public CartResponse()
+        public CartResponse(int customerId)
         {
-            Products = new Dictionary<ProductResponse, int>();
+            Products = new List<PurchaseProduct>();
+            Id = customerId;
+            TotalPrice = 0;
+
+        }
+        public CartResponse() { }
+
+        public void AddProduct(PurchaseProduct product)
+        {
+            Products.Add(product);
+            //TotalPrice = Products.Sum(p => Product.Price * p.Quantity);
+        }
+
+        public void RemoveProduct(PurchaseProduct product)
+        {
+            Products.Remove(product);
+            //TotalPrice = Products.Subtract(p => Product.Price * p.Quantity);
         }
     }
 }
