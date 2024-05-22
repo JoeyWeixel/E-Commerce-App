@@ -203,7 +203,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
         }
 
-        /*[HttpGet("{customerId}/cart/products/{productId}")]
+        [HttpDelete("{customerId}/cart/products/{productId}")]
         public IActionResult DeleePurchaseProduct(int customerId, int productId)
         {
             try
@@ -217,6 +217,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 return StatusCode(500);
 
             }
-        }*/
+        }
     }
 }
