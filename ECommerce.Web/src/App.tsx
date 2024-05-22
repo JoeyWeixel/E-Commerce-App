@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import CartPage from "./Pages/CartPage";
 import Header from "./Components/Header";
-
 interface ProductType {
   id: number;
   name: string;
@@ -28,6 +27,15 @@ const App: React.FC = () => {
               <>
                 <Header />
                 <HomePage />
+              </>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <>
+                <Header />
+                <CartPage />
               </>
             }
           />

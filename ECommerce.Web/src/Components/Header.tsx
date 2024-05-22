@@ -4,24 +4,19 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Button } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-// src/Components/Header.tsx
-import React from 'react';
-import '../Styles/HeaderStyle.css';
-import SearchIcon from '@mui/icons-material/Search';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-
-const Header: React.FC = () => {
-  const history = useNavigate();
-
-  const routeChange = () => {
-    history("/cart");
-  };
 
 interface HeaderProps {
   cartItemCount: number;
 }
 
 const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
+  const history = useNavigate();
+
+  const routeChange = () => {
+    history("/cart");
+  };
+};
+
   return (
     <div className="header">
       <img

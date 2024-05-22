@@ -190,7 +190,7 @@ namespace ECommerceAPI.Endpoints.Product
 
         }
 
-        [HttpPost("{customerId}/cart/add")]
+        [HttpPost("{customerId}/cart")]
         public IActionResult AddProductToCart(int customerId, [FromBody] ProductRequest request)
         {
             try
@@ -210,7 +210,7 @@ namespace ECommerceAPI.Endpoints.Product
             }
         }
 
-        [HttpDelete("{customerId}/cart/remove")]
+        [HttpDelete("{customerId}/cart")]
         public IActionResult RemoveProductFromCart(int customerId, [FromBody] ProductRequest request)
         {
             try
