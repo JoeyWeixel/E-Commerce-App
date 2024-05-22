@@ -33,6 +33,7 @@
                 "watch",
                 "run",
                 "--project",
+                "--launch-profile https",
                 "${workspaceFolder}/ECommerceAPI.sln"
             ],
             "problemMatcher": "$msCompile"
