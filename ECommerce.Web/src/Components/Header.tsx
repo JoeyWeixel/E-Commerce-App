@@ -15,7 +15,6 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
   const routeChange = () => {
     history("/cart");
   };
-};
 
   return (
     <div className="header">

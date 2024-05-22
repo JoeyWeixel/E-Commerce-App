@@ -1,9 +1,9 @@
-import React from "react";
-import "./App.css";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import CartPage from "./Pages/CartPage";
 import Header from "./Components/Header";
+import "./App.css";
 interface ProductType {
   id: number;
   name: string;
@@ -15,8 +15,6 @@ interface ProductType {
 function App() {
   const [cart, setCart] = useState<ProductType[]>([]);
 
-
-const App: React.FC = () => {
   return (
     <div className="app">
       <Router>
@@ -25,8 +23,8 @@ const App: React.FC = () => {
             path="/"
             element={
               <>
-                <Header />
-                <HomePage />
+                <Header cartItemCount={cart.length} />
+                <HomePage setCart={setCart} />
               </>
             }
           />
@@ -34,7 +32,7 @@ const App: React.FC = () => {
             path="/"
             element={
               <>
-                <Header />
+                <Header cartItemCount={cart.length} />
                 <CartPage />
               </>
             }
