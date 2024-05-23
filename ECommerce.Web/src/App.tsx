@@ -20,7 +20,7 @@ interface ProductType {
 function App() {
   const [cart, setCart] = useState<ProductType[]>([]);
   const [customers, setCustomers] = useState<CustomerType[]>([]);
-  const [currentCustomer, setCurrentCustomer] = useState<CustomerType>(null);
+  const [currentCustomer, setCurrentCustomer] = useState<CustomerType>();
 
   const handleUpdateCustomer = (newCustomer: CustomerType) => {
     setCurrentCustomer(newCustomer);
