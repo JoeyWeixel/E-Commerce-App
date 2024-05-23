@@ -6,12 +6,15 @@ import CustomerPage from "./Pages/CustomerPage";
 import Header from "./Components/Header";
 import "./App.css";
 import { CustomerType } from "./Components/Customer";
+
 interface ProductType {
   id: number;
   name: string;
   description: string;
   numInStock: number;
   price: number;
+  quantity: number;  
+
 }
 
 function App() {
@@ -31,7 +34,6 @@ function App() {
         .catch(error => console.error('Error fetching customers:', error));
     }, []);
 
-  
   return (
     <div className="app">
       <Router>
@@ -50,7 +52,7 @@ function App() {
             element={
               <>
                 <Header cartItemCount={cart.length} />
-                <CartPage />
+                <CartPage cart={cart} setCart={setCart} />
               </>
             }
           />
@@ -59,10 +61,10 @@ function App() {
             element={
               <>
                 <Header cartItemCount={cart.length} />
-                <CustomerPage customers = {customers}/>
+                <CustomerPage customers={customers} />
               </>
             }
-            />
+          />
         </Routes>
       </Router>
     </div>
