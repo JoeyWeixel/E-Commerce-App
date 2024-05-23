@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CartItem from "./CartItem";
 import "../Styles/CartStyle.css";
-
 import { Typography, Button } from "@mui/material";
 
 interface ProductType {
@@ -35,6 +34,13 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
+  const handleCheckout = () => {
+    alert(`You just ordered:\n${items.map(item => `${item.name} (x${item.quantity})`).join('\n')}\n\nTotal price: $${getTotalPrice().toFixed(2)}`);
+    setItems([]);
+    setCart([]);
+  };
+
+
   return (
     <div>
       <Typography variant="h4">Shopping Cart</Typography>
@@ -48,7 +54,7 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
           <Typography variant="h5">
             Total: ${getTotalPrice().toFixed(2)}
           </Typography>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={handleCheckout}>
             Proceed to Checkout
           </Button>
         </div>
