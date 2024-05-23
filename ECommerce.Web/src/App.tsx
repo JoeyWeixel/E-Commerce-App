@@ -17,6 +17,11 @@ interface ProductType {
 function App() {
   const [cart, setCart] = useState<ProductType[]>([]);
   const [customers, setCustomers] = useState<CustomerType[]>([]);
+  const [currentCustomer, setCurrentCustomer] = useState<CustomerType>();
+
+  const handleUpdateCustomer = (newCustomer: CustomerType) => {
+    setCurrentCustomer(newCustomer);
+  };
 
   useEffect(() => {
       // Fetch customers from the API
@@ -59,7 +64,7 @@ function App() {
             element={
               <>
                 <Header cartItemCount={cart.length} />
-                <CustomerPage customers = {customers}/>
+                <CustomerPage customers = {customers} updateCustomer={handleUpdateCustomer}/>
               </>
             }
             />
