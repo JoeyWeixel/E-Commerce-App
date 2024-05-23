@@ -8,7 +8,7 @@ export type ContactInfoType = {
     address: string,
     phoneNumber: string
   }
-  export type CustomerType = {
+export type CustomerType = {
     id: number,
     contactInfo: ContactInfoType
   }
