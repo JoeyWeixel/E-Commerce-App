@@ -20,6 +20,11 @@ interface ProductType {
 function App() {
   const [cart, setCart] = useState<ProductType[]>([]);
   const [customers, setCustomers] = useState<CustomerType[]>([]);
+  const [currentCustomer, setCurrentCustomer] = useState<CustomerType>(null);
+
+  const handleUpdateCustomer = (newCustomer: CustomerType) => {
+    setCurrentCustomer(newCustomer);
+  };
 
   useEffect(() => {
       // Fetch customers from the API
@@ -36,35 +41,13 @@ function App() {
 
   return (
     <div className="app">
+      
       <Router>
+      <Header cartItemCount={cart.length} customer={currentCustomer}/>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Header cartItemCount={cart.length} />
-                <HomePage setCart={setCart} />
-              </>
-            }
-          />
-          <Route
-            path="/cart"
-            element={
-              <>
-                <Header cartItemCount={cart.length} />
-                <CartPage cart={cart} setCart={setCart} />
-              </>
-            }
-          />
-          <Route
-            path="/customers"
-            element={
-              <>
-                <Header cartItemCount={cart.length} />
-                <CustomerPage customers={customers} />
-              </>
-            }
-          />
+          <Route path="/" element={<HomePage setCart={setCart} />}/>
+          <Route path="/cart" element={<CartPage />}/>
+          <Route path="/customers" element={<CustomerPage customers = {customers} updateCustomer={handleUpdateCustomer}/>}/>
         </Routes>
       </Router>
     </div>

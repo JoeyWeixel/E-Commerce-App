@@ -14,12 +14,13 @@ export type ContactInfoType = {
   }
 
 interface CardProps {
-    customer: CustomerType
+    customer: CustomerType,
+    onClick: (click: CustomerType) => void
 }
 
-const CustomerCard: React.FC<CardProps> = ({ customer }) => {
+const CustomerCard: React.FC<CardProps> = ({ customer, onClick }) => {
     return (
-    <div className='customer-card'>
+    <div className='customer-card' onClick={() => onClick(customer)}>
         <img src={RealHFritz} alt='The real henry fritz'></img>
         <div className='info'>
             <p className='name'>{customer.contactInfo.name}</p>
