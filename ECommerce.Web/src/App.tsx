@@ -46,7 +46,7 @@ function App() {
       <Header cartItemCount={cart.length} customer={currentCustomer}/>
         <Routes>
           <Route path="/" element={<HomePage setCart={setCart} />}/>
-          <Route path="/cart" element={<CartPage />}/>
+          <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />}/>
           <Route path="/customers" element={<CustomerPage customers = {customers} updateCustomer={handleUpdateCustomer}/>}/>
         </Routes>
       </Router>
