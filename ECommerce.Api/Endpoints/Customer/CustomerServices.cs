@@ -142,20 +142,19 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public PurchaseProductResponse AddPurchaseProduct(int customerId, PurchaseProductRequest request)
         {
-            // Step 1: Retrieve the customer and their cart
             var customer = _db.Customers
                 .Include(c => c.Cart)
                 .ThenInclude(cart => cart.Products)
                 .FirstOrDefault(c => c.Id == customerId);
 
-            if (customer == null)
-            {
-                throw new Exception("Customer not found.");
-            }
+            // is this necessary due to the try catch block?
+            /*            if (customer == null)
+                        {
+                            throw new Exception("Customer not found.");
+                        }*/
 
             var cart = customer.Cart;
 
-            // Step 2: Check if the product already exists in the cart
             var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
 
             if (existingProduct != null)
@@ -176,7 +175,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             _db.SaveChanges();
 
-            // Step 3: Return the updated cart including the list of products
             return new PurchaseProductResponse(existingProduct ?? new PurchaseProduct
             {
                 CartId = customerId,

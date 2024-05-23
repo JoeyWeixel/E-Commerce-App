@@ -6,17 +6,25 @@ import CustomerPage from "./Pages/CustomerPage";
 import Header from "./Components/Header";
 import "./App.css";
 import { CustomerType } from "./Components/Customer";
+
 interface ProductType {
   id: number;
   name: string;
   description: string;
   numInStock: number;
   price: number;
+  quantity: number;  
+
 }
 
 function App() {
   const [cart, setCart] = useState<ProductType[]>([]);
   const [customers, setCustomers] = useState<CustomerType[]>([]);
+  const [currentCustomer, setCurrentCustomer] = useState<CustomerType>();
+
+  const handleUpdateCustomer = (newCustomer: CustomerType) => {
+    setCurrentCustomer(newCustomer);
+  };
 
   useEffect(() => {
       // Fetch customers from the API
@@ -31,38 +39,15 @@ function App() {
         .catch(error => console.error('Error fetching customers:', error));
     }, []);
 
-  
   return (
     <div className="app">
+      
       <Router>
+      <Header cartItemCount={cart.length} customer={currentCustomer}/>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Header cartItemCount={cart.length} />
-                <HomePage setCart={setCart} />
-              </>
-            }
-          />
-          <Route
-            path="/cart"
-            element={
-              <>
-                <Header cartItemCount={cart.length} />
-                <CartPage />
-              </>
-            }
-          />
-          <Route
-            path="/customers"
-            element={
-              <>
-                <Header cartItemCount={cart.length} />
-                <CustomerPage customers = {customers}/>
-              </>
-            }
-            />
+          <Route path="/" element={<HomePage setCart={setCart} />}/>
+          <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />}/>
+          <Route path="/customers" element={<CustomerPage customers = {customers} updateCustomer={handleUpdateCustomer}/>}/>
         </Routes>
       </Router>
     </div>

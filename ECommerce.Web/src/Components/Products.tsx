@@ -7,6 +7,8 @@ interface ProductType {
   description: string;
   numInStock: number;
   price: number;
+  quantity: number;  
+
 }
 
 interface ProductProps {

@@ -2,37 +2,25 @@ import React from "react";
 import "../Styles/HeaderStyle.css";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import { Button } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { CustomerType } from "./Customer";
 
-interface HeaderProps {
+type HeaderProps = {
   cartItemCount: number;
+  customer: CustomerType | undefined;
 }
 
-const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
-  const history = useNavigate();
-
-  const routeChange = () => {
-    history("/cart");
-  };
-
-  const routeHome = () => {
-    history('/');
-  };
-
-  const routeCustomers = () => {
-    history("customers");
-  };
+const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
 
   return (
     <div className="header">
-        <Button variant="contained" color="primary" onClick={routeHome}>
+        <Link to='/'>
         <img
         className="header__logo"
         src="https://media.licdn.com/dms/image/D5603AQFHz0FdYA9DqQ/profile-displayphoto-shrink_200_200/0/1694185994992?e=2147483647&v=beta&t=2UQTFQe-wXVnR3Pp41Yeo0Iva2lbzMiv0mSpuMzJvJM"
         alt="Logo"
       />
-          </Button>
+          </Link>
   
       <div className="header__search">
         <input className="header__searchInput" type="text" />
@@ -41,10 +29,10 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
 
       <div className="header__nav">
         <div className="header__option">
-          <Button variant="contained" color="default" onClick={() => routeCustomers()}>
-            <span className="header__optionLineOne">Hello Guest</span>
-            <span className="header__optionLineTwo">Sign In</span>
-          </Button>
+          <Link to="/customers">
+            <span className="header__optionLineOne">{'Hello ' + (!customer ? 'Guest' : customer.contactInfo.name)}</span>
+            <span className="header__optionLineTwo">Switch Account</span>
+          </Link>
         </div>
 
         <div className="header__option">
@@ -53,9 +41,9 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount }) => {
         </div>
 
         <div className="header__optionBasket">
-          <Button variant="contained" color="primary" onClick={routeChange}>
+          <Link to='/cart'>
             <ShoppingBasketIcon />
-          </Button>
+          </Link>
           <span className="header__optionLineTwo header__basketCount">
             {cartItemCount}
           </span>

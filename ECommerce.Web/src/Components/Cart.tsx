@@ -1,23 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CartItem from "./CartItem";
 import "../Styles/CartStyle.css";
 
 import { Typography, Button } from "@mui/material";
 
-interface CartProps {
-  initialItems: {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-  }[];
+interface ProductType {
+  id: number;
+  name: string;
+  description: string;
+  numInStock: number;
+  price: number;
+  quantity: number;
 }
 
-const Cart: React.FC<CartProps> = ({ initialItems }) => {
-  const [items, setItems] = useState(initialItems);
+interface CartProps {
+  initialItems: ProductType[];
+  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
+}
+
+const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
+  const [items, setItems] = useState<ProductType[]>(initialItems);
+
+  useEffect(() => {
+    setItems(initialItems);
+  }, [initialItems]);
 
   const handleRemove = (id: number) => {
-    setItems(items.filter((item) => item.id !== id));
+    const updatedItems = items.filter((item) => item.id !== id);
+    setItems(updatedItems);
+    setCart(updatedItems);
   };
 
   const getTotalPrice = () => {

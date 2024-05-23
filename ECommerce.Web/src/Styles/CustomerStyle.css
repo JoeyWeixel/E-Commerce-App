@@ -24,6 +24,7 @@
 .customer-card img{
     height: 100px;
     border-radius: 50%;
+    grid-area: 1 1 2 1;
 }
 
 .customer-card p{
