@@ -139,20 +139,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
         }
 
-        [HttpGet("{id}/orders")]
-        public IActionResult GetAllOrders(int id)
-        {
-            try
-            {
-                var orders = _service.GetAllOrders(id);
-                return Ok(orders);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpGet("{id}/contact-info")]
         public IActionResult GetContactInfo(int id)
         {

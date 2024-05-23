@@ -60,57 +60,49 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             _db.SaveChanges();
             return new CustomerResponse(newCustomer);
         }
-
-        public IEnumerable<OrderResponse> GetAllOrders(int customerId)
-        {
-            Customer customer = _db.Customers
-                .Include(customer => customer.Orders)
-                .ThenInclude(order => order.DeliveryDate)
-                .Include(customer => customer.Orders)
-                .ThenInclude(order => order.OrderDate)
-                .SingleOrDefault(customer => customer.Id == customerId);
-
-            var orders = new List<OrderResponse>();
-            foreach (Order order in customer.Orders)
-            {
-                orders.Add(new OrderResponse
-                {
-                    Id = order.Id,
-                    DeliveryDate = order.DeliveryDate,
-                    OrderDate = order.OrderDate,
-                });
-            }
-            return orders;
-        }
-
         public OrderResponse GetOrder(int customerId, int orderId)
         {
-            Customer customer = _db.Customers.Include(customer => customer.Orders).SingleOrDefault((Customer c) => c.Id == customerId);
+            Customer customer = _db.Customers
+                .Include(c => c.Orders)
+                .SingleOrDefault(c => c.Id == customerId);
+
+            if (customer == null)
+            {
+                throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+            }
 
             var order = customer.Orders.Find(o => o.Id == orderId);
             var orderResponse = new OrderResponse
             {
                 Id = order.Id,
-                DeliveryDate = order.DeliveryDate,
+                Cart = customer.Cart,
                 OrderDate = order.OrderDate,
             };
             return orderResponse;
         }
 
-        public Order AddOrder(int customerId, OrderRequest order)
+        public Order AddOrder(int customerId, OrderRequest orderRequest)
         {
-            Customer customer = _db.Customers
-                .Include(customer => customer.Orders)
-                .SingleOrDefault((Customer c) => c.Id == customerId);
+            var customer = _db.Customers
+                .Include(c => c.Orders)
+                .SingleOrDefault(c => c.Id == customerId);
+
+            if (customer == null)
+            {
+                throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+            }
 
             var newOrder = new Order
             {
-                Id = customer.Orders.Max(o => o.Id) + 1,
-                Cart = customer.Cart,
+                Id = customer.Orders.Any() ? customer.Orders.Max(o => o.Id) + 1 : 1,
+                Cart = orderRequest.Cart,
                 OrderDate = DateTime.Now
             };
+
+            customer.Orders.Add(newOrder);
             customer.Cart = new Cart();
             _db.SaveChanges();
+
             return newOrder;
         }
 
@@ -216,13 +208,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             return cartResponse;
         }
-
-
-
-
-
-
-
         public PurchaseProductResponse DeletePurchaseProduct(int customerId, int productId)
         {
             var purchaseProduct = from c in _db.Customers
