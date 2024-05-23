@@ -8,6 +8,8 @@ interface ProductType {
   description: string;
   numInStock: number;
   price: number;
+  quantity: number;  
+
 }
 
 const HomePage: React.FC<{
