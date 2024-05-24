@@ -76,7 +76,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             {
                 Id = order.Id,
                 Cart = customer.Cart,
-                OrderDate = order.OrderDate,
             };
             return orderResponse;
         }
