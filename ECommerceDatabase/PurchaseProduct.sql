@@ -4,5 +4,6 @@
     [CartId] INT NOT NULL, 
     [Quantity] INT NOT NULL, 
     PRIMARY KEY ([ProductId], [CartId]),
-    Foreign Key ([ProductId]) references [Product][]
+    Foreign Key ([ProductId]) references [Product]([Id]),
+    Foreign key ([CartId]) references [Cart]([Id])
 )
