@@ -1,6 +1,7 @@
 using ECommerceAPI.Domain;
 using ECommerceAPI.Endpoints.CustomerEndpoint;
 using ECommerceAPI.Endpoints.ProductEndpoint;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -12,9 +13,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<ECommerceContext>(opt =>
-    opt.UseInMemoryDatabase("ECommerce"));
 builder.Services.AddSwaggerGen();
+
+var connection = String.Empty;
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
+    connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+}
+else
+{
+    connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+}
+
+builder.Services.AddDbContext<ECommerceContext>(options =>
+    options.UseSqlServer(connection));
 
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<CustomerService>();
@@ -38,7 +51,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+string connectionString = app.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+
+try
+{
+    using var conn = new SqlConnection(connectionString);
+}
+catch (Exception e)
+{
+    Console.WriteLine(e.Message);
+}
+
+    app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
