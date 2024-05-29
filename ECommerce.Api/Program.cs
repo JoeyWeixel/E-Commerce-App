@@ -51,18 +51,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-string connectionString = app.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
-
-try
-{
-    using var conn = new SqlConnection(connectionString);
-}
-catch (Exception e)
-{
-    Console.WriteLine(e.Message);
-}
-
-    app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
