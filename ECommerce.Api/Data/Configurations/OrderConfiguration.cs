@@ -12,7 +12,7 @@ namespace ECommerce.Api.Data.Configurations
 
             builder.HasKey(o => o.Id);
 
-            builder.Property(o => o.Cart).IsRequired();
+            builder.HasOne(o => o.Cart);
 
             builder.Property(o => o.OrderDate).IsRequired();
         }

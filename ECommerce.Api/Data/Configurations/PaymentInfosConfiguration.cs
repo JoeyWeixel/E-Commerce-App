@@ -8,7 +8,7 @@ namespace ECommerce.Api.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<PaymentInfo> builder)
         {
-            builder.ToTable("PaymentInfos");
+            builder.ToTable("PaymentInfo");
 
             builder.HasKey(c => c.Id);
 

@@ -8,11 +8,9 @@ namespace ECommerceAPI.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<PurchaseProduct> builder)
         {
-            builder.ToTable("Product");
-            builder.Property(x => x.Cart)
-                .IsRequired();
-            builder.Property(x => x.Product)
-                .IsRequired();
+            builder.ToTable("PurchaseProduct");
+            builder.HasOne(x => x.Cart);
+            builder.HasOne(x => x.Product);
             builder.HasKey(x => new { x.Cart, x.Product });
         }
     }

@@ -9,12 +9,12 @@ namespace ECommerce.Api.Data.Configurations
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
 
-            builder.ToTable("Customers");
+            builder.ToTable("Customer");
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Cart).IsRequired();
-            builder.Property(c => c.ContactInfo).IsRequired().HasMaxLength(50);
-            builder.Property(c => c.PaymentInfos).IsRequired().HasMaxLength(50);
-            builder.Property(c => c.Orders).IsRequired().HasMaxLength(50);
+            builder.HasOne(c => c.Cart);
+            builder.HasOne(c => c.ContactInfo);
+            builder.HasOne(c => c.PaymentInfos);
+            builder.HasMany(c => c.Orders);
         }
     }
 }
