@@ -12,6 +12,13 @@ namespace ECommerceAPI.Domain
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<ContactInfo> ContactInfos { get; set; }
+        public DbSet<PaymentInfo> PaymentInfos { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<PurchaseProduct> PurchaseProducts { get; set; }
+
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
