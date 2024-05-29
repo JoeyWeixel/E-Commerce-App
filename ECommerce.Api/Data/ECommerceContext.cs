@@ -21,6 +21,10 @@ namespace ECommerceAPI.Domain
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
             modelBuilder.ApplyConfiguration(new CartConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactInfoConfiguration());
+            modelBuilder.ApplyConfiguration(new PaymentInfosConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new PurchaseProductConfiguration());
 
         }
 
