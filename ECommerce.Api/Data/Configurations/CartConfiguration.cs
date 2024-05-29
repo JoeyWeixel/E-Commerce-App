@@ -18,7 +18,7 @@ namespace ECommerce.Api.Data.Configurations
 
             builder.HasMany(c => c.Products)
                             .WithOne()
-                            .HasForeignKey(p => p.CartId)
+                            .HasForeignKey(p => p.Cart.Id)
                             .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -152,7 +152,8 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             var cart = customer.Cart;
 
-            var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
+            var existingProduct = cart.Products.FirstOrDefault(cp => cp.Product.Id == request.ProductId);
+            var newPurchaseProduct = new PurchaseProduct();
 
             if (existingProduct != null)
             {
@@ -160,10 +161,10 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
             else
             {
-                var newPurchaseProduct = new PurchaseProduct
+                newPurchaseProduct = new PurchaseProduct
                 {
-                    CartId = customerId,
-                    ProductId = request.ProductId,
+                    Cart = customer.Cart,
+                    Product = _db.Products.FirstOrDefault(p => p.Id == request.ProductId),
                     Quantity = request.Quantity
                 };
 
@@ -172,12 +173,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             _db.SaveChanges();
 
-            return new PurchaseProductResponse(existingProduct ?? new PurchaseProduct
-            {
-                CartId = customerId,
-                ProductId = request.ProductId,
-                Quantity = request.Quantity
-            });
+            return new PurchaseProductResponse(existingProduct ?? newPurchaseProduct);
         }
 
         public CartResponse GetCart(int customerId)
@@ -209,18 +205,13 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                                   where c.Id == customerId
                                   select (
                                       from p in c.Cart.Products
-                                      where p.ProductId == productId && p.CartId == customerId
+                                      where p.Product.Id == productId && p.Cart.Id == c.Cart.Id
                                       select p
                                       );
             _db.Remove(purchaseProduct);
             _db.SaveChanges();
 
-            return new PurchaseProductResponse
-            {
-                CartId = customerId,
-                ProductId = productId,
-                Quantity = 0
-            };
+            return new PurchaseProductResponse();
         }
     }
 }

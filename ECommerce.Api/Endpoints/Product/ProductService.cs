@@ -22,7 +22,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                numInStock = product.numInStock,
+                numInStock = product.NumInStock,
                 Price = product.Price
             }).ToList();
         }
@@ -40,7 +40,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                numInStock = product.numInStock,
+                numInStock = product.NumInStock,
                 Price = product.Price
             };
         }
@@ -61,7 +61,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
             {
                 Name = productRequest.Name,
                 Description = productRequest.Description,
-                numInStock = productRequest.numInStock,
+                NumInStock = productRequest.numInStock,
                 Price = productRequest.Price
             };
             _nextId++;
@@ -73,7 +73,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                numInStock = product.numInStock,
+                numInStock = product.NumInStock,
                 Price = product.Price
             };
         }

@@ -10,6 +10,9 @@ namespace ECommerceAPI.Data.Configurations
         {
             builder.ToTable("Product");
             builder.HasKey(x => x.Id);
+            builder.Property(p => p.Price)
+                            .IsRequired()
+                            .HasColumnType("decimal(18,2)");
         }
     }
 }
