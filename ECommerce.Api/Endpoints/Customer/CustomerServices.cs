@@ -44,7 +44,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         {
             var newCustomer = new Customer
             {
-                Id = _nextCustomerId++,
                 ContactInfo = new ContactInfo
                 {
                     Name = customerRequest.ContactInfo.Name,
@@ -93,7 +92,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             var newOrder = new Order
             {
-                Id = customer.Orders.Any() ? customer.Orders.Max(o => o.Id) + 1 : 1,
                 Cart = orderRequest.Cart,
                 OrderDate = DateTime.Now
             };

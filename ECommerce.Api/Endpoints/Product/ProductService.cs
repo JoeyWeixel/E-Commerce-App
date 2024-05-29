@@ -59,7 +59,6 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
         {
             var product = new Product
             {
-                Id = _nextId,
                 Name = productRequest.Name,
                 Description = productRequest.Description,
                 numInStock = productRequest.numInStock,
