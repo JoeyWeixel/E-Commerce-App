@@ -12,7 +12,7 @@ namespace ECommerce.Api.Data.Configurations
             builder.HasKey(c => c.Id);
             builder.HasOne(c => c.Cart);
             builder.HasOne(c => c.ContactInfo);
-            builder.HasOne(c => c.PaymentInfos);
+            builder.HasMany(c => c.PaymentInfos);
             builder.HasMany(c => c.Orders);
         }
     }

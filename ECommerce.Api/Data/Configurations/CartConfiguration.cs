@@ -17,8 +17,8 @@ namespace ECommerce.Api.Data.Configurations
                             .HasColumnType("decimal(18,2)");
 
             builder.HasMany(c => c.Products)
-                            .WithOne()
-                            .HasForeignKey(p => p.Cart.Id)
+                            .WithOne(p => p.Cart)
+                            .HasForeignKey(p => p.CartId)
                             .OnDelete(DeleteBehavior.Cascade);
         }
     }
