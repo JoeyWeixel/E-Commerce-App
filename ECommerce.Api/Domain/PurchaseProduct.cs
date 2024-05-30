@@ -14,7 +14,5 @@
         public int CartId { get; set; } // Foreign key property
 
         public int Quantity { get; set; }
-
-
     }
 }

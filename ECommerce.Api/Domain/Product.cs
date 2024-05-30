@@ -7,6 +7,5 @@
         public string Description { get; set; }
         public int NumInStock { get; set; }
         public double Price { get; set; }
-
     }
 }

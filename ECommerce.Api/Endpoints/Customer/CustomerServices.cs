@@ -17,7 +17,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public IEnumerable<CustomerResponse> GetAllCustomers()
         {
-            var customers = _db.Customers
+            var customers = _db.Customer
                 .Include(customer => customer.ContactInfo)
                 .ToList();
 
@@ -26,7 +26,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public CustomerResponse GetCustomer(int id)
         {
-            Customer customer = _db.Customers
+            Customer customer = _db.Customer
                 .Include(customer => customer.ContactInfo)
                 .SingleOrDefault(customer => customer.Id == id);
             return (new CustomerResponse(customer));
@@ -34,8 +34,8 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public CustomerResponse DeleteCustomer(int id)
         {
-            var customer = _db.Customers.First(c => c.Id == id);
-            _db.Customers.Remove(customer);
+            var customer = _db.Customer.First(c => c.Id == id);
+            _db.Customer.Remove(customer);
             _db.SaveChanges();
             return new CustomerResponse(customer);
         }
@@ -55,13 +55,13 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 Orders = [],
                 PaymentInfos = []
             };
-            _db.Customers.Add(newCustomer);
+            _db.Customer.Add(newCustomer);
             _db.SaveChanges();
             return new CustomerResponse(newCustomer);
         }
         public OrderResponse GetOrder(int customerId, int orderId)
         {
-            Customer customer = _db.Customers
+            Customer customer = _db.Customer
                 .Include(c => c.Orders)
                 .SingleOrDefault(c => c.Id == customerId);
 
@@ -81,7 +81,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public Order AddOrder(int customerId, OrderRequest orderRequest)
         {
-            var customer = _db.Customers
+            var customer = _db.Customer
                 .Include(c => c.Orders)
                 .SingleOrDefault(c => c.Id == customerId);
 
@@ -105,7 +105,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public PaymentInfoResponse GetPaymentInfo(int customerId, int paymentId)
         {
-            List<PaymentInfo> paymentInfos = _db.Customers
+            List<PaymentInfo> paymentInfos = _db.Customer
                 .Include(customer => customer.PaymentInfos)
                 .SingleOrDefault((Customer c) => c.Id == customerId)
                 .PaymentInfos;
@@ -118,7 +118,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public PaymentInfoResponse AddPaymentInfo(int customerId, PaymentInfoRequest request)
         {
-            List<PaymentInfo> paymentInfos = _db.Customers
+            List<PaymentInfo> paymentInfos = _db.Customer
                 .Include(customer => customer.PaymentInfos)
                 .SingleOrDefault((Customer c) => c.Id == customerId)
                 .PaymentInfos;
@@ -139,16 +139,10 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public PurchaseProductResponse AddPurchaseProduct(int customerId, PurchaseProductRequest request)
         {
-            var customer = _db.Customers
+            var customer = _db.Customer
                 .Include(c => c.Cart)
                 .ThenInclude(cart => cart.Products)
                 .FirstOrDefault(c => c.Id == customerId);
-
-            // is this necessary due to the try catch block?
-            /*            if (customer == null)
-                        {
-                            throw new Exception("Customer not found.");
-                        }*/
 
             var cart = customer.Cart;
 
@@ -164,7 +158,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 newPurchaseProduct = new PurchaseProduct
                 {
                     Cart = customer.Cart,
-                    Product = _db.Products.FirstOrDefault(p => p.Id == request.ProductId),
+                    Product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId),
                     Quantity = request.Quantity
                 };
 
@@ -178,15 +172,10 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public CartResponse GetCart(int customerId)
         {
-            var customer = _db.Customers
+            var customer = _db.Customer
                 .Include(c => c.Cart)
                 .ThenInclude(cart => cart.Products)
                 .FirstOrDefault(c => c.Id == customerId);
-
-            if (customer == null)
-            {
-                throw new Exception("Customer not found.");
-            }
 
             var cart = customer.Cart;
 
@@ -201,7 +190,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         }
         public PurchaseProductResponse DeletePurchaseProduct(int customerId, int productId)
         {
-            var purchaseProduct = from c in _db.Customers
+            var purchaseProduct = from c in _db.Customer
                                   where c.Id == customerId
                                   select (
                                       from p in c.Cart.Products
