@@ -10,21 +10,16 @@ namespace ECommerceAPI.Domain
             : base(options)
         {
         }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Cart> Carts { get; set; }
-        public DbSet<ContactInfo> ContactInfos { get; set; }
-        public DbSet<PaymentInfo> PaymentInfos { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<Customer> Customer { get; set; }
+        public DbSet<Cart> Cart { get; set; }
+        public DbSet<ContactInfo> ContactInfo { get; set; }
+        public DbSet<PaymentInfo> PaymentInfo { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<PurchaseProduct> PurchaseProducts { get; set; }
-
-
-
+        public DbSet<PurchaseProduct> PurchaseProduct { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
             modelBuilder.ApplyConfiguration(new CartConfiguration());
@@ -32,8 +27,6 @@ namespace ECommerceAPI.Domain
             modelBuilder.ApplyConfiguration(new PaymentInfosConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new PurchaseProductConfiguration());
-
         }
-
     }
 }

@@ -16,7 +16,6 @@ namespace ECommerce.Api.Data.Configurations
                             .IsRequired()
                             .HasColumnType("decimal(18,2)");
 
-
             builder.HasMany(c => c.Products)
                             .WithOne()
                             .HasForeignKey(p => p.Cart.Id)

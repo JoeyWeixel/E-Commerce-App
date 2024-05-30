@@ -1,7 +1,6 @@
 using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 using ECommerceAPI.Domain;
 
-
 namespace ECommerceAPI.Endpoints.ProductEndpoint
 {
     public class ProductService
@@ -17,19 +16,19 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
 
         public IEnumerable<ProductResponse> GetAllProducts()
         {
-            return _db.Products.Select(product => new ProductResponse
+            return _db.Product.Select(product => new ProductResponse
             {
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                numInStock = product.NumInStock,
+                NumInStock = product.NumInStock,
                 Price = product.Price
             }).ToList();
         }
 
         public ProductResponse GetProduct(int id)
         {
-            var product = _db.Products.FirstOrDefault(p => p.Id == id);
+            var product = _db.Product.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 return null;
@@ -40,17 +39,17 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                numInStock = product.NumInStock,
+                NumInStock = product.NumInStock,
                 Price = product.Price
             };
         }
 
         public void DeleteProduct(int id)
         {
-            var product = _db.Products.FirstOrDefault(p => p.Id == id);
+            var product = _db.Product.FirstOrDefault(p => p.Id == id);
             if (product != null)
             {
-                _db.Products.Remove(product);
+                _db.Product.Remove(product);
             }
             _db.SaveChanges();
         }
@@ -61,19 +60,19 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
             {
                 Name = productRequest.Name,
                 Description = productRequest.Description,
-                NumInStock = productRequest.numInStock,
+                NumInStock = productRequest.NumInStock,
                 Price = productRequest.Price
             };
             _nextId++;
 
-            _db.Products.Add(product);
+            _db.Product.Add(product);
             _db.SaveChanges();
             return new ProductResponse
             {
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                numInStock = product.NumInStock,
+                NumInStock = product.NumInStock,
                 Price = product.Price
             };
         }

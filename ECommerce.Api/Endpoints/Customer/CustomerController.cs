@@ -18,17 +18,14 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         [HttpGet]
         public IActionResult GetCustomers()
         {
-
             try
             {
                 var customers = _service.GetAllCustomers();
                 return Ok(customers);
-
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-
             }
         }
 
@@ -40,12 +37,10 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 var customer = _service.GetCustomer(id);
 
                 return Ok(customer);
-
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-
             }
         }
 
@@ -64,8 +59,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
         }
 
-
-
         [HttpDelete("{id}")]
         public IActionResult DeleteCustomer(int id)
         {
@@ -77,7 +70,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             catch (Exception ex)
             {
                 return BadRequest();
-
             }
         }
 
@@ -152,7 +144,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             catch (Exception ex)
             {
                 return NotFound();
-
             }
         }
 
@@ -168,10 +159,8 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             catch
             {
                 return StatusCode(500);
-
             }
         }
-
 
         [HttpGet("{customerId}/cart")]
         public IActionResult GetCart(int customerId)
@@ -185,7 +174,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             catch
             {
                 return StatusCode(500);
-
             }
         }
 
@@ -201,7 +189,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             catch
             {
                 return StatusCode(500);
-
             }
         }
     }

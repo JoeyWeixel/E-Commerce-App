@@ -4,15 +4,14 @@ using ECommerceAPI.Endpoints.ProductEndpoint;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 var connection = String.Empty;
@@ -31,7 +30,6 @@ builder.Services.AddDbContext<ECommerceContext>(options =>
 
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<CustomerService>();
-
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -56,7 +54,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCors("AllowFrontend");
-
 
 app.MapControllers();
 
