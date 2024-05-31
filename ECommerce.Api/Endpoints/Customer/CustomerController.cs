@@ -64,12 +64,12 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         {
             try
             {
-                _service.DeleteCustomer(id);
-                return Ok();
+                var customer = _service.DeleteCustomer(id);
+                return Ok(customer);
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return StatusCode(500);
             }
         }
 

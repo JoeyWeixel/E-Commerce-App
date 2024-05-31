@@ -1,9 +1,11 @@
 .customer-page{
-    height:inherit;
     width: 100vw;
+    gap: 30px;
+}
+
+.card-holder {
     display: flex;
     flex-direction: column;
-    gap: 30px;
     justify-content: center;
     align-items: center;
 }
@@ -21,8 +23,9 @@
     border-radius: 10px;
 }
 
-.customer-hover{
+.customer-card:hover{
     background-color: #292929;
+    cursor: pointer;
 }
 
 .customer-card img{
@@ -33,4 +36,15 @@
 
 .customer-card p{
     font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    align-self: center;
+    gap: 10px;
+    background-color: #2F2F2F;
+    padding: 10px;
+    border-radius: 5px;
 }
