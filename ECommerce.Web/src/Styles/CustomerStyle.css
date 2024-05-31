@@ -21,6 +21,10 @@
     border-radius: 10px;
 }
 
+.customer-hover{
+    background-color: #292929;
+}
+
 .customer-card img{
     height: 100px;
     border-radius: 50%;

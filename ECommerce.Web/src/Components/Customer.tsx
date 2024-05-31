@@ -20,7 +20,7 @@ interface CardProps {
 
 const CustomerCard: React.FC<CardProps> = ({ customer, onClick }) => {
     return (
-    <div className='customer-card' onClick={() => onClick(customer)}>
+    <div className='customer-card hover:customer-hover' onClick={() => onClick(customer)}>
         <img src={RealHFritz} alt='The real henry fritz'></img>
         <div className='info'>
             <p className='name'>{customer.contactInfo.name}</p>
