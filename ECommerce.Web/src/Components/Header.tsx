@@ -8,20 +8,19 @@ import { CustomerType } from "./Customer";
 type HeaderProps = {
   cartItemCount: number;
   customer: CustomerType | undefined;
-}
+};
 
 const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
-
   return (
     <div className="header">
-        <Link to='/'>
+      <Link to="/">
         <img
-        className="header__logo"
-        src="https://media.licdn.com/dms/image/D5603AQFHz0FdYA9DqQ/profile-displayphoto-shrink_200_200/0/1694185994992?e=2147483647&v=beta&t=2UQTFQe-wXVnR3Pp41Yeo0Iva2lbzMiv0mSpuMzJvJM"
-        alt="Logo"
-      />
-          </Link>
-  
+          className="header__logo"
+          src="https://media.licdn.com/dms/image/D5603AQFHz0FdYA9DqQ/profile-displayphoto-shrink_200_200/0/1694185994992?e=2147483647&v=beta&t=2UQTFQe-wXVnR3Pp41Yeo0Iva2lbzMiv0mSpuMzJvJM"
+          alt="Logo"
+        />
+      </Link>
+
       <div className="header__search">
         <input className="header__searchInput" type="text" />
         <SearchIcon className="header__searchIcon" />
@@ -29,9 +28,11 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
 
       <div className="header__nav">
         <div className="header__option">
+          <span className="header__optionLineOne">
+            {"Welcome " + (!customer ? "Guest" : customer.contactInfo.name)}
+          </span>
           <Link to="/customers">
-            <span className="header__optionLineOne">{'Hello ' + (!customer ? 'Guest' : customer.contactInfo.name)}</span>
-            <span className="header__optionLineTwo">Switch Account</span>
+            <span className="header__optionLineTwo"> Switch Account</span>
           </Link>
         </div>
 
@@ -41,12 +42,10 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
         </div>
 
         <div className="header__optionBasket">
-          <Link to='/cart'>
+          <Link to="/cart">
             <ShoppingBasketIcon />
           </Link>
-          <span className="header__optionLineTwo header__basketCount">
-            {cartItemCount}
-          </span>
+          <span className="header__basketCount">{cartItemCount}</span>
         </div>
       </div>
     </div>

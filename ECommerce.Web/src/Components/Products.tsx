@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import '../Styles/ProductsStyle.css';
+import React, { useEffect, useState } from "react";
+import "../Styles/ProductsStyle.css";
 
 interface ProductType {
   id: number;
@@ -7,8 +7,7 @@ interface ProductType {
   description: string;
   numInStock: number;
   price: number;
-  quantity: number;  
-
+  quantity: number;
 }
 
 interface ProductProps {
@@ -46,24 +45,24 @@ const Products: React.FC<ProductsProps> = ({ setCart }) => {
 
   useEffect(() => {
     // Fetch products from the API
-    fetch('https://localhost:7249/products') 
-      .then(response => {
+    fetch("https://localhost:7249/products")
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return response.json();
       })
-      .then(data => setProducts(data))
-      .catch(error => console.error('Error fetching products:', error));
+      .then((data) => setProducts(data))
+      .catch((error) => console.error("Error fetching products:", error));
   }, []);
 
-
   const addToCart = (product: ProductType) => {
-    setCart(prevCart => {
-      const existingProduct = prevCart.find(item => item.id === product.id);
-  
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+
       if (existingProduct) {
-        return prevCart.map(item => item.id === product.id
+        return prevCart.map((item) =>
+          item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -76,7 +75,7 @@ const Products: React.FC<ProductsProps> = ({ setCart }) => {
   return (
     <div className="products-page">
       <div className="products">
-        {products.map(product => (
+        {products.map((product) => (
           <Product key={product.id} product={product} addToCart={addToCart} />
         ))}
       </div>
