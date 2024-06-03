@@ -2,9 +2,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import CustomerCard from "../Components/Customer";
 import { CustomerType } from "../Components/Customer";
 import "../Styles/CustomerStyle.css"
+import { useState, useEffect } from "react";
 
 type CustomerPageProps = {
-    customers: CustomerType[],
     updateCustomer: (c: CustomerType) => void
 }
 
@@ -15,10 +15,23 @@ type FormValues = {
     email: string
 }
 
-const CustomerPage: React.FC<CustomerPageProps> = ({ customers, updateCustomer }) => {
-
+const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
+    const [customers, setCustomers] = useState<CustomerType[]>([]);
 
     const { register, handleSubmit } = useForm<FormValues>();
+
+    const loadData = () => {
+        fetch('https://localhost:7249/customers') 
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => setCustomers(data))
+        .catch(error => console.error('Error fetching customers:', error));
+    } 
+
     const onSubmit: SubmitHandler<FormValues> = (data) => {
         fetch("https://localhost:7249/customers", 
             {
@@ -36,59 +49,14 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customers, updateCustomer }
                 },
                 method: "POST"
             })
-            .then(response => response.json())
-            .then(json => console.log(json));
+            .then(() => loadData())
     };
 
+    useEffect(() => {
+        // Fetch customers from the API
+        loadData();
+      }, []);
 
-    {/*
-    const [name, setName] = useState<string>("");
-    const [address, setAddress] = useState<string>("");
-    const [phone, setPhone] = useState<string>("0000000000");
-    const [email, setEmail] = useState<string>("");
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        const title = e.target.title;
-        switch (title){
-            case 'name':
-                setName(e.target.value);
-                break;
-            case 'address':
-                setAddress(e.target.value);
-                break;
-            case 'phone':
-                setPhone(e.target.value);
-                break;
-            case 'email':
-                setEmail(e.target.value);
-                break;
-        }
-    };
-    */}
-
-/*     const postCustomer = (e: React.SyntheticEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        fetch("https://localhost:7249/customers", 
-            {
-                body: JSON.stringify({
-                    contactInfo: {
-                        name: name,
-                        email: email,
-                        phoneNumber: phone,
-                        address: address
-                    }
-                }),
-                headers: {
-                    Accept: "*\/*", 
-                    "Content-Type": "application/json"
-                },
-                method: "POST"
-            })
-            .then(response => response.json())
-            .then(json => console.log(json));
-        };
-     */
     return (
         <>
             <div className="customer-page">
