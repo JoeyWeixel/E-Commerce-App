@@ -49,24 +49,23 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
                 },
                 method: "POST"
             })
+            .then(response => response.json)
             .then(() => loadData())
     };
 
     useEffect(() => {
-        // Fetch customers from the API
         loadData();
       }, []);
 
     return (
-        <>
-            <div className="customer-page">
-                <div className="card-holder">
-                    {customers.map(x => 
-                        <CustomerCard customer={x} onClick={updateCustomer} />
-                    )}
-                </div>
+
+        <div className="customer-page">
+            <div className="card-holder">
+                {customers.map(customer => 
+                    <CustomerCard customer={customer} onClick={updateCustomer} key={customer.id} />
+                )}
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} >
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <title>Add A Customer</title>
 
                 <label>Name:
@@ -87,7 +86,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
 
                 <button type="submit">Add Customer</button>
             </form>
-        </>
+        </div>
     );
 };
 
