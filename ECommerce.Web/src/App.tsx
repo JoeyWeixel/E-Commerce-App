@@ -38,7 +38,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage setCart={setCart} />}/>
           <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />}/>
-          <Route path="/customers" element={<CustomerPage customers = {customers} updateCustomer={handleUpdateCustomer}/>}/>
+          <Route path="/customers" element={<CustomerPage updateCustomer={handleUpdateCustomer}/>}/>
           <Route path="/OrdersPage" element={<OrdersPage />} /> 
         </Routes>
       </Router>
