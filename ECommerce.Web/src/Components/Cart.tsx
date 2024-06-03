@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import CartItem from "./CartItem";
 import "../Styles/CartStyle.css";
 import { Typography, Button } from "@mui/material";
-import { OrdersContext } from '../Contexts/OrdersContext';
-import { useContext } from 'react';
+import { OrdersContext } from "../Contexts/OrdersContext";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
-
-
 
 interface ProductType {
   id: number;
@@ -34,8 +31,6 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
   const { addOrder } = useContext(OrdersContext);
   const navigate = useNavigate();
 
-
-
   useEffect(() => {
     setItems(initialItems);
   }, [initialItems]);
@@ -50,9 +45,11 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
   const handleCheckout = () => {
-    alert(`You just ordered:\n${items.map(item => `${item.name} (x${item.quantity})`).join('\n')}\n\nTotal price: $${getTotalPrice().toFixed(2)}`);
+    alert(
+      `You just ordered:\n${items.map((item) => `${item.name} (x${item.quantity})`).join("\n")}\n\nTotal price: $${getTotalPrice().toFixed(2)}`
+    );
 
-    items.forEach(item => {
+    items.forEach((item) => {
       const newOrder: Order = {
         name: item.name,
         quantity: item.quantity,
@@ -63,14 +60,14 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
 
     setItems([]);
     setCart([]);
-    navigate("/OrdersPage"); 
-
+    navigate("/OrdersPage");
   };
-
 
   return (
     <div>
-      <Typography variant="h4">Shopping Cart</Typography>
+      <Typography className="title" variant="h4">
+        Shopping Cart
+      </Typography>
       {items.length === 0 ? (
         <Typography variant="h6">Your cart is empty</Typography>
       ) : (
