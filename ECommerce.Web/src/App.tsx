@@ -6,6 +6,10 @@ import CustomerPage from "./Pages/CustomerPage";
 import Header from "./Components/Header";
 import "./App.css";
 import { CustomerType } from "./Components/Customer";
+import { OrdersProvider } from './Contexts/OrdersContext';
+import {OrdersPage} from "./Pages/OrdersPage"; 
+
+
 
 interface ProductType {
   id: number;
@@ -21,6 +25,7 @@ function App() {
   const [cart, setCart] = useState<ProductType[]>([]);
   const [customers, setCustomers] = useState<CustomerType[]>([]);
   const [currentCustomer, setCurrentCustomer] = useState<CustomerType>();
+
 
   const handleUpdateCustomer = (newCustomer: CustomerType) => {
     setCurrentCustomer(newCustomer);
@@ -41,15 +46,17 @@ function App() {
 
   return (
     <div className="app">
-      
+      <OrdersProvider>
       <Router>
       <Header cartItemCount={cart.length} customer={currentCustomer}/>
         <Routes>
           <Route path="/" element={<HomePage setCart={setCart} />}/>
           <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />}/>
           <Route path="/customers" element={<CustomerPage customers = {customers} updateCustomer={handleUpdateCustomer}/>}/>
+          <Route path="/OrdersPage" element={<OrdersPage />} /> 
         </Routes>
       </Router>
+      </OrdersProvider>
     </div>
   );
 }
