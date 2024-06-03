@@ -3,8 +3,8 @@
     width: 100vw;
     display: flex;
     align-items: center;
-    background-color: #111a25;
-    position: fixed;
+    background-color: #131921;
+    position: sticky;
     top: 0;
     z-index: 100;padding: 0px; 
     box-sizing: border-box; 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import CartPage from "./Pages/CartPage";
@@ -23,26 +23,12 @@ interface ProductType {
 
 function App() {
   const [cart, setCart] = useState<ProductType[]>([]);
-  const [customers, setCustomers] = useState<CustomerType[]>([]);
   const [currentCustomer, setCurrentCustomer] = useState<CustomerType>();
 
 
   const handleUpdateCustomer = (newCustomer: CustomerType) => {
     setCurrentCustomer(newCustomer);
   };
-
-  useEffect(() => {
-      // Fetch customers from the API
-      fetch('https://localhost:7249/customers') 
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => setCustomers(data))
-        .catch(error => console.error('Error fetching customers:', error));
-    }, []);
 
   return (
     <div className="app">
@@ -52,7 +38,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage setCart={setCart} />}/>
           <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} />}/>
-          <Route path="/customers" element={<CustomerPage customers = {customers} updateCustomer={handleUpdateCustomer}/>}/>
+          <Route path="/customers" element={<CustomerPage updateCustomer={handleUpdateCustomer}/>}/>
           <Route path="/OrdersPage" element={<OrdersPage />} /> 
         </Routes>
       </Router>

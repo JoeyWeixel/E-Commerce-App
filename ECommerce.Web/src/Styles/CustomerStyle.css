@@ -1,11 +1,23 @@
 .customer-page{
-    height:inherit;
     width: 100vw;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    justify-content: center;
     align-items: center;
+    gap: 30px;
+    padding-top: 100px;
+
+}
+
+.card-holder {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 60vh;
+    width: min-content;
 }
 
 .customer-card{
@@ -17,8 +29,13 @@
     justify-items: center;
     align-content: center;
     background-color: #2F2F2F;
-    padding: 20px;
+    padding: 0px;
     border-radius: 10px;
+}
+
+.customer-card:hover{
+    background-color: #292929;
+    cursor: pointer;
 }
 
 .customer-card img{
@@ -29,4 +46,15 @@
 
 .customer-card p{
     font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    align-self: center;
+    gap: 10px;
+    background-color: #2F2F2F;
+    padding: 10px;
+    border-radius: 5px;
 }

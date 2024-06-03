@@ -34,7 +34,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public CustomerResponse DeleteCustomer(int id)
         {
-            var customer = _db.Customer.First(c => c.Id == id);
+            var customer = _db.Customer.Include(c => c.ContactInfo).FirstOrDefault(c => c.Id == id);
             _db.Customer.Remove(customer);
             _db.SaveChanges();
             return new CustomerResponse(customer);
