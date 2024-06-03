@@ -13,12 +13,27 @@ export type CustomerType = {
     contactInfo: ContactInfoType
   }
 
-interface CardProps {
+type CardProps = {
     customer: CustomerType,
     onClick: (click: CustomerType) => void
+    loadData: () => void
 }
 
-const CustomerCard: React.FC<CardProps> = ({ customer, onClick }) => {
+const CustomerCard: React.FC<CardProps> = ({ customer, onClick, loadData }) => {
+    const deleteCustomer = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation();
+        fetch(`https://localhost:7249/customers/${customer.id}`, 
+            {
+                headers: {
+                    Accept: "*/*"
+                },
+                method: 'DELETE'
+            }
+        )
+        .then(response => response.json)
+        .then(() => loadData())
+    };
+
     return (
     <div className='customer-card' onClick={() => onClick(customer)}>
         <img src={RealHFritz} alt='The real henry fritz'></img>
@@ -26,6 +41,7 @@ const CustomerCard: React.FC<CardProps> = ({ customer, onClick }) => {
             <p className='name'>{customer.contactInfo.name}</p>
             <p className="email">{customer.contactInfo.email}</p>
         </div>
+        <button className='delete' onClick={(e) => deleteCustomer(e)}>Delete</button>
     </div>
     )
 };
