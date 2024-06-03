@@ -1,5 +1,5 @@
-import { useState } from "react";
-import CustomerCard from "../Components/Customer"
+import { useForm, SubmitHandler } from "react-hook-form";
+import CustomerCard from "../Components/Customer";
 import { CustomerType } from "../Components/Customer";
 import "../Styles/CustomerStyle.css"
 
@@ -8,14 +8,44 @@ type CustomerPageProps = {
     updateCustomer: (c: CustomerType) => void
 }
 
+type FormValues = {
+    name: string
+    address: string
+    phone: string
+    email: string
+}
+
 const CustomerPage: React.FC<CustomerPageProps> = ({ customers, updateCustomer }) => {
 
 
+    const { register, handleSubmit } = useForm<FormValues>();
+    const onSubmit: SubmitHandler<FormValues> = (data) => {
+        fetch("https://localhost:7249/customers", 
+            {
+                body: JSON.stringify({
+                    contactInfo: {
+                        name: data.name,
+                        email: data.email,
+                        phoneNumber: data.phone,
+                        address: data.address
+                    }
+                }),
+                headers: {
+                    Accept: "*/*", 
+                    "Content-Type": "application/json"
+                },
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(json => console.log(json));
+    };
+
+
+    {/*
     const [name, setName] = useState<string>("");
     const [address, setAddress] = useState<string>("");
     const [phone, setPhone] = useState<string>("0000000000");
     const [email, setEmail] = useState<string>("");
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -34,10 +64,10 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customers, updateCustomer }
                 setEmail(e.target.value);
                 break;
         }
-        
     };
+    */}
 
-    const postCustomer = (e: React.SyntheticEvent<HTMLFormElement>) => {
+/*     const postCustomer = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         fetch("https://localhost:7249/customers", 
             {
@@ -50,7 +80,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customers, updateCustomer }
                     }
                 }),
                 headers: {
-                    Accept: "*/*", 
+                    Accept: "*\/*", 
                     "Content-Type": "application/json"
                 },
                 method: "POST"
@@ -58,7 +88,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customers, updateCustomer }
             .then(response => response.json())
             .then(json => console.log(json));
         };
-
+     */
     return (
         <>
             <div className="customer-page">
@@ -68,20 +98,24 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customers, updateCustomer }
                     )}
                 </div>
             </div>
-            <form onSubmit={postCustomer} >
+            <form onSubmit={handleSubmit(onSubmit)} >
                 <title>Add A Customer</title>
 
-                <label htmlFor="name">Name:</label>
-                <input title="name" type="text" value={name} onChange={handleChange} required />
+                <label>Name:
+                <input type="text" {...register("name")} required />
+                </label>
 
-                <label htmlFor="email">Email:</label>
-                <input title="email" type="email" value={email} onChange={handleChange} required />
+                <label>Email:
+                <input type="email" {...register("email")} required />
+                </label>
 
-                <label htmlFor="address">Address:</label>
-                <input title="address" type="text" value ={address} onChange={handleChange} required />
+                <label>Address:
+                <input type="text" {...register("address")} required />
+                </label>
 
-                <label htmlFor="phone">Phone Number:</label>
-                <input title="phone" type="tel" value={phone} onChange={handleChange} required />
+                <label>Phone Number:
+                <input type="tel" {...register("phone")} required />
+                </label>
 
                 <button type="submit">Add Customer</button>
             </form>

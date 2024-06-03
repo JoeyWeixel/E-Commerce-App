@@ -1,7 +1,6 @@
 using ECommerceAPI.Domain;
 using ECommerceAPI.Endpoints.CustomerEndpoint;
 using ECommerceAPI.Endpoints.ProductEndpoint;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,10 +37,7 @@ builder.Services.AddCors(options =>
         builder => builder.WithOrigins("http://localhost:5173")
                           .AllowAnyMethod()
                           .AllowAnyHeader());
-    options.AddPolicy("AllowSwagger",
-        builder => builder.WithOrigins("http://localhost:7249")
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+
 });
 
 var app = builder.Build();
