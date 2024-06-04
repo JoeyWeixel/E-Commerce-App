@@ -1,15 +1,13 @@
 // src/Pages/HomePage.tsx
 import "../Styles/HomeStyle.css";
 import Products from "../Components/Products";
-
 interface ProductType {
   id: number;
   name: string;
   description: string;
   numInStock: number;
   price: number;
-  quantity: number;  
-
+  quantity: number;
 }
 
 const HomePage: React.FC<{
