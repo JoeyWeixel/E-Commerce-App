@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import CartItem from "./CartItem";
 import "../Styles/CartStyle.css";
 import { Typography, Button } from "@mui/material";
-
+import { CustomerType } from '../Components/Customer';
 import { useNavigate } from "react-router-dom";
 
 interface ProductType {
@@ -14,13 +14,14 @@ interface ProductType {
   quantity: number;
 }
 
-
 interface CartProps {
   initialItems: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  currentCustomer: CustomerType | null;
+
 }
 
-const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
+const Cart: React.FC<CartProps> = ({ initialItems, setCart, currentCustomer }) => {
   const [items, setItems] = useState<ProductType[]>(initialItems);
   const navigate = useNavigate();
 
@@ -37,13 +38,40 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
   const getTotalPrice = () => {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
-  const handleCheckout = () => {
-    alert(
-      `You just ordered:\n${items.map((item) => `${item.name} (x${item.quantity})`).join("\n")}\n\nTotal price: $${getTotalPrice().toFixed(2)}`
-    );
-    setItems([]);
-    setCart([]);
-    navigate("/OrdersPage");
+  const handleCheckout = async () => {
+    if (currentCustomer) { 
+      try {
+        const response = await fetch(`https://localhost:7249/customers/${currentCustomer.id}/orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            cart: {
+              products: items.map(item => ({
+                productId: item.id,
+                quantity: item.quantity,
+              })),
+            },
+          }),
+        });
+
+        if (response.ok) {
+          alert("Order placed successfully!"); 
+          setItems([]); 
+          setCart([]);
+          navigate("/orders");
+        } else {
+          alert("Failed to place order. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error placing order:", error);
+        alert("An error occurred while placing your order.");
+      }
+    } else {
+      alert("Please select a customer before checking out.");
+      navigate("/customers"); 
+    }
   };
 
   return (

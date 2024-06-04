@@ -83,6 +83,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         {
             var customer = _db.Customer
                 .Include(c => c.Orders)
+                .Include(c => c.Cart)
                 .SingleOrDefault(c => c.Id == customerId);
 
             if (customer == null)
@@ -92,7 +93,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             var newOrder = new Order
             {
-                Cart = orderRequest.Cart,
+                Cart = customer.Cart,
                 OrderDate = DateTime.Now
             };
 
