@@ -17,7 +17,11 @@ interface CartPageProps {
 }
 
 const CartPage: React.FC<CartPageProps> = ({ cart, setCart }) => {
-  return <Cart initialItems={cart} setCart={setCart} />;
+  return (
+    <div>
+      <Cart initialItems={cart} setCart={setCart} />
+    </div>
+  );
 };
 
 export default CartPage;

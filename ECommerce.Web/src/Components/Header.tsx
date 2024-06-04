@@ -4,10 +4,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Link } from "react-router-dom";
 import { CustomerType } from "./Customer";
+import { Button } from "@/Components/ui/button";
 
 type HeaderProps = {
   cartItemCount: number;
-  customer: CustomerType | undefined;
+  customer: CustomerType | null;
 };
 
 const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
@@ -42,12 +43,14 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
           </Link>
         </div>
 
-        <div className="header__optionBasket">
-          <Link to="/cart">
-            <ShoppingBasketIcon />
-          </Link>
-          <span className="header__basketCount">{cartItemCount}</span>
-        </div>
+        <Button variant="outline">
+          <div className="header__optionBasket">
+            <Link to="/cart">
+              <ShoppingBasketIcon />
+            </Link>
+            <span className="header__basketCount">{cartItemCount}</span>
+          </div>
+        </Button>
       </div>
     </div>
   );
