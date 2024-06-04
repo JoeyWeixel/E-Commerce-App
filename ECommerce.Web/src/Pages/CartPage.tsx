@@ -1,5 +1,6 @@
-import React from 'react';
-import Cart from '../Components/Cart';
+import React from "react";
+import Cart from "../Components/Cart";
+import "../Styles/CartStyle.css";
 
 interface ProductType {
   id: number;

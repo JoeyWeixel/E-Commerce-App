@@ -62,7 +62,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
         <div className="customer-page">
             <div className="card-holder">
                 {customers.map(customer => 
-                    <CustomerCard customer={customer} onClick={updateCustomer} key={customer.id} />
+                    <CustomerCard customer={customer} onClick={updateCustomer} loadData={loadData} key={customer.id} />
                 )}
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
