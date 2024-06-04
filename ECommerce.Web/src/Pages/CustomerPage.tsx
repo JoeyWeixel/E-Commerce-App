@@ -25,7 +25,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from "@/Components/ui/dialog"
+  } from "@/Components/ui/dialog";
+import { Label } from "@/Components/ui/label";
 
 type CustomerPageProps = {
     updateCustomer: (c: CustomerType) => void
@@ -94,8 +95,9 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
 
     return (
 
-        <div className="flex flex-col gap-4 jus">
-            <ScrollArea className="max-w-screen-sm max-h-md min-w-52 mx-auto">
+        <div className="flex flex-col justify-start gap-4 h-full pt-20">
+            <Label className="text-4xl w-9/12 mx-auto underline">Select User</Label>
+            <ScrollArea className="w-9/12 mx-auto h-1/2 border p-4 rounded-md">
                 {customers.map(customer => 
                     <CustomerCard customer={customer} onClick={updateCustomer} loadData={loadData} key={customer.id} />
                 )}

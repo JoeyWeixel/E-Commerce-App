@@ -4,12 +4,11 @@ import { Avatar, AvatarImage } from './ui/avatar';
 import {
     Card,
     CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
   } from "./ui/card";
 import { Button } from "./ui/button"
 import { AvatarFallback } from '@radix-ui/react-avatar';
+import { Label } from './ui/label';
+import { Separator } from './ui/separator';
 
 
 export type ContactInfoType = {
@@ -44,22 +43,19 @@ const CustomerCard: React.FC<CardProps> = ({ customer, onClick, loadData }) => {
     };
 
     return (
-        <Card className='w-full'>
-            <CardHeader>
-                <CardTitle>{customer.contactInfo.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <Avatar>
+        <Card className='w-full my-2 h-16'>
+            <CardContent className='flex items-center justify-between gap-5 py-2 h-full'>
+                <Avatar className="justify-self-start">
                     <AvatarImage src={RealHFritz} alt='The real henry fritz'></AvatarImage>
                     <AvatarFallback>Holy Fwick</AvatarFallback>
                 </Avatar>
-                <p>{customer.contactInfo.email}</p>
-                <p>{customer.contactInfo.phoneNumber}</p>
-                <Button onClick={() => onClick(customer)}>Sign In</Button>
+                <Label className='text-xl w-1/3'>{customer.contactInfo.name}</Label>
+                <Separator orientation='vertical'></Separator>
+                <div className='justify-self-end flex justify-between gap-10 -ml-8'>
+                    <Button onClick={() => onClick(customer)}>Sign In</Button>
+                    <Button className='delete' onClick={() => deleteCustomer()} variant={"destructive"}>Delete</Button>
+                </div>
             </CardContent>
-            <CardFooter>
-                <Button className='delete' onClick={() => deleteCustomer()} variant={"destructive"}>Delete</Button>
-            </CardFooter>
         </Card>
     )
 };
