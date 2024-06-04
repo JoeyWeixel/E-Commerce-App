@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { OrdersContext } from '../Contexts/OrdersContext';
+
 import { useState, useEffect } from 'react';
 import { CustomerType } from '../Components/Customer';
 

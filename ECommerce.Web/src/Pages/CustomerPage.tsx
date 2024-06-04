@@ -119,7 +119,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
                                     <FormItem>
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Name" {...field} />
+                                        <Input placeholder="Name" {...field} required type="text"/>
                                     </FormControl>
                                     <FormDescription>
                                         This is your public display name.
@@ -135,7 +135,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
                                     <FormItem>
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Email" {...field} />
+                                        <Input placeholder="Email" {...field} required type="email"/>
                                     </FormControl>
                                     <FormDescription>
                                         How we will contact you about account information.
@@ -151,7 +151,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
                                     <FormItem>
                                     <FormLabel>Address</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Address" {...field} />
+                                        <Input placeholder="Address" {...field} required type="text"/>
                                     </FormControl>
                                     <FormDescription>
                                         Where we will ship your orders.
@@ -167,7 +167,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
                                     <FormItem>
                                     <FormLabel>Phone</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="(000) 000-0000" {...field} />
+                                        <Input placeholder="(000) 000-0000" {...field} required type="tel"/>
                                     </FormControl>
                                     <FormDescription>
                                         For text updates about order status.

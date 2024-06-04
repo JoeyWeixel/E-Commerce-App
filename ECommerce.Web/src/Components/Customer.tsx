@@ -9,6 +9,12 @@ import { Button } from "./ui/button"
 import { AvatarFallback } from '@radix-ui/react-avatar';
 import { Label } from './ui/label';
 import { Separator } from './ui/separator';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+  } from "@/Components/ui/accordion"
 
 
 export type ContactInfoType = {
@@ -43,15 +49,27 @@ const CustomerCard: React.FC<CardProps> = ({ customer, onClick, loadData }) => {
     };
 
     return (
-        <Card className='w-full my-2 h-16'>
-            <CardContent className='flex items-center justify-between gap-5 py-2 h-full'>
-                <Avatar className="justify-self-start">
+        <Card className='w-full my-2 min-h-16 max-h-fit'>
+            <CardContent className='flex items-center gap-5 py-2 h-full'>
+                <Avatar className="justify-self-start size-14">
                     <AvatarImage src={RealHFritz} alt='The real henry fritz'></AvatarImage>
                     <AvatarFallback>Holy Fwick</AvatarFallback>
                 </Avatar>
-                <Label className='text-xl w-1/3'>{customer.contactInfo.name}</Label>
-                <Separator orientation='vertical'></Separator>
-                <div className='justify-self-end flex justify-between gap-10 -ml-8'>
+                <Label className='text-xl w-1/4'>{customer.contactInfo.name}</Label>
+                <Accordion type="single" collapsible className="">
+                    <AccordionItem value="item-1" className="border-none w-max">
+                        <AccordionTrigger>
+                            <Label>Contact Info</Label>
+                        </AccordionTrigger>
+                        <AccordionContent className='flex flex-col'>
+                            <Label className='text-lg'>Email: {customer.contactInfo.email}</Label>
+                            <Label className='text-lg'>Phone: {customer.contactInfo.phoneNumber}</Label>
+                            <Label className='text-lg'>Address: {customer.contactInfo.address}</Label>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+                <div className='ml-auto flex justify-between gap-10 items-center h-full'>
+                    <Separator orientation='vertical' className='h-16 ml-auto'></Separator>
                     <Button onClick={() => onClick(customer)}>Sign In</Button>
                     <Button className='delete' onClick={() => deleteCustomer()} variant={"destructive"}>Delete</Button>
                 </div>
