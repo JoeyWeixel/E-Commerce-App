@@ -44,7 +44,7 @@ const CustomerCard: React.FC<CardProps> = ({ customer, onClick, loadData }) => {
     };
 
     return (
-        <Card>
+        <Card className='w-full'>
             <CardHeader>
                 <CardTitle>{customer.contactInfo.name}</CardTitle>
             </CardHeader>

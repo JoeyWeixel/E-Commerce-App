@@ -94,15 +94,15 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
 
     return (
 
-        <div className="flex flex-col place-items-center">
-            <ScrollArea className="max-w-screen-sm max-h-md min-w-md">
+        <div className="flex flex-col gap-4 jus">
+            <ScrollArea className="max-w-screen-sm max-h-md min-w-52 mx-auto">
                 {customers.map(customer => 
                     <CustomerCard customer={customer} onClick={updateCustomer} loadData={loadData} key={customer.id} />
                 )}
             </ScrollArea>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="outline">Sign Up</Button>
+                    <Button variant="outline"  className="fixed bottom-0 h-20 mx-auto w-screen text-center text-xl hover:cursor-pointer bg-primary border-primary text-white rounded-none border 2"><u>Sign Up</u></Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
@@ -174,7 +174,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">Create Account</Button>
+                            <Button type="submit" className="mt-3 w-full">Create Account</Button>
                         </form>
                     </Form>
                 </DialogContent>
