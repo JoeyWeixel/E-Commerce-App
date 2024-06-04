@@ -1,14 +1,46 @@
-import React, { useContext } from 'react';
-import { OrdersContext } from '../Contexts/OrdersContext';
+import { useState, useEffect } from 'react';
+import { CustomerType } from '../Components/Customer';
 
 type Order = {
-    name: string;
-    quantity: number;
-    total: number;
+    id: number;
+    cart: CartType;
 };
 
-export function OrdersPage() {
-    const { orders } = useContext(OrdersContext);
+type CartType = {
+    id: number;
+    products: PurchaseProductType[];
+};
+
+type PurchaseProductType = {
+    productId: number;
+    quantity: number;
+};
+
+type OrdersPageProps = {
+    currentCustomer: CustomerType | null;
+};
+
+export function OrdersPage({ currentCustomer }: OrdersPageProps) {
+    const [orders, setOrders] = useState<Order[]>([]);
+
+    useEffect(() => {
+        const loadOrders = async () => {
+            if (currentCustomer) {
+                try {
+                    const response = await fetch(`http://localhost:7249/customers/${currentCustomer.id}/orders`);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const data = await response.json();
+                    setOrders(data);
+                } catch (error) {
+                    console.error('Error fetching orders:', error);
+                }
+            }
+        };
+
+        loadOrders();
+    }, [currentCustomer]);
 
     return (
         <div>
@@ -18,9 +50,15 @@ export function OrdersPage() {
             ) : (
                 orders.map((order: Order, index: number) => (
                     <div key={index}>
-                        <h2>{order.name}</h2>
-                        <p>Quantity: {order.quantity}</p>
-                        <p>Total: {order.total}</p>
+                        <h2>Order ID: {order.id}</h2>
+                        <h3>Cart</h3>
+                        <ul>
+                            {order.cart.products.map((product, idx) => (
+                                <li key={idx}>
+                                    Product ID: {product.productId}, Quantity: {product.quantity}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 ))
             )}

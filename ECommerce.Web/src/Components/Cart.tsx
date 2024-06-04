@@ -2,12 +2,8 @@ import React, { useState, useEffect } from "react";
 import CartItem from "./CartItem";
 import "../Styles/CartStyle.css";
 import { Typography, Button } from "@mui/material";
-import { OrdersContext } from '../Contexts/OrdersContext';
-import { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-
-
-
+import { CustomerType } from "./Customer";
 
 interface ProductType {
   id: number;
@@ -18,23 +14,15 @@ interface ProductType {
   quantity: number;
 }
 
-type Order = {
-  name: string;
-  quantity: number;
-  total: number;
-};
-
 interface CartProps {
   initialItems: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
+  currentCustomer: CustomerType | null;
 }
 
-const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
+const Cart: React.FC<CartProps> = ({ initialItems, setCart, currentCustomer }) => {
   const [items, setItems] = useState<ProductType[]>(initialItems);
-  const { addOrder } = useContext(OrdersContext);
   const navigate = useNavigate();
-
-
 
   useEffect(() => {
     setItems(initialItems);
@@ -49,24 +37,38 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart }) => {
   const getTotalPrice = () => {
     return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
-  const handleCheckout = () => {
-    alert(`You just ordered:\n${items.map(item => `${item.name} (x${item.quantity})`).join('\n')}\n\nTotal price: $${getTotalPrice().toFixed(2)}`);
 
-    items.forEach(item => {
-      const newOrder: Order = {
-        name: item.name,
-        quantity: item.quantity,
-        total: item.price * item.quantity,
-      };
-      addOrder(newOrder);
-    });
+  const handleCheckout = async () => {
+    if (!currentCustomer) {
+      alert('Please select a customer before checking out.');
+      return;
+    }
 
-    setItems([]);
-    setCart([]);
-    navigate("/OrdersPage"); 
+    try {
+      const response = await fetch(`http://localhost:7249/customers/${currentCustomer.id}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          cart: { products: items }
+        })
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to place order');
+      }
+
+      alert(`You just ordered:\n${items.map(item => `${item.name} (x${item.quantity})`).join('\n')}\n\nTotal price: $${getTotalPrice().toFixed(2)}`);
+
+      setItems([]);
+      setCart([]);
+      navigate("/OrdersPage");
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      alert('Error during checkout. Please try again.');
+    }
   };
-
 
   return (
     <div>
