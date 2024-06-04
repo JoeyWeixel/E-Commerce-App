@@ -19,6 +19,13 @@ import {
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { ScrollArea } from "@/Components/ui/scroll-area"
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/Components/ui/dialog"
 
 type CustomerPageProps = {
     updateCustomer: (c: CustomerType) => void
@@ -93,75 +100,85 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
                     <CustomerCard customer={customer} onClick={updateCustomer} loadData={loadData} key={customer.id} />
                 )}
             </ScrollArea>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Name" {...field} />
-                              </FormControl>
-                              <FormDescription>
-                                This is your public display name.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Email</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Email" {...field} />
-                              </FormControl>
-                              <FormDescription>
-                                How we will contact you about account information.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="address"
-                        render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Address</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Address" {...field} />
-                              </FormControl>
-                              <FormDescription>
-                                Where we will ship your orders.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Phone</FormLabel>
-                              <FormControl>
-                                <Input placeholder="(000) 000-0000" {...field} />
-                              </FormControl>
-                              <FormDescription>
-                                For text updates about order status.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <Button type="submit">Create Account</Button>
-                </form>
-            </Form>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="outline">Sign Up</Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Sign Up</DialogTitle>
+                    </DialogHeader>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormLabel>Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Name" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        This is your public display name.
+                                    </FormDescription>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Email" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        How we will contact you about account information.
+                                    </FormDescription>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="address"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormLabel>Address</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Address" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Where we will ship your orders.
+                                    </FormDescription>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormLabel>Phone</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="(000) 000-0000" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        For text updates about order status.
+                                    </FormDescription>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit">Create Account</Button>
+                        </form>
+                    </Form>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };
