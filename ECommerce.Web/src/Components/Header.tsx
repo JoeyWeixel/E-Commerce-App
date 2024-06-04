@@ -8,7 +8,7 @@ import { Button } from "@/Components/ui/button";
 
 type HeaderProps = {
   cartItemCount: number;
-  customer: CustomerType | undefined;
+  customer: CustomerType | null;
 };
 
 const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {

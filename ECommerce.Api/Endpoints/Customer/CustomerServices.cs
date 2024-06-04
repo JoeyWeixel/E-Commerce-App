@@ -188,6 +188,24 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             return cartResponse;
         }
+        public List<OrderResponse> GetOrders(int customerId)
+        {
+            var customer = _db.Customer
+                .Include(c => c.Orders)
+                .ThenInclude(o => o.Cart)
+                .ThenInclude(cart => cart.Products)
+                .ThenInclude(pp => pp.Product)
+                .SingleOrDefault(c => c.Id == customerId);
+
+            if (customer == null)
+            {
+                throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+            }
+
+            var orders = customer.Orders.Select(order => new OrderResponse(order)).ToList();
+
+            return orders;
+        }
         public PurchaseProductResponse DeletePurchaseProduct(int customerId, int productId)
         {
             var purchaseProduct = from c in _db.Customer
