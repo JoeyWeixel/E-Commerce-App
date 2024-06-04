@@ -1,5 +1,15 @@
 import React from 'react';
 import RealHFritz from "../assets/RealHenryFritz.jpeg";
+import { Avatar, AvatarImage } from './ui/avatar';
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+  } from "./ui/card";
+import { Button } from "./ui/button"
+import { AvatarFallback } from '@radix-ui/react-avatar';
 
 
 export type ContactInfoType = {
@@ -20,8 +30,7 @@ type CardProps = {
 }
 
 const CustomerCard: React.FC<CardProps> = ({ customer, onClick, loadData }) => {
-    const deleteCustomer = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.stopPropagation();
+    const deleteCustomer = () => {
         fetch(`https://localhost:7249/customers/${customer.id}`, 
             {
                 headers: {
@@ -35,14 +44,23 @@ const CustomerCard: React.FC<CardProps> = ({ customer, onClick, loadData }) => {
     };
 
     return (
-    <div className='customer-card' onClick={() => onClick(customer)}>
-        <img src={RealHFritz} alt='The real henry fritz'></img>
-        <div className='info'>
-            <p className='name'>{customer.contactInfo.name}</p>
-            <p className="email">{customer.contactInfo.email}</p>
-        </div>
-        <button className='delete' onClick={(e) => deleteCustomer(e)}>Delete</button>
-    </div>
+        <Card>
+            <CardHeader>
+                <CardTitle>{customer.contactInfo.name}</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <Avatar>
+                    <AvatarImage src={RealHFritz} alt='The real henry fritz'></AvatarImage>
+                    <AvatarFallback>Holy Fwick</AvatarFallback>
+                </Avatar>
+                <p>{customer.contactInfo.email}</p>
+                <p>{customer.contactInfo.phoneNumber}</p>
+                <Button onClick={() => onClick(customer)}>Sign In</Button>
+            </CardContent>
+            <CardFooter>
+                <Button className='delete' onClick={() => deleteCustomer()} variant={"destructive"}>Delete</Button>
+            </CardFooter>
+        </Card>
     )
 };
 
