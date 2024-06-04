@@ -1,5 +1,14 @@
 import React from 'react';
 import RealHFritz from "../assets/RealHenryFritz.jpeg";
+import { Avatar, AvatarImage } from './ui/avatar';
+import {
+    Card,
+    CardContent,
+  } from "./ui/card";
+import { Button } from "./ui/button"
+import { AvatarFallback } from '@radix-ui/react-avatar';
+import { Label } from './ui/label';
+import { Separator } from './ui/separator';
 
 
 export type ContactInfoType = {
@@ -20,8 +29,7 @@ type CardProps = {
 }
 
 const CustomerCard: React.FC<CardProps> = ({ customer, onClick, loadData }) => {
-    const deleteCustomer = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.stopPropagation();
+    const deleteCustomer = () => {
         fetch(`https://localhost:7249/customers/${customer.id}`, 
             {
                 headers: {
@@ -35,14 +43,20 @@ const CustomerCard: React.FC<CardProps> = ({ customer, onClick, loadData }) => {
     };
 
     return (
-    <div className='customer-card' onClick={() => onClick(customer)}>
-        <img src={RealHFritz} alt='The real henry fritz'></img>
-        <div className='info'>
-            <p className='name'>{customer.contactInfo.name}</p>
-            <p className="email">{customer.contactInfo.email}</p>
-        </div>
-        <button className='delete' onClick={(e) => deleteCustomer(e)}>Delete</button>
-    </div>
+        <Card className='w-full my-2 h-16'>
+            <CardContent className='flex items-center justify-between gap-5 py-2 h-full'>
+                <Avatar className="justify-self-start">
+                    <AvatarImage src={RealHFritz} alt='The real henry fritz'></AvatarImage>
+                    <AvatarFallback>Holy Fwick</AvatarFallback>
+                </Avatar>
+                <Label className='text-xl w-1/3'>{customer.contactInfo.name}</Label>
+                <Separator orientation='vertical'></Separator>
+                <div className='justify-self-end flex justify-between gap-10 -ml-8'>
+                    <Button onClick={() => onClick(customer)}>Sign In</Button>
+                    <Button className='delete' onClick={() => deleteCustomer()} variant={"destructive"}>Delete</Button>
+                </div>
+            </CardContent>
+        </Card>
     )
 };
 
