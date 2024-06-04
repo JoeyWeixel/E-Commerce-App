@@ -117,6 +117,21 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
         }
 
+
+        [HttpGet("{customerId}/orders")]
+        public IActionResult GetOrders(int customerId)
+        {
+            try
+            {
+                var orders = _service.GetOrders(customerId);
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{customerId}/orders/{orderId}")]
         public IActionResult GetOrder(int customerId, int orderId)
         {

@@ -7,7 +7,7 @@ import { CustomerType } from "./Customer";
 
 type HeaderProps = {
   cartItemCount: number;
-  customer: CustomerType | undefined;
+  customer: CustomerType | null;
 };
 
 const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
