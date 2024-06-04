@@ -23,7 +23,7 @@ function App() {
 
   const handleUpdateCustomer = (newCustomer: CustomerType) => {
     setCurrentCustomer(newCustomer);
-  };
+  }
 
   return (
     <div className="app">
@@ -31,7 +31,7 @@ function App() {
           <Header cartItemCount={cart.length} customer={currentCustomer} />
           <Routes>
             <Route path="/" element={<HomePage setCart={setCart} />} />
-            <Route path="/cart" element={<CartPage cart={cart} setCart={setCart} currentCustomer={currentCustomer} />} />
+            <Route path="/cart" element={<CartPage cart={cart} setCart={setCart}  />} />
             <Route path="/customers" element={<CustomerPage updateCustomer={handleUpdateCustomer} />} />
             <Route path="/OrdersPage" element={<OrdersPage currentCustomer={currentCustomer} />} />
           </Routes>

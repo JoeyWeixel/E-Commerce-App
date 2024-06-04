@@ -1,6 +1,5 @@
 import React from 'react';
 import Cart from '../Components/Cart';
-import { CustomerType } from '../Components/Customer';
 
 interface ProductType {
   id: number;
@@ -14,13 +13,12 @@ interface ProductType {
 interface CartPageProps {
   cart: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
-  currentCustomer: CustomerType | null;
 }
 
-const CartPage: React.FC<CartPageProps> = ({ cart, setCart, currentCustomer }) => {
+const CartPage: React.FC<CartPageProps> = ({ cart, setCart }) => {
   return (
     <div>
-      <Cart initialItems={cart} setCart={setCart} currentCustomer={currentCustomer} />
+      <Cart initialItems={cart} setCart={setCart} />
     </div>
   );
 };

@@ -24,22 +24,17 @@ export function OrdersPage({ currentCustomer }: OrdersPageProps) {
     const [orders, setOrders] = useState<Order[]>([]);
 
     useEffect(() => {
-        const loadOrders = async () => {
-            if (currentCustomer) {
-                try {
-                    const response = await fetch(`http://localhost:7249/customers/${currentCustomer.id}/orders`);
+        if (currentCustomer) {
+            fetch(`http://localhost:7249/customers/${currentCustomer.id}/orders`)
+                .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    const data = await response.json();
-                    setOrders(data);
-                } catch (error) {
-                    console.error('Error fetching orders:', error);
-                }
-            }
-        };
-
-        loadOrders();
+                    return response.json();
+                })
+                .then(data => setOrders(data))
+                .catch(error => console.error('Error fetching orders:', error));
+        }
     }, [currentCustomer]);
 
     return (
