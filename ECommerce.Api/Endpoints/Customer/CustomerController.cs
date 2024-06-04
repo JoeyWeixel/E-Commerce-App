@@ -103,7 +103,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         }
 
         [HttpPost("{customerId}/orders")]
-        public IActionResult AddOrder(int customerId, OrderRequest order)
+        public IActionResult AddOrder(int customerId, [FromBody] OrderRequest order)
         {
             try
             {

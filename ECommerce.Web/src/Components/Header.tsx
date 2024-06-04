@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
         </div>
 
         <div className="header__option">
-          <Link to="/OrdersPage">
+          <Link to="/orders">
             <span className="header__optionLineThree">Returns & Orders</span>
           </Link>
         </div>
