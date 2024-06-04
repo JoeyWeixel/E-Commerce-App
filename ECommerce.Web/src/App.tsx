@@ -4,7 +4,7 @@ import HomePage from "./Pages/HomePage";
 import CartPage from "./Pages/CartPage";
 import CustomerPage from "./Pages/CustomerPage";
 import Header from "./Components/Header";
-import "./App.css";
+import "./Styles/App.css";
 import { CustomerType } from "./Components/Customer";
 import { OrdersProvider } from './Contexts/OrdersContext';
 import {OrdersPage} from "./Pages/OrdersPage"; 
