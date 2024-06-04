@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import CartItem from "./CartItem";
 import "../Styles/CartStyle.css";
 import { Typography, Button } from "@mui/material";
-import { OrdersContext } from "../Contexts/OrdersContext";
-import { useContext } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 interface ProductType {
