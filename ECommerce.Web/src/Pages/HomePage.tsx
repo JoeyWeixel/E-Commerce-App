@@ -2,6 +2,14 @@
 import "../Styles/HomeStyle.css";
 import Product from "../Components/Products";
 import { useEffect, useState } from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/Components/ui/carousel"
+
 interface ProductType {
   id: number;
   name: string;
@@ -30,21 +38,18 @@ const HomePage: React.FC<HomePageProps> = () => {
   }, []);
 
   return (
-    <div className="home">
-      <div className="home__container">
-        <img
-          className="home__image"
-          src="https://www.thevillagernewspaper.com/wordpress/wp-content/uploads/2018/04/RRMathCounts.jpg"
-          alt=""
-        />
-        <div> 
-          {
-            products.map((product) => (
-              <Product key={product.id} product={product} />
-            ))
-          }
-        </div>
-      </div>
+    <div className="bg-[url('https://www.thevillagernewspaper.com/wordpress/wp-content/uploads/2018/04/RRMathCounts.jpg')] w-full h-full bg-cover">
+      <Carousel className="w-2/3 mx-auto mt-16 bg-primary">
+        <CarouselContent>
+          {products.map((product) => (
+            <CarouselItem className="basis-1/6 grow" key={product.id}>
+              <Product product={product} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     </div>
   );
 };
