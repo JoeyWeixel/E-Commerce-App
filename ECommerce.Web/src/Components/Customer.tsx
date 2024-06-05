@@ -1,5 +1,5 @@
 import React from 'react';
-import RealHFritz from "../assets/RealHenryFritz.jpeg";
+import RealHFritz from "@/assets/RealHenryFritz.jpeg";
 import { Avatar, AvatarImage } from './ui/avatar';
 import {
     Card,

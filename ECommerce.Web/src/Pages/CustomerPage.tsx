@@ -27,12 +27,12 @@ import {
     DialogTrigger,
   } from "@/Components/ui/dialog";
 import { Label } from "@/Components/ui/label";
+import { useCustomer } from "@/Contexts/CustomerContext";
 
-type CustomerPageProps = {
-    updateCustomer: (c: CustomerType) => void
-}
+type CustomerPageProps = Record<string, never>
 
-const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
+const CustomerPage: React.FC<CustomerPageProps> = () => {
+    const {setCurrentCustomer} = useCustomer();
     const [customers, setCustomers] = useState<CustomerType[]>([]);
 
     const formSchema = z.object({
@@ -95,16 +95,16 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
 
     return (
 
-        <div className="flex flex-col justify-start gap-4 h-full pt-20">
-            <Label className="text-4xl w-9/12 mx-auto">Select User</Label>
-            <ScrollArea className="w-9/12 mx-auto h-1/2 border p-4 rounded-md">
+        <div className="flex flex-col justify-start items-start gap-4 h-full pt-20 w-1/2 self-center">
+            <Label className="text-4xl w-9/12 mr-auto justify-self-start">Select User</Label>
+            <ScrollArea className="w-full mx-auto h-1/2 border p-4 rounded-md">
                 {customers.map(customer => 
-                    <CustomerCard customer={customer} onClick={updateCustomer} loadData={loadData} key={customer.id} />
+                    <CustomerCard customer={customer} onClick={setCurrentCustomer} loadData={loadData} key={customer.id} />
                 )}
             </ScrollArea>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="outline"  className="h-16 mx-auto w-3/4 text-center text-xl hover:cursor-pointer bg-primary border-primary text-white hover:underline">Sign Up</Button>
+                    <Button variant="outline"  className="h-16 mx-auto w-3/4 text-center text-xl hover:cursor-pointer border-primary">Sign Up</Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>

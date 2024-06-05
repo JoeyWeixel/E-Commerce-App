@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { CustomerType } from '../Components/Customer';
+import { useCustomer } from '@/Contexts/CustomerContext';
 
 
 type Order = {
@@ -16,15 +16,26 @@ type CartType = {
 type PurchaseProductType = {
     productId: number;
     quantity: number;
+    productName: string;
 };
 
-type OrdersPageProps = {
-    currentCustomer: CustomerType | null;
-};
+type OrdersPageProps = Record<string, never>;
 
-export const OrdersPage: React.FC<OrdersPageProps> = ({ currentCustomer }) => {
+export const OrdersPage: React.FC<OrdersPageProps> = () => {
+    const {currentCustomer} = useCustomer();
     const [orders, setOrders] = useState<Order[]>([]);
     const [error, setError] = useState<string | null>(null);
+
+    /*
+    const getProductName = (productId: number): string | undefined => {
+      const order = orders.find(order => order.cart.products.some(product => product.productId === productId));
+      if (order) {
+        const product = order.cart.products.find(product => product.productId === productId);
+        return product?.productName;
+      }
+      return undefined;
+    };
+    */
   
     useEffect(() => {
       let isMounted = true;
@@ -56,6 +67,9 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ currentCustomer }) => {
               setError('Error fetching orders: ' + error.message);
             }
           });
+      }else{
+        alert("Please select a customer first.");
+        return;
       }
   
       return () => { isMounted = false; }; 
@@ -74,14 +88,15 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ currentCustomer }) => {
         ) : (
           orders.map((order: Order, index: number) => (
             <div key={index}>
-             <h2>Order ID: {order.id}</h2>
-                    <ul>
-                     {order.cart.products.map((product, idx) => (
-                    <li key={idx}>
-                        Product ID: {product.productId}, Quantity: {product.quantity}
-                    </li>
-                    ))}
-                </ul>
+              <h1>Order:</h1>
+              <h2>ID: {order.id}</h2>
+              <ul>
+                {order.cart.products.map((product, idx) => (
+                  <li key={idx}>
+                    Product ID: {product.productId}, Quantity: {product.quantity}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))
         )}
