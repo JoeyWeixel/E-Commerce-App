@@ -1,5 +1,5 @@
 import React from "react";
-import "../Styles/HeaderStyle.css";
+import "@/Styles/HeaderStyle.css";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Link } from "react-router-dom";
@@ -29,20 +29,20 @@ const Header: React.FC = () => {
           <span className="header__optionLineOne">
             {"Welcome " + (!currentCustomer ? "Guest" : currentCustomer.id)}
           </span>
-          <Link to="/customers">
+          <Link to="customers">
             <span className="header__optionLineTwo"> Switch Account</span>
           </Link>
         </div>
 
         <div className="header__option">
-          <Link to="/orders">
+          <Link to="orders">
             <span className="header__optionLineThree">Orders</span>
           </Link>
         </div>
 
         <Button variant="outline">
           <div className="header__optionBasket">
-            <Link to="/cart">
+            <Link to="cart">
               <ShoppingBasketIcon />
             </Link>
           </div>

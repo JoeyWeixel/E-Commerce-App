@@ -19,7 +19,7 @@ const BrowserRouter = createBrowserRouter([
         element: <CartPage />,
       },
       {
-        path: 'customer',
+        path: 'customers',
         element: <CustomerPage />,
       },
       {
