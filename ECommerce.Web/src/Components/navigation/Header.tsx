@@ -3,15 +3,12 @@ import "../Styles/HeaderStyle.css";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Link } from "react-router-dom";
-import { CustomerType } from "./Customer";
 import { Button } from "@/Components/ui/button";
+import { useCustomer } from "@/Contexts/CustomerContext";
 
-type HeaderProps = {
-  cartItemCount: number;
-  customer: CustomerType | null;
-};
+const Header: React.FC = () => {
+  const { currentCustomer } = useCustomer();
 
-const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
   return (
     <div className="header">
       <Link to="/">
@@ -30,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
       <div className="header__nav">
         <div className="header__option">
           <span className="header__optionLineOne">
-            {"Welcome " + (!customer ? "Guest" : customer.contactInfo.name)}
+            {"Welcome " + (!currentCustomer ? "Guest" : currentCustomer.id)}
           </span>
           <Link to="/customers">
             <span className="header__optionLineTwo"> Switch Account</span>
@@ -48,7 +45,6 @@ const Header: React.FC<HeaderProps> = ({ cartItemCount, customer }) => {
             <Link to="/cart">
               <ShoppingBasketIcon />
             </Link>
-            <span className="header__basketCount">{cartItemCount}</span>
           </div>
         </Button>
       </div>
