@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { Button } from "@/Components/ui/button";
 import { useCustomer } from "@/Contexts/CustomerContext";
-import RealHFritz from "../assets/RealHenryFritz.jpeg";
+import RealHFritz from "@/assets/RealHenryFritz.jpeg";
 
 const Header: React.FC = () => {
   const { currentCustomer } = useCustomer();
