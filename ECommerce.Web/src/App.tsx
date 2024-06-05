@@ -20,11 +20,13 @@ interface ProductType {
 
 function App() {
   const [cart, setCart] = useState<ProductType[]>([]);
-  const [currentCustomer, setCurrentCustomer] = useState<CustomerType | null>(null);
+  const [currentCustomer, setCurrentCustomer] = useState<CustomerType | null>(
+    null
+  );
 
   const handleUpdateCustomer = (newCustomer: CustomerType) => {
     setCurrentCustomer(newCustomer);
-  }
+  };
 
   return (
     <div className="app">
@@ -37,7 +39,6 @@ function App() {
           <Route path="/orders" element={<OrdersPage currentCustomer={currentCustomer} />} /> 
           </Routes>
         </Router>
-
     </div>
   );
 }
