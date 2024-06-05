@@ -1,40 +1,33 @@
-import HomePage from "@/Pages/HomePage";
+import { createBrowserRouter } from 'react-router-dom';
+import AppLayout from './AppLayout';
+import HomePage from '@/Pages/HomePage';
+import CartPage from '@/Pages/CartPage';
+import CustomerPage from '@/Pages/CustomerPage';
+import OrdersPage from '@/Pages/OrdersPage';
 
 const BrowserRouter = createBrowserRouter([
-	{
-		path: '/',
-		element: <HomePage />,
-		errorElement: < />,
-	},
-	{
-		path: '/',
-		element: <AppLayout />,
-		children: [
-			{
-				path: 'buttons',
-				element: <ButtonsPage />,
-			},
-			{
-				path: 'charts',
-				element: <ChartsPage />,
-			},
-			{
-				path: 'data-table',
-				element: <DataTablePage />,
-			},
-			{
-				path: 'cards',
-				element: <CardsPage />,
-			},
-			{
-				path: 'inputs',
-				element: <InputsPage />,
-			},
-			{
-				path: 'settings',
-				element: <SettingsPage />,
-			},
-		],
-		errorElement: <ErrorPage />,
-	},
-])
+  {
+    path: '/',
+    element: <AppLayout />,
+    children: [
+      {
+        path: '',
+        element: <HomePage />,
+      },
+      {
+        path: 'cart',
+        element: <CartPage />,
+      },
+      {
+        path: 'customer',
+        element: <CustomerPage />,
+      },
+      {
+        path: 'orders',
+        element: <OrdersPage />,
+      },
+    ],
+  },
+]);
+
+export default BrowserRouter;
