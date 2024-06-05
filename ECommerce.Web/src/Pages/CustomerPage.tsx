@@ -104,7 +104,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
             </ScrollArea>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="outline"  className="fixed bottom-0 h-20 mx-auto w-screen text-center text-xl hover:cursor-pointer bg-primary border-primary text-white rounded-none border 2"><u>Sign Up</u></Button>
+                    <Button variant="outline"  className="h-16 mx-auto w-3/4 text-center text-xl hover:cursor-pointer bg-primary border-primary text-white"><u>Sign Up</u></Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
