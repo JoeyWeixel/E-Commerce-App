@@ -19,24 +19,34 @@ interface ProductType {
 
 function App() {
   const [cart, setCart] = useState<ProductType[]>([]);
-  const [currentCustomer, setCurrentCustomer] = useState<CustomerType | null>(null);
+  const [currentCustomer, setCurrentCustomer] = useState<CustomerType | null>(
+    null
+  );
 
   const handleUpdateCustomer = (newCustomer: CustomerType) => {
     setCurrentCustomer(newCustomer);
-  }
+  };
 
   return (
     <div className="app">
-        <Router>
-          <Header cartItemCount={cart.length} customer={currentCustomer} />
-          <Routes>
-            <Route path="/" element={<HomePage setCart={setCart} />} />
-            <Route path="/cart" element={<CartPage cart={cart} setCart={setCart}  />} />
-            <Route path="/customers" element={<CustomerPage updateCustomer={handleUpdateCustomer} />} />
-            <Route path="/OrdersPage" element={<OrdersPage currentCustomer={currentCustomer} />} />
-          </Routes>
-        </Router>
-
+      <Router>
+        <Header cartItemCount={cart.length} customer={currentCustomer} />
+        <Routes>
+          <Route path="/" element={<HomePage setCart={setCart} />} />
+          <Route
+            path="/cart"
+            element={<CartPage cart={cart} setCart={setCart} />}
+          />
+          <Route
+            path="/customers"
+            element={<CustomerPage updateCustomer={handleUpdateCustomer} />}
+          />
+          <Route
+            path="/OrdersPage"
+            element={<OrdersPage currentCustomer={currentCustomer} />}
+          />
+        </Routes>
+      </Router>
     </div>
   );
 }
