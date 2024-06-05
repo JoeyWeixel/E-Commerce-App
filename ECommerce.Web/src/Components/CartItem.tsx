@@ -14,7 +14,7 @@ interface CartItemProps {
 
 const CartItem: React.FC<CartItemProps> = ({ item, onRemove }) => {
   return (
-    <Card style={{ margin: "10px 0" }}>
+    <Card key={item.id} style={{ margin: "10px 0" }}>
       <CardContent>
         <Typography className="item__name" variant="h5">
           {item.name}

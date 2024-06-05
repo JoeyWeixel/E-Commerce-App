@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { CustomerType } from '../Components/Customer';
+import { useCustomer } from '@/Contexts/CustomerContext';
 
 
 type Order = {
@@ -19,14 +19,10 @@ type PurchaseProductType = {
     productName: string;
 };
 
-type OrdersPageProps = {
-    currentCustomer: CustomerType | null;
-};
+type OrdersPageProps = Record<string, never>;
 
-
-
-
-export const OrdersPage: React.FC<OrdersPageProps> = ({ currentCustomer }) => {
+export const OrdersPage: React.FC<OrdersPageProps> = () => {
+    const {currentCustomer} = useCustomer();
     const [orders, setOrders] = useState<Order[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -71,6 +67,9 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ currentCustomer }) => {
               setError('Error fetching orders: ' + error.message);
             }
           });
+      }else{
+        alert("Please select a customer first.");
+        return;
       }
   
       return () => { isMounted = false; }; 

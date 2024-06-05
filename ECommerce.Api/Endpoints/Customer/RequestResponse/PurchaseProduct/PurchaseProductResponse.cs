@@ -10,8 +10,8 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
 
         public PurchaseProductResponse(PurchaseProduct p)
         {
-            ProductId = p.Product.Id;
-            CartId = p.Cart.Id;
+            ProductId = p.ProductId;
+            CartId = p.CartId;
             Quantity = p.Quantity;
         }
         public PurchaseProductResponse() { }

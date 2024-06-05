@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import "../Styles/ProductsStyle.css";
+import { useCustomer } from "@/Contexts/CustomerContext";
 
 interface ProductType {
   id: number;
@@ -12,12 +12,33 @@ interface ProductType {
 
 interface ProductProps {
   product: ProductType;
-  addToCart: (product: ProductType) => void;
 }
 
-const Product: React.FC<ProductProps> = ({ product, addToCart }) => {
-  const handleAddToCart = () => {
-    addToCart(product);
+const Product: React.FC<ProductProps> = ({ product }) => {
+  const {currentCustomer} = useCustomer();
+  const addToCart = () => {
+    if (!currentCustomer) {
+      alert("Please select a customer first.");
+      return;
+    }
+    fetch('https://localhost:7249/customers/' + currentCustomer.id + '/cart/products', 
+    {
+      method: 'POST',
+      headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          'productId': product.id
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .catch(error => console.error('Error adding to cart:', error));
   };
 
   return (
@@ -31,56 +52,9 @@ const Product: React.FC<ProductProps> = ({ product, addToCart }) => {
         <p>{product.description}</p>
       </div>
       <img src="https://via.placeholder.com/150" alt={product.name} />
-      <button onClick={handleAddToCart}>Add to Basket</button>
+      <button onClick={addToCart}>Add to Basket</button>
     </div>
   );
 };
 
-interface ProductsProps {
-  setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
-}
-
-const Products: React.FC<ProductsProps> = ({ setCart }) => {
-  const [products, setProducts] = useState<ProductType[]>([]);
-
-  useEffect(() => {
-    // Fetch products from the API
-    fetch("https://localhost:7249/products")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => setProducts(data))
-      .catch((error) => console.error("Error fetching products:", error));
-  }, []);
-
-  const addToCart = (product: ProductType) => {
-    setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id);
-
-      if (existingProduct) {
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        return [...prevCart, { ...product, quantity: 1 }];
-      }
-    });
-  };
-
-  return (
-    <div className="products-page">
-      <div className="products">
-        {products.map((product) => (
-          <Product key={product.id} product={product} addToCart={addToCart} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default Products;
+export default Product;

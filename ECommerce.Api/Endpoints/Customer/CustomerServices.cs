@@ -147,12 +147,12 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             var cart = customer.Cart;
 
-            var existingProduct = cart.Products.FirstOrDefault(cp => cp.Product.Id == request.ProductId);
+            var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
             var newPurchaseProduct = new PurchaseProduct();
 
             if (existingProduct != null)
             {
-                existingProduct.Quantity += request.Quantity;
+                existingProduct.Quantity += 1;
             }
             else
             {
@@ -160,10 +160,10 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 {
                     Cart = customer.Cart,
                     Product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId),
-                    Quantity = request.Quantity
+                    Quantity = 1
                 };
 
-                cart.Products.Add(newPurchaseProduct);
+                cart.Products.Append(newPurchaseProduct);
             }
 
             _db.SaveChanges();
@@ -182,10 +182,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             var cartResponse = new CartResponse(customer.Id);
 
-            foreach (var product in cart.Products)
-            {
-                cartResponse.AddProduct(product);
-            }
+            cartResponse.Products = cart.Products.Select(product => new PurchaseProductResponse(product));
 
             return cartResponse;
         }

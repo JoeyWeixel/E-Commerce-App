@@ -83,9 +83,11 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart, currentCustomer }) =
         <Typography variant="h6">Your cart is empty</Typography>
       ) : (
         <div>
-          {items.map((item) => (
-            <CartItem key={item.id} item={item} onRemove={handleRemove} />
-          ))}
+          {
+            items.map((item) => (
+              <CartItem key={item.id} item={item} onRemove={handleRemove} />
+            ))
+          }
           <Typography variant="h5">
             Total: ${getTotalPrice().toFixed(2)}
           </Typography>
