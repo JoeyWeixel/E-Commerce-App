@@ -20,7 +20,7 @@ const CartPage: React.FC = () => {
     if (currentCustomer) {
       fetch(`https://localhost:7249/customers/${currentCustomer.id}/cart`, {})
         .then(response => response.json())
-        .then(data => setCart(data));
+        .then(data => setCart(data.products));
     }
   }, [currentCustomer]);
 

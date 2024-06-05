@@ -163,7 +163,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                     Quantity = 1
                 };
 
-                cart.Products.Add(newPurchaseProduct);
+                cart.Products.Append(newPurchaseProduct);
             }
 
             _db.SaveChanges();
@@ -182,10 +182,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             var cartResponse = new CartResponse(customer.Id);
 
-            foreach (var product in cart.Products)
-            {
-                cartResponse.AddProduct(product);
-            }
+            cartResponse.Products = cart.Products.Select(product => new PurchaseProductResponse(product));
 
             return cartResponse;
         }

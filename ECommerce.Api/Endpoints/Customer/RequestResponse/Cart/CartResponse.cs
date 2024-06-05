@@ -4,7 +4,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
 {
     public class CartResponse
     {
-        public List<PurchaseProductResponse> Products { get; set; }
+        public IEnumerable<PurchaseProductResponse> Products { get; set; }
         public int Id { get; set; }
         public CartResponse(int customerId)
         {
