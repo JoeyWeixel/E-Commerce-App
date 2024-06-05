@@ -27,12 +27,12 @@ import {
     DialogTrigger,
   } from "@/Components/ui/dialog";
 import { Label } from "@/Components/ui/label";
+import { useCustomer } from "@/Contexts/CustomerContext";
 
-type CustomerPageProps = {
-    updateCustomer: (c: CustomerType) => void
-}
+type CustomerPageProps = Record<string, never>
 
-const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
+const CustomerPage: React.FC<CustomerPageProps> = () => {
+    const {setCurrentCustomer} = useCustomer();
     const [customers, setCustomers] = useState<CustomerType[]>([]);
 
     const formSchema = z.object({
@@ -99,7 +99,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ updateCustomer }) => {
             <Label className="text-4xl w-9/12 mx-auto underline">Select User</Label>
             <ScrollArea className="w-9/12 mx-auto h-1/2 border p-4 rounded-md">
                 {customers.map(customer => 
-                    <CustomerCard customer={customer} onClick={updateCustomer} loadData={loadData} key={customer.id} />
+                    <CustomerCard customer={customer} onClick={setCurrentCustomer} loadData={loadData} key={customer.id} />
                 )}
             </ScrollArea>
             <Dialog>
