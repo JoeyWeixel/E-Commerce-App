@@ -26,7 +26,7 @@ const Header: React.FC = () => {
             <span className="">Orders</span>
           </Link>
         </div>
-
+        
         <div className="p-2">
           {!currentCustomer ? (
             <div className="">
