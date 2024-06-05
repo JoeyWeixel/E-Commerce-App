@@ -26,20 +26,20 @@ const Header: React.FC = () => {
             <span className="">Orders</span>
           </Link>
         </div>
-        
+
         <div className="p-2">
           {!currentCustomer ? (
             <div className="">
               <Button className="bg-gray-800 hover:bg-gray-700 ">
                 <Link to="customers">
-                  <span className="">Login</span>
+                  <span className="text-white font-bold">Login</span>
                 </Link>
               </Button>
             </div>
           ) : (
             <div>
-              <span className="text-sm font-bold text-center align-middle leading-9 p-2">
-                {currentCustomer.id}
+              <span className="text-sm font-bold text-center align-middle p-2">
+                {currentCustomer.contactInfo.name}
               </span>
               <Avatar className="float-end">
                 <Link to="customers">
