@@ -152,7 +152,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             if (existingProduct != null)
             {
-                existingProduct.Quantity += request.Quantity;
+                existingProduct.Quantity += 1;
             }
             else
             {
@@ -160,7 +160,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 {
                     Cart = customer.Cart,
                     Product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId),
-                    Quantity = request.Quantity
+                    Quantity = 1
                 };
 
                 cart.Products.Add(newPurchaseProduct);
