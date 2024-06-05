@@ -147,7 +147,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             var cart = customer.Cart;
 
-            var existingProduct = cart.Products.FirstOrDefault(cp => cp.Product.Id == request.ProductId);
+            var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
             var newPurchaseProduct = new PurchaseProduct();
 
             if (existingProduct != null)
