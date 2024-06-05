@@ -18,7 +18,7 @@ const CartPage: React.FC = () => {
 
   useEffect(() => {
     if (currentCustomer) {
-      fetch(`https://localhost:7249.com/customers/${currentCustomer.id}/cart`)
+      fetch(`https://localhost:7249/customers/${currentCustomer.id}/cart`, {})
         .then(response => response.json())
         .then(data => setCart(data));
     }
