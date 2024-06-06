@@ -5,7 +5,7 @@ import { CustomerProvider } from '@/Contexts/CustomerContext';
 const AppLayout = () => {
   return (
     <CustomerProvider>
-      <div className="flex flex-col w-screen items-start">
+      <div className="flex flex-col w-screen h-screen items-start">
         <Header />
         <Outlet />
       </div>
