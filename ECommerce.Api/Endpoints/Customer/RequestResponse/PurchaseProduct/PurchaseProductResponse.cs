@@ -14,6 +14,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
             CartId = p.CartId;
             Quantity = p.Quantity;
         }
+
         public PurchaseProductResponse() { }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Cart
     {
-        public IEnumerable<PurchaseProduct> Products { get; set; }
+        public List<PurchaseProduct> Products { get; set; } = new List<PurchaseProduct>();
         public int Id { get; set; }
         public double TotalPrice { get; set; }
 

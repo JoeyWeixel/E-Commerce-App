@@ -6,7 +6,6 @@
 
         public int Id { get; set; } // Primary key
 
-
         public int ProductId { get; set; } // Foreign key property
 
         public Cart Cart { get; set; }

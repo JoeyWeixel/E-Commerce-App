@@ -145,31 +145,50 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 .ThenInclude(cart => cart.Products)
                 .FirstOrDefault(c => c.Id == customerId);
 
+            if (customer == null)
+            {
+                throw new ArgumentException($"Customer with Id {customerId} does not exist.");
+            }
+
             var cart = customer.Cart;
 
+            if (cart == null)
+            {
+                cart = new Cart { Id = customerId };
+                _db.Cart.Add(cart);
+                customer.Cart = cart;
+            }
+
+            if (cart.Products == null)
+            {
+                cart.Products = new List<PurchaseProduct>();
+            }
+
             var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
-            var newPurchaseProduct = new PurchaseProduct();
+            PurchaseProduct newPurchaseProduct;
 
             if (existingProduct != null)
             {
                 existingProduct.Quantity += 1;
+                newPurchaseProduct = existingProduct;
             }
             else
             {
                 newPurchaseProduct = new PurchaseProduct
                 {
-                    Cart = customer.Cart,
+                    Cart = cart,
                     Product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId),
                     Quantity = 1
                 };
 
-                cart.Products.Append(newPurchaseProduct);
+                cart.Products.Add(newPurchaseProduct);
             }
 
             _db.SaveChanges();
 
-            return new PurchaseProductResponse(existingProduct ?? newPurchaseProduct);
+            return new PurchaseProductResponse(newPurchaseProduct);
         }
+
 
         public CartResponse GetCart(int customerId)
         {
@@ -178,14 +197,25 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 .ThenInclude(cart => cart.Products)
                 .FirstOrDefault(c => c.Id == customerId);
 
+            if (customer == null)
+            {
+                throw new ArgumentException($"Customer with Id {customerId} does not exist.");
+            }
             var cart = customer.Cart;
 
-            var cartResponse = new CartResponse(customer.Id);
+            if (cart == null)
+            {
+                var emptyCartResponse = new CartResponse(customer.Id);
+                emptyCartResponse.Products = new List<PurchaseProductResponse>();
+                return emptyCartResponse;
+            }
 
-            cartResponse.Products = cart.Products.Select(product => new PurchaseProductResponse(product));
+            var cartResponse = new CartResponse(customer.Id);
+            cartResponse.Products = cart.Products.Select(product => new PurchaseProductResponse(product)).ToList();
 
             return cartResponse;
         }
+
         public List<OrderResponse> GetOrders(int customerId)
         {
             var customer = _db.Customer
@@ -206,17 +236,37 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         }
         public PurchaseProductResponse DeletePurchaseProduct(int customerId, int productId)
         {
-            var purchaseProduct = from c in _db.Customer
-                                  where c.Id == customerId
-                                  select (
-                                      from p in c.Cart.Products
-                                      where p.Product.Id == productId && p.Cart.Id == c.Cart.Id
-                                      select p
-                                      );
-            _db.Remove(purchaseProduct);
+            var customer = _db.Customer
+                .Include(c => c.Cart)
+                .ThenInclude(cart => cart.Products)
+                .FirstOrDefault(c => c.Id == customerId);
+
+            if (customer == null)
+            {
+                throw new ArgumentException($"Customer with Id {customerId} does not exist.");
+            }
+
+            var cart = customer.Cart;
+
+            if (cart == null)
+            {
+                throw new ArgumentException($"Cart for customer with Id {customerId} does not exist.");
+            }
+
+            var purchaseProduct = cart.Products.FirstOrDefault(p => p.ProductId == productId);
+
+            if (purchaseProduct == null)
+            {
+                throw new ArgumentException($"Product with Id {productId} is not in the cart.");
+            }
+
+            cart.Products.Remove(purchaseProduct);
+
+            _db.PurchaseProduct.Remove(purchaseProduct);
+
             _db.SaveChanges();
 
-            return new PurchaseProductResponse();
+            return new PurchaseProductResponse(purchaseProduct);
         }
     }
 }
