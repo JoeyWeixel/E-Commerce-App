@@ -158,7 +158,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             {
                 newPurchaseProduct = new PurchaseProduct
                 {
-                    Cart = customer.Cart,
+                    CartId = customer.Cart.Id,
                     Product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId),
                     Quantity = 1
                 };
@@ -210,7 +210,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                                   where c.Id == customerId
                                   select (
                                       from p in c.Cart.Products
-                                      where p.Product.Id == productId && p.Cart.Id == c.Cart.Id
+                                      where p.Product.Id == productId && p.CartId == c.Cart.Id
                                       select p
                                       );
             _db.Remove(purchaseProduct);
