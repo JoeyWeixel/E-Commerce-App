@@ -168,14 +168,30 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             try
             {
                 var pProduct = _service.AddPurchaseProduct(customerId, request);
-
                 return Ok(pProduct);
             }
-            catch
+            catch (KeyNotFoundException ex)
             {
-                return StatusCode(500);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+            {
+                // Log the exception details
+                Console.WriteLine($"DbUpdateException: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while updating the database.", details = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details
+                Console.WriteLine($"Exception: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while processing your request.", details = ex.Message });
             }
         }
+
 
         [HttpGet("{customerId}/cart")]
         public IActionResult GetCart(int customerId)

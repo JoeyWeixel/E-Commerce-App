@@ -2,10 +2,13 @@
 {
     public class Cart
     {
-        public List<PurchaseProduct> Products { get; set; } = new List<PurchaseProduct>();
+        public ICollection<PurchaseProduct> Products { get; set; }
         public int Id { get; set; }
         public double TotalPrice { get; set; }
 
-        public Cart() { }
+        public Cart()
+        {
+            Products = new List<PurchaseProduct>();
+        }
     }
 }

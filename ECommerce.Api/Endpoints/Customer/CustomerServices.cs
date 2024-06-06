@@ -1,14 +1,14 @@
 ﻿using ECommerceAPI.Domain;
 using ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse;
-
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ECommerceAPI.Endpoints.CustomerEndpoint
 {
     public class CustomerService
     {
-        ECommerceContext _db;
-        private static int _nextCustomerId = 1;
+        private readonly ECommerceContext _db;
 
         public CustomerService(ECommerceContext db)
         {
@@ -26,15 +26,29 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public CustomerResponse GetCustomer(int id)
         {
-            Customer customer = _db.Customer
+            var customer = _db.Customer
                 .Include(customer => customer.ContactInfo)
                 .SingleOrDefault(customer => customer.Id == id);
-            return (new CustomerResponse(customer));
+
+            if (customer == null)
+            {
+                throw new KeyNotFoundException($"Customer with ID {id} not found.");
+            }
+
+            return new CustomerResponse(customer);
         }
 
         public CustomerResponse DeleteCustomer(int id)
         {
-            var customer = _db.Customer.Include(c => c.ContactInfo).FirstOrDefault(c => c.Id == id);
+            var customer = _db.Customer
+                .Include(c => c.ContactInfo)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (customer == null)
+            {
+                throw new KeyNotFoundException($"Customer with ID {id} not found.");
+            }
+
             _db.Customer.Remove(customer);
             _db.SaveChanges();
             return new CustomerResponse(customer);
@@ -52,17 +66,22 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                     Address = customerRequest.ContactInfo.Address
                 },
                 Cart = new Cart(),
-                Orders = [],
-                PaymentInfos = []
+                Orders = new List<Order>(),
+                PaymentInfos = new List<PaymentInfo>()
             };
+
             _db.Customer.Add(newCustomer);
             _db.SaveChanges();
             return new CustomerResponse(newCustomer);
         }
+
         public OrderResponse GetOrder(int customerId, int orderId)
         {
-            Customer customer = _db.Customer
+            var customer = _db.Customer
                 .Include(c => c.Orders)
+                .ThenInclude(o => o.Cart)
+                .ThenInclude(cart => cart.Products)
+                .ThenInclude(pp => pp.Product)
                 .SingleOrDefault(c => c.Id == customerId);
 
             if (customer == null)
@@ -70,13 +89,13 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
             }
 
-            var order = customer.Orders.Find(o => o.Id == orderId);
-            var orderResponse = new OrderResponse
+            var order = customer.Orders.SingleOrDefault(o => o.Id == orderId);
+            if (order == null)
             {
-                Id = order.Id,
-                Cart = customer.Cart,
-            };
-            return orderResponse;
+                throw new KeyNotFoundException($"Order with ID {orderId} not found.");
+            }
+
+            return new OrderResponse(order);
         }
 
         public Order AddOrder(int customerId, OrderRequest orderRequest)
@@ -84,6 +103,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             var customer = _db.Customer
                 .Include(c => c.Orders)
                 .Include(c => c.Cart)
+                .ThenInclude(cart => cart.Products)
                 .SingleOrDefault(c => c.Id == customerId);
 
             if (customer == null)
@@ -98,7 +118,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             };
 
             customer.Orders.Add(newOrder);
-            customer.Cart = new Cart();
+            customer.Cart = new Cart(); // Reset the cart
             _db.SaveChanges();
 
             return newOrder;
@@ -106,25 +126,36 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public PaymentInfoResponse GetPaymentInfo(int customerId, int paymentId)
         {
-            List<PaymentInfo> paymentInfos = _db.Customer
-                .Include(customer => customer.PaymentInfos)
-                .SingleOrDefault((Customer c) => c.Id == customerId)
-                .PaymentInfos;
+            var customer = _db.Customer
+                .Include(c => c.PaymentInfos)
+                .SingleOrDefault(c => c.Id == customerId);
 
-            PaymentInfo paymentInfo = paymentInfos
-                .SingleOrDefault(paymentInfo => paymentInfo.Id == paymentId);
+            if (customer == null)
+            {
+                throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+            }
+
+            var paymentInfo = customer.PaymentInfos.SingleOrDefault(p => p.Id == paymentId);
+            if (paymentInfo == null)
+            {
+                throw new KeyNotFoundException($"PaymentInfo with ID {paymentId} not found.");
+            }
 
             return new PaymentInfoResponse(paymentInfo);
         }
 
         public PaymentInfoResponse AddPaymentInfo(int customerId, PaymentInfoRequest request)
         {
-            List<PaymentInfo> paymentInfos = _db.Customer
-                .Include(customer => customer.PaymentInfos)
-                .SingleOrDefault((Customer c) => c.Id == customerId)
-                .PaymentInfos;
+            var customer = _db.Customer
+                .Include(c => c.PaymentInfos)
+                .SingleOrDefault(c => c.Id == customerId);
 
-            PaymentInfo paymentInfo = new PaymentInfo
+            if (customer == null)
+            {
+                throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+            }
+
+            var paymentInfo = new PaymentInfo
             {
                 Name = request.Name,
                 PaymentMethod = request.PaymentMethod,
@@ -132,7 +163,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 Address = request.Address
             };
 
-            paymentInfos.Add(paymentInfo);
+            customer.PaymentInfos.Add(paymentInfo);
             _db.SaveChanges();
 
             return new PaymentInfoResponse(paymentInfo);
@@ -140,61 +171,75 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public PurchaseProductResponse AddPurchaseProduct(int customerId, PurchaseProductRequest request)
         {
-            var customer = _db.Customer
-                .Include(c => c.Cart)
-                .ThenInclude(cart => cart.Products)
-                .FirstOrDefault(c => c.Id == customerId);
-
-            if (customer == null)
+            try
             {
-                throw new ArgumentException($"Customer with Id {customerId} does not exist.");
-            }
+                var customer = _db.Customer
+                    .Include(c => c.Cart)
+                    .ThenInclude(cart => cart.Products)
+                    .FirstOrDefault(c => c.Id == customerId);
 
-            var cart = customer.Cart;
-
-            if (cart == null)
-            {
-                cart = new Cart { Id = customerId };
-                _db.Cart.Add(cart);
-                customer.Cart = cart;
-            }
-
-            if (cart.Products == null)
-            {
-                cart.Products = new List<PurchaseProduct>();
-            }
-
-            var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
-            PurchaseProduct newPurchaseProduct;
-
-            if (existingProduct != null)
-            {
-                existingProduct.Quantity += 1;
-                newPurchaseProduct = existingProduct;
-            }
-            else
-            {
-                newPurchaseProduct = new PurchaseProduct
+                if (customer == null)
                 {
-                    Cart = cart,
-                    Product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId),
-                    Quantity = 1
-                };
+                    throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+                }
 
-                cart.Products.Add(newPurchaseProduct);
+                if (customer.Cart == null)
+                {
+                    throw new InvalidOperationException($"Cart for customer with ID {customerId} not found.");
+                }
+
+                var cart = customer.Cart;
+                var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
+                PurchaseProduct purchaseProduct;
+
+                if (existingProduct != null)
+                {
+                    existingProduct.Quantity += request.Quantity;
+                    purchaseProduct = existingProduct;
+                }
+                else
+                {
+                    // Verify the product exists
+                    var product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId);
+                    if (product == null)
+                    {
+                        throw new KeyNotFoundException($"Product with ID {request.ProductId} not found.");
+                    }
+
+                    purchaseProduct = new PurchaseProduct
+                    {
+                        CartId = cart.Id,
+                        ProductId = request.ProductId,
+                        Quantity = request.Quantity
+                    };
+
+                    cart.Products.Add(purchaseProduct);
+                }
+
+                _db.SaveChanges();
+
+                return new PurchaseProductResponse(purchaseProduct);
             }
-
-            _db.SaveChanges();
-
-            return new PurchaseProductResponse(newPurchaseProduct);
+            catch (DbUpdateException dbEx)
+            {
+                // Log the inner exception details for debugging
+                Console.WriteLine($"DbUpdateException: {dbEx.InnerException?.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Log the error details for debugging
+                Console.WriteLine($"Exception: {ex.Message}");
+                throw;
+            }
         }
-
 
         public CartResponse GetCart(int customerId)
         {
             var customer = _db.Customer
                 .Include(c => c.Cart)
                 .ThenInclude(cart => cart.Products)
+                .ThenInclude(pp => pp.Product)
                 .FirstOrDefault(c => c.Id == customerId);
 
             if (customer == null)
@@ -234,6 +279,8 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             return orders;
         }
+
+
         public PurchaseProductResponse DeletePurchaseProduct(int customerId, int productId)
         {
             var customer = _db.Customer
