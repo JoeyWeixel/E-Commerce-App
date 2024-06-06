@@ -1,35 +1,30 @@
 import React from "react";
-import { Button, Card, CardContent, Typography } from "@mui/material";
-import "../Styles/CartStyle.css";
+import { Button, Typography } from "@mui/material";
+
+interface ProductType {
+  id: number;
+  name: string;
+  description: string;
+  numInStock: number;
+  price: number;
+  quantity: number;
+}
 
 interface CartItemProps {
-  item: {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-  };
+  item: ProductType;
   onRemove: (id: number) => void;
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item, onRemove }) => {
   return (
-    <Card key={item.id} style={{ margin: "10px 0" }}>
-      <CardContent>
-        <Typography className="item__name" variant="h5">
-          {item.name}
-        </Typography>
-        <Typography variant="body2">Price: ${item.price}</Typography>
-        <Typography variant="body2">Quantity: {item.quantity}</Typography>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => onRemove(item.id)}
-        >
-          Remove
-        </Button>
-      </CardContent>
-    </Card>
+    <div className="cart-item">
+      <Typography variant="h6">{item.name}</Typography>
+      <Typography variant="body1">Price: ${item.price}</Typography>
+      <Typography variant="body1">Quantity: {item.quantity}</Typography>
+      <Button variant="contained" color="secondary" onClick={() => onRemove(item.id)}>
+        Remove
+      </Button>
+    </div>
   );
 };
 
