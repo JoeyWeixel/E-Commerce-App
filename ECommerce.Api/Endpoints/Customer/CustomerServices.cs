@@ -189,23 +189,22 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             {
                 existingProduct.Quantity += request.Quantity;
                 purchaseProduct = existingProduct;
-
             }
             else
             {
-                var newPurchaseProduct = new PurchaseProduct
+                purchaseProduct = new PurchaseProduct
                 {
                     CartId = cart.Id,
                     ProductId = request.ProductId,
                     Quantity = request.Quantity
                 };
 
-                cart.Products.Add(newPurchaseProduct);
+                cart.Products.Add(purchaseProduct);
             }
 
             _db.SaveChanges();
 
-            return new PurchaseProductResponse(existingProduct);
+            return new PurchaseProductResponse(purchaseProduct);
         }
 
         public CartResponse GetCart(int customerId)
