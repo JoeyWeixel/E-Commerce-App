@@ -15,31 +15,48 @@ interface ProductType {
 }
 
 interface CartProps {
-  initialItems: ProductType[];
+  items: ProductType[];
   setCart: React.Dispatch<React.SetStateAction<ProductType[]>>;
   currentCustomer: CustomerType | null;
-
 }
 
-const Cart: React.FC<CartProps> = ({ initialItems, setCart, currentCustomer }) => {
-  const [items, setItems] = useState<ProductType[]>(initialItems);
+const Cart: React.FC<CartProps> = ({ items, setCart, currentCustomer }) => {
+  const [cartItems, setCartItems] = useState<ProductType[]>(items);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setItems(initialItems);
-  }, [initialItems]);
+    setCartItems(items);
+  }, [items]);
 
-  const handleRemove = (id: number) => {
-    const updatedItems = items.filter((item) => item.id !== id);
-    setItems(updatedItems);
-    setCart(updatedItems);
+  const handleRemove = async (id: number) => {
+    if (currentCustomer) {
+      try {
+        const response = await fetch(`https://localhost:7249/customers/${currentCustomer.id}/cart/products/${id}`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          const updatedItems = cartItems.filter((item) => item.id !== id);
+          setCartItems(updatedItems);
+          setCart(updatedItems);
+        } else {
+          alert("Failed to remove item. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error removing item:", error);
+        alert("An error occurred while removing the item.");
+      }
+    } else {
+      alert("Customer not found.");
+    }
   };
 
   const getTotalPrice = () => {
-    return items.reduce((total, item) => total + item.price * item.quantity, 0);
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
+
   const handleCheckout = async () => {
-    if (currentCustomer) { 
+    if (currentCustomer) {
       try {
         const response = await fetch(`https://localhost:7249/customers/${currentCustomer.id}/orders`, {
           method: 'POST',
@@ -48,7 +65,7 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart, currentCustomer }) =
           },
           body: JSON.stringify({
             cart: {
-              products: items.map(item => ({
+              products: cartItems.map(item => ({
                 productId: item.id,
                 quantity: item.quantity,
               })),
@@ -57,8 +74,8 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart, currentCustomer }) =
         });
 
         if (response.ok) {
-          alert("Order placed successfully!"); 
-          setItems([]); 
+          alert("Order placed successfully!");
+          setCartItems([]);
           setCart([]);
           navigate("/orders");
         } else {
@@ -70,7 +87,7 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart, currentCustomer }) =
       }
     } else {
       alert("Please select a customer before checking out.");
-      navigate("/customers"); 
+      navigate("/customers");
     }
   };
 
@@ -79,15 +96,13 @@ const Cart: React.FC<CartProps> = ({ initialItems, setCart, currentCustomer }) =
       <Typography className="title" variant="h4">
         Shopping Cart
       </Typography>
-      {items.length === 0 ? (
+      {cartItems.length === 0 ? (
         <Typography variant="h6">Your cart is empty</Typography>
       ) : (
         <div>
-          {
-            items.map((item) => (
-              <CartItem key={item.id} item={item} onRemove={handleRemove} />
-            ))
-          }
+          {cartItems.map((item) => (
+            <CartItem key={item.id} item={item} onRemove={handleRemove} />
+          ))}
           <Typography variant="h5">
             Total: ${getTotalPrice().toFixed(2)}
           </Typography>
