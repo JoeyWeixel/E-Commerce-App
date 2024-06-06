@@ -178,34 +178,48 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             if (customer == null)
             {
-                throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+                throw new ArgumentException($"Customer with Id {customerId} does not exist.");
             }
 
             var cart = customer.Cart;
+
+            if (cart == null)
+            {
+                cart = new Cart { Id = customerId };
+                _db.Cart.Add(cart);
+                customer.Cart = cart;
+            }
+
+            if (cart.Products == null)
+            {
+                cart.Products = new List<PurchaseProduct>();
+            }
+
             var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
-            PurchaseProduct purchaseProduct;
+            PurchaseProduct newPurchaseProduct;
 
             if (existingProduct != null)
             {
-                existingProduct.Quantity += request.Quantity;
-                purchaseProduct = existingProduct;
+                existingProduct.Quantity += 1;
+                newPurchaseProduct = existingProduct;
             }
             else
             {
                 purchaseProduct = new PurchaseProduct
                 {
-                    CartId = cart.Id,
-                    ProductId = request.ProductId,
-                    Quantity = request.Quantity
+                    Cart = cart,
+                    Product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId),
+                    Quantity = 1
                 };
 
-                cart.Products.Add(purchaseProduct);
+                cart.Products.Add(newPurchaseProduct);
             }
 
             _db.SaveChanges();
 
-            return new PurchaseProductResponse(purchaseProduct);
+            return new PurchaseProductResponse(newPurchaseProduct);
         }
+
 
         public CartResponse GetCart(int customerId)
         {
@@ -217,14 +231,19 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
             if (customer == null)
             {
-                throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+                throw new ArgumentException($"Customer with Id {customerId} does not exist.");
+            }
+            var cart = customer.Cart;
+
+            if (cart == null)
+            {
+                var emptyCartResponse = new CartResponse(customer.Id);
+                emptyCartResponse.Products = new List<PurchaseProductResponse>();
+                return emptyCartResponse;
             }
 
-            var cart = customer.Cart;
-            var cartResponse = new CartResponse(cart.Id)
-            {
-                Products = cart.Products.Select(p => new PurchaseProductResponse(p)).ToList()
-            };
+            var cartResponse = new CartResponse(customer.Id);
+            cartResponse.Products = cart.Products.Select(product => new PurchaseProductResponse(product)).ToList();
 
             return cartResponse;
         }
@@ -254,20 +273,31 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             var customer = _db.Customer
                 .Include(c => c.Cart)
                 .ThenInclude(cart => cart.Products)
-                .SingleOrDefault(c => c.Id == customerId);
+                .FirstOrDefault(c => c.Id == customerId);
 
             if (customer == null)
             {
-                throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+                throw new ArgumentException($"Customer with Id {customerId} does not exist.");
             }
 
-            var purchaseProduct = customer.Cart.Products.SingleOrDefault(pp => pp.ProductId == productId);
+            var cart = customer.Cart;
+
+            if (cart == null)
+            {
+                throw new ArgumentException($"Cart for customer with Id {customerId} does not exist.");
+            }
+
+            var purchaseProduct = cart.Products.FirstOrDefault(p => p.ProductId == productId);
+
             if (purchaseProduct == null)
             {
-                throw new KeyNotFoundException($"Product with ID {productId} not found in cart.");
+                throw new ArgumentException($"Product with Id {productId} is not in the cart.");
             }
 
-            customer.Cart.Products.Remove(purchaseProduct);
+            cart.Products.Remove(purchaseProduct);
+
+            _db.PurchaseProduct.Remove(purchaseProduct);
+
             _db.SaveChanges();
 
             return new PurchaseProductResponse(purchaseProduct);
