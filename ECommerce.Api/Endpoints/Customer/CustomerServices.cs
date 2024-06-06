@@ -183,6 +183,11 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                     throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
                 }
 
+                if (customer.Cart == null)
+                {
+                    throw new InvalidOperationException($"Cart for customer with ID {customerId} not found.");
+                }
+
                 var cart = customer.Cart;
                 var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
                 PurchaseProduct purchaseProduct;
@@ -210,10 +215,12 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
             catch (Exception ex)
             {
+                // Log the error details for debugging
                 Console.WriteLine($"Error adding product to cart: {ex.Message}");
                 throw;
             }
         }
+
         public CartResponse GetCart(int customerId)
         {
             var customer = _db.Customer
