@@ -171,56 +171,49 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
         public PurchaseProductResponse AddPurchaseProduct(int customerId, PurchaseProductRequest request)
         {
-            var customer = _db.Customer
-                .Include(c => c.Cart)
-                .ThenInclude(cart => cart.Products)
-                .FirstOrDefault(c => c.Id == customerId);
-
-            if (customer == null)
+            try
             {
-                throw new ArgumentException($"Customer with Id {customerId} does not exist.");
-            }
+                var customer = _db.Customer
+                    .Include(c => c.Cart)
+                    .ThenInclude(cart => cart.Products)
+                    .FirstOrDefault(c => c.Id == customerId);
 
-            var cart = customer.Cart;
-
-            if (cart == null)
-            {
-                cart = new Cart { Id = customerId };
-                _db.Cart.Add(cart);
-                customer.Cart = cart;
-            }
-
-            if (cart.Products == null)
-            {
-                cart.Products = new List<PurchaseProduct>();
-            }
-
-            var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
-            PurchaseProduct newPurchaseProduct;
-
-            if (existingProduct != null)
-            {
-                existingProduct.Quantity += 1;
-                newPurchaseProduct = existingProduct;
-            }
-            else
-            {
-                purchaseProduct = new PurchaseProduct
+                if (customer == null)
                 {
-                    Cart = cart,
-                    Product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId),
-                    Quantity = 1
-                };
+                    throw new KeyNotFoundException($"Customer with ID {customerId} not found.");
+                }
 
-                cart.Products.Add(newPurchaseProduct);
+                var cart = customer.Cart;
+                var existingProduct = cart.Products.FirstOrDefault(cp => cp.ProductId == request.ProductId);
+                PurchaseProduct purchaseProduct;
+
+                if (existingProduct != null)
+                {
+                    existingProduct.Quantity += request.Quantity;
+                    purchaseProduct = existingProduct;
+                }
+                else
+                {
+                    purchaseProduct = new PurchaseProduct
+                    {
+                        CartId = cart.Id,
+                        ProductId = request.ProductId,
+                        Quantity = request.Quantity
+                    };
+
+                    cart.Products.Add(purchaseProduct);
+                }
+
+                _db.SaveChanges();
+
+                return new PurchaseProductResponse(purchaseProduct);
             }
-
-            _db.SaveChanges();
-
-            return new PurchaseProductResponse(newPurchaseProduct);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding product to cart: {ex.Message}");
+                throw;
+            }
         }
-
-
         public CartResponse GetCart(int customerId)
         {
             var customer = _db.Customer
