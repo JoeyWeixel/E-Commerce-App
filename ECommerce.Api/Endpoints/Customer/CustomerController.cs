@@ -180,13 +180,11 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
             {
-                // Log the exception details
                 Console.WriteLine($"DbUpdateException: {ex.Message}");
                 return StatusCode(500, new { message = "An error occurred while updating the database.", details = ex.Message });
             }
             catch (Exception ex)
             {
-                // Log the exception details
                 Console.WriteLine($"Exception: {ex.Message}");
                 return StatusCode(500, new { message = "An error occurred while processing your request.", details = ex.Message });
             }

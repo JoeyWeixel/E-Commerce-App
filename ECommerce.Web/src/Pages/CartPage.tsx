@@ -26,7 +26,6 @@ const CartPage: React.FC = () => {
           return response.json();
         })
         .then(data => {
-          // get attr for each product in the cart
           const productFetches = data.products.map((product: { productId: number, quantity: number }) => 
             fetch(`https://localhost:7249/products/${product.productId}`)
               .then(response => {
@@ -36,12 +35,11 @@ const CartPage: React.FC = () => {
                 return response.json();
               })
               .then(productData => ({
-                ...productData, // Merge product attr with quantity 
+                ...productData, 
                 quantity: product.quantity,
               }))
           );
 
-          // Wait for all product details to be fetched/update cart state with product attributes
           Promise.all(productFetches)
             .then(fetchedProducts => setCart(fetchedProducts)) 
             .catch(error => console.error("Error fetching product details:", error)); 

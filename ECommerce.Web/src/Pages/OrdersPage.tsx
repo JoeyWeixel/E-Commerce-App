@@ -44,7 +44,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = () => {
                 })
                 .then(data => {
                     if (isMounted) {
-                        console.log('Fetched Orders Data:', data); // Log the fetched data
+                        console.log('Fetched Orders Data:', data); 
                         setOrders(data);
                         setError(null);
                     }
