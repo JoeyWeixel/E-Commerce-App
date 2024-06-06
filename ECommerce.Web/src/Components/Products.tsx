@@ -1,5 +1,7 @@
 import "../Styles/ProductsStyle.css";
 import { useCustomer } from "@/Contexts/CustomerContext";
+import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
+import { Button } from "./ui/button";
 
 interface ProductType {
   id: number;
@@ -42,18 +44,20 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   };
 
   return (
-    <div className="product">
-      <div className="product__info">
-        <p>{product.name}</p>
-        <p className="product__price">
-          <small>$</small>
-          <strong>{product.price}</strong>
-        </p>
+    <Card className="flex flex-col justfy-between itmes-center">
+      <CardHeader>
+        <h3 className="text-lg mx-auto">{product.name}</h3>
+      </CardHeader>
+      <CardContent className="flex flex-col justify-between items-center">
+        <img src="https://via.placeholder.com/150" alt={product.name} className="mb-2" />
         <p>{product.description}</p>
-      </div>
-      <img src="https://via.placeholder.com/150" alt={product.name} />
-      <button onClick={addToCart}>Add to Basket</button>
-    </div>
+        <p className="text-sm">Price: ${product.price}</p>
+        <p className="text-sm">In Stock: {product.numInStock}</p>
+      </CardContent>
+      <CardFooter>
+        <Button className="hover:bg-card-foreground hover:text-card text-card-foreground border-card-foreground border-[1px] bg-card mx-auto" onClick={addToCart}>Add to Cart</Button>
+      </CardFooter>
+    </Card>
   );
 };
 
