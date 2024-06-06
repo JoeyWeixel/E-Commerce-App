@@ -12,9 +12,9 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint.RequestResponse
         public PurchaseProductResponse(PurchaseProduct p)
         {
             ProductId = p.ProductId;
-            ProductName = p.Product.Name; // Assuming Product has a Name property
+            ProductName = p.Product.Name;
             Quantity = p.Quantity;
-            Price = p.Product.Price; // Assuming Product has a Price property
+            Price = p.Product.Price;
         }
 
         public PurchaseProductResponse() { }
