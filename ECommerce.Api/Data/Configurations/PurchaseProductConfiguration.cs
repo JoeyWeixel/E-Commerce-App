@@ -12,9 +12,7 @@ namespace ECommerceAPI.Data.Configurations
 
 
             builder.HasKey(x => x.Id);
-            builder.HasOne(x => x.Cart)
-                 .WithMany()
-                 .HasForeignKey(x => x.CartId);
+
 
             builder.HasOne(x => x.Product)
                    .WithMany()

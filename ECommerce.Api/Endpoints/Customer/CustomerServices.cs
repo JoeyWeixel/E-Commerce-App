@@ -249,6 +249,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             return orders;
         }
 
+
         public PurchaseProductResponse DeletePurchaseProduct(int customerId, int productId)
         {
             var customer = _db.Customer
