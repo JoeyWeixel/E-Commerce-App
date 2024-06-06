@@ -44,6 +44,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = () => {
                 })
                 .then(data => {
                     if (isMounted) {
+                        console.log('Fetched Orders Data:', data); // Log the fetched data
                         setOrders(data);
                         setError(null);
                     }
@@ -75,17 +76,9 @@ export const OrdersPage: React.FC<OrdersPageProps> = () => {
                     <div key={index}>
                         <h1>Order:</h1>
                         <h2>ID: {order.id}</h2>
-                        <ul>
-                            {order.cart && order.cart.products ? (
-                                order.cart.products.map((product, idx) => (
-                                    <li key={idx}>
-                                        Product ID: {product.productId}, Quantity: {product.quantity}, Name: {product.productName}
-                                    </li>
-                                ))
-                            ) : (
-                                <li>No products in this order.</li>
-                            )}
-                        </ul>
+                        {order.cart && order.cart.products && order.cart.products.length > 0 && (
+                            <p>Products: {order.cart.products.map((product) => product.productName).join(', ')}</p>
+                        )}
                     </div>
                 ))
             )}

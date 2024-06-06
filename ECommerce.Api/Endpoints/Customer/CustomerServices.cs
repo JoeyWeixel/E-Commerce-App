@@ -199,6 +199,13 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 }
                 else
                 {
+                    // Verify the product exists
+                    var product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId);
+                    if (product == null)
+                    {
+                        throw new KeyNotFoundException($"Product with ID {request.ProductId} not found.");
+                    }
+
                     purchaseProduct = new PurchaseProduct
                     {
                         CartId = cart.Id,
@@ -213,10 +220,16 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
 
                 return new PurchaseProductResponse(purchaseProduct);
             }
+            catch (DbUpdateException dbEx)
+            {
+                // Log the inner exception details for debugging
+                Console.WriteLine($"DbUpdateException: {dbEx.InnerException?.Message}");
+                throw;
+            }
             catch (Exception ex)
             {
                 // Log the error details for debugging
-                Console.WriteLine($"Error adding product to cart: {ex.Message}");
+                Console.WriteLine($"Exception: {ex.Message}");
                 throw;
             }
         }
