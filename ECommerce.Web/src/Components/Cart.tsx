@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import CartItem from "./CartItem";
 import "../Styles/CartStyle.css";
-import { Typography, Button } from "@mui/material";
 import { CustomerType } from '../Components/Customer';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Label } from "@/Components/ui/label";
+import { Button } from "@/Components/ui/button";
 
 interface ProductType {
   id: number;
@@ -92,21 +93,26 @@ const Cart: React.FC<CartProps> = ({ items, setCart, currentCustomer }) => {
   };
 
   return (
-    <div>
-      <Typography className="title" variant="h4">
+    <div className="w-screen flex flex-col items-center py-8">
+      <Label className="text-3xl my-4">
         Shopping Cart
-      </Typography>
+      </Label>
       {cartItems.length === 0 ? (
-        <Typography variant="h6">Your cart is empty</Typography>
+        <>
+          <Label>Your cart is empty</Label>
+          <Button asChild>
+            <Link to="/">Go Shopping</Link>
+          </Button>
+        </>
       ) : (
-        <div>
+        <div className="flex flex-col gap-4 w-2/3">
           {cartItems.map((item) => (
             <CartItem key={item.id} item={item} onRemove={handleRemove} />
           ))}
-          <Typography variant="h5">
+          <Label className="text-center text-xl">
             Total: ${getTotalPrice().toFixed(2)}
-          </Typography>
-          <Button variant="contained" color="primary" onClick={handleCheckout}>
+          </Label>
+          <Button className="bg-blue-500" onClick={handleCheckout}>
             Proceed to Checkout
           </Button>
         </div>

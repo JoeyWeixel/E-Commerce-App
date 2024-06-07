@@ -1,5 +1,7 @@
 import React from "react";
-import { Button, Typography } from "@mui/material";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { Label } from "./ui/label";
 
 interface ProductType {
   id: number;
@@ -17,14 +19,19 @@ interface CartItemProps {
 
 const CartItem: React.FC<CartItemProps> = ({ item, onRemove }) => {
   return (
-    <div className="cart-item">
-      <Typography variant="h6">{item.name}</Typography>
-      <Typography variant="body1">Price: ${item.price}</Typography>
-      <Typography variant="body1">Quantity: {item.quantity}</Typography>
-      <Button variant="contained" color="secondary" onClick={() => onRemove(item.id)}>
-        Remove
-      </Button>
-    </div>
+
+    <Card className="w-full">
+      <CardHeader className="pb-0">
+        <Label className="text-xl">{item.name}</Label>
+      </CardHeader>
+      <CardContent className="flex justify-between items-center ">
+        <Label>Price: ${item.price}</Label>
+        <Label>Quantity: {item.quantity}</Label>
+        <Button variant="destructive" onClick={() => onRemove(item.id)}>
+          Remove
+        </Button>
+      </CardContent>
+    </Card>
   );
 };
 

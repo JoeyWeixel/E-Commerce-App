@@ -49,7 +49,7 @@ const CartPage: React.FC = () => {
   }, [currentCustomer]); 
 
   return (
-    <div>
+    <div className="w-1/2">
       <Cart items={cart} setCart={setCart} currentCustomer={currentCustomer} />
     </div>
   );
