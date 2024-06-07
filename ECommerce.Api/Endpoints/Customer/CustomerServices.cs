@@ -176,6 +176,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 var customer = _db.Customer
                     .Include(c => c.Cart)
                     .ThenInclude(cart => cart.Products)
+                    .ThenInclude(products => products.Product)
                     .FirstOrDefault(c => c.Id == customerId);
 
                 if (customer == null)
@@ -286,6 +287,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             var customer = _db.Customer
                 .Include(c => c.Cart)
                 .ThenInclude(cart => cart.Products)
+                .ThenInclude(product => product.Product)
                 .FirstOrDefault(c => c.Id == customerId);
 
             if (customer == null)

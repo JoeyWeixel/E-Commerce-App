@@ -31,7 +31,8 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-          'productId': product.id
+          'productId': product.id,
+          'quantity': 1
       })
     })
     .then(response => {
