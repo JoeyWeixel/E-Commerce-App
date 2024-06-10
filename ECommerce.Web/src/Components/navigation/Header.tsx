@@ -10,7 +10,6 @@ import {
   SheetTrigger,
 } from "@/Components/ui/sheet";
 import { Button } from "@/Components/ui/button";
-
 import { useCustomer } from "@/Contexts/CustomerContext";
 import RealHFritz from "@/assets/RealHenryFritz.jpeg";
 
@@ -28,9 +27,9 @@ const Header: React.FC = () => {
         </Link>
       </div>
 
-      <div className="flex w-full m-auto justify-end items-center p-4 m-2">
+      <div className="flex w-full m-2 justify-end items-center p-4">
         <Link to="orders">
-          <Button className=" text-center align-middle bg-gray-800 hover:bg-gray-700">
+          <Button className=" bg-gray-800 hover:bg-gray-700">
             <span className="text-white text-sm font-bold">Orders</span>
           </Button>
         </Link>
@@ -57,19 +56,21 @@ const Header: React.FC = () => {
 
         <Sheet>
           <SheetTrigger>
-            <Button className="text-sm text-white font-bold text-center align-middle bg-gray-800 hover:bg-gray-700">
+            <Button className="text-sm text-white font-bold bg-gray-800 hover:bg-gray-700">
               Cart
             </Button>
           </SheetTrigger>
-
           <SheetContent>
             <SheetHeader>
-              <SheetTitle>
+              <SheetTitle>Current Shopping Cart</SheetTitle>
+              <SheetDescription>
+                Your cart is empty
                 <Link to="cart">
-                  <span className="text-white font-bold">Go to Cart</span>
+                  <Button className="w-full text-sm text-white font-bold bg-gray-800 hover:bg-gray-700">
+                    View Cart
+                  </Button>
                 </Link>
-              </SheetTitle>
-              <SheetDescription>Your cart is empty</SheetDescription>
+              </SheetDescription>
             </SheetHeader>
           </SheetContent>
         </Sheet>
