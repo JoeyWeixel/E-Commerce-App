@@ -1,8 +1,16 @@
 import React from "react";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/Components/ui/sheet";
 import { Button } from "@/Components/ui/button";
+
 import { useCustomer } from "@/Contexts/CustomerContext";
 import RealHFritz from "@/assets/RealHenryFritz.jpeg";
 
@@ -10,7 +18,7 @@ const Header: React.FC = () => {
   const { currentCustomer } = useCustomer();
   return (
     <div className="flex items-center w-screen h-16 bg-gray-800">
-      <div className="float-start">
+      <div className="items-start">
         <Link to="/">
           <img
             className="w-16 ml-1 p-1 rounded-lg object-contain"
@@ -20,42 +28,51 @@ const Header: React.FC = () => {
         </Link>
       </div>
 
-      <div className="flex text-white w-full m-auto justify-end">
-        <div className="text-sm font-bold text-center align-middle leading-9 p-2">
-          <Link to="orders">
-            <span className="">Orders</span>
-          </Link>
-        </div>
+      <div className="flex w-full m-auto justify-end items-center p-4 m-2">
+        <Link to="orders">
+          <Button className=" text-center align-middle bg-gray-800 hover:bg-gray-700">
+            <span className="text-white text-sm font-bold">Orders</span>
+          </Button>
+        </Link>
 
-        <div className="p-2">
-          {!currentCustomer ? (
-            <div className="">
-              <Button className="bg-gray-800 hover:bg-gray-700 ">
-                <Link to="customers">
-                  <span className="text-white font-bold">Login</span>
-                </Link>
-              </Button>
-            </div>
-          ) : (
-            <div>
-              <span className="text-sm font-bold text-center align-middle p-2">
-                {currentCustomer.contactInfo.name}
-              </span>
-              <Avatar className="float-end">
-                <Link to="customers">
-                  <AvatarImage src={RealHFritz} />
-                  <AvatarFallback>CN</AvatarFallback>{" "}
-                </Link>
-              </Avatar>
-            </div>
-          )}
-        </div>
-
-        <div className="font-bold justify-items-end float-end leading-7 p-2 mr-4">
-          <Link to="cart">
-            <ShoppingBasketIcon />
+        {!currentCustomer ? (
+          <Link to="customers">
+            <Button className="bg-gray-800 hover:bg-gray-700">
+              <span className="text-white text-sm font-bold">Login</span>
+            </Button>
           </Link>
-        </div>
+        ) : (
+          <>
+            <span className="text-sm text-white font-bold text-center align-middle p-2">
+              {currentCustomer.contactInfo.name}
+            </span>
+            <Avatar className="float-end mr-2">
+              <Link to="customers">
+                <AvatarImage src={RealHFritz} />
+                <AvatarFallback>CN</AvatarFallback>{" "}
+              </Link>
+            </Avatar>
+          </>
+        )}
+
+        <Sheet>
+          <SheetTrigger>
+            <Button className="text-sm text-white font-bold text-center align-middle bg-gray-800 hover:bg-gray-700">
+              Cart
+            </Button>
+          </SheetTrigger>
+
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>
+                <Link to="cart">
+                  <span className="text-white font-bold">Go to Cart</span>
+                </Link>
+              </SheetTitle>
+              <SheetDescription>Your cart is empty</SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );
