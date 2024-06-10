@@ -46,7 +46,7 @@ namespace ECommerceAPI.Endpoints.ProductEndpoint
         }
 
         [HttpPost("/products")]
-        public IActionResult AddProduct(ProductRequest product)
+        public IActionResult AddProduct([FromBody]ProductRequest product)
         {
             try
             {
