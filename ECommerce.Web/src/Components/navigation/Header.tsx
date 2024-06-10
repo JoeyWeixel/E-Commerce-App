@@ -7,7 +7,14 @@ import { useCustomer } from "@/Contexts/CustomerContext";
 import RealHFritz from "@/assets/RealHenryFritz.jpeg";
 
 const Header: React.FC = () => {
-  const { currentCustomer } = useCustomer();
+  const { currentCustomer, cartItems } = useCustomer();
+
+  const getCartItemCount = () => {
+    return cartItems.length;
+  };
+
+  const cartItemCount = getCartItemCount();
+
   return (
     <div className="flex items-center w-screen h-16 bg-gray-800">
       <div className="float-start">
@@ -44,7 +51,7 @@ const Header: React.FC = () => {
               <Avatar className="float-end">
                 <Link to="customers">
                   <AvatarImage src={RealHFritz} />
-                  <AvatarFallback>CN</AvatarFallback>{" "}
+                  <AvatarFallback>CN</AvatarFallback>
                 </Link>
               </Avatar>
             </div>
@@ -54,6 +61,11 @@ const Header: React.FC = () => {
         <div className="font-bold justify-items-end float-end leading-7 p-2 mr-4">
           <Link to="cart">
             <ShoppingBasketIcon />
+            {cartItemCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
+                {cartItemCount}
+              </span>
+            )}
           </Link>
         </div>
       </div>

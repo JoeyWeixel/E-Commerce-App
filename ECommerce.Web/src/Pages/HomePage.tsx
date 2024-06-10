@@ -1,4 +1,3 @@
-// src/Pages/HomePage.tsx
 import "../Styles/HomeStyle.css";
 import Product from "../Components/Products";
 import { useEffect, useState } from "react";
@@ -26,7 +25,6 @@ const HomePage: React.FC<HomePageProps> = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
 
   useEffect(() => {
-    // Fetch products from the API
     fetch("https://localhost:7249/products")
       .then((response) => {
         if (!response.ok) {

@@ -42,6 +42,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         {
             var customer = _db.Customer
                 .Include(c => c.ContactInfo)
+                .Include(c => c.Orders)
                 .FirstOrDefault(c => c.Id == id);
 
             if (customer == null)
@@ -118,7 +119,7 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             };
 
             customer.Orders.Add(newOrder);
-            customer.Cart = new Cart(); // Reset the cart
+            customer.Cart = new Cart();
             _db.SaveChanges();
 
             return newOrder;
@@ -200,7 +201,6 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
                 }
                 else
                 {
-                    // Verify the product exists
                     var product = _db.Product.FirstOrDefault(p => p.Id == request.ProductId);
                     if (product == null)
                     {
@@ -223,13 +223,11 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
             }
             catch (DbUpdateException dbEx)
             {
-                // Log the inner exception details for debugging
                 Console.WriteLine($"DbUpdateException: {dbEx.InnerException?.Message}");
                 throw;
             }
             catch (Exception ex)
             {
-                // Log the error details for debugging
                 Console.WriteLine($"Exception: {ex.Message}");
                 throw;
             }
