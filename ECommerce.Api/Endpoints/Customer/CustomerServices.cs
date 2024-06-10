@@ -42,6 +42,9 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         {
             var customer = _db.Customer
                 .Include(c => c.ContactInfo)
+                .Include(c => c.Cart)
+                .Include(c => c.Orders)
+                .Include(c => c.PaymentInfos)
                 .FirstOrDefault(c => c.Id == id);
 
             if (customer == null)
@@ -148,6 +151,9 @@ namespace ECommerceAPI.Endpoints.CustomerEndpoint
         {
             var customer = _db.Customer
                 .Include(c => c.PaymentInfos)
+                .Include(c => c.Cart)
+                .Include(c => c.Orders)
+                .Include(c => c.ContactInfo)
                 .SingleOrDefault(c => c.Id == customerId);
 
             if (customer == null)
