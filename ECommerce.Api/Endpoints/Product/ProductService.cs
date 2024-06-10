@@ -1,5 +1,6 @@
 using ECommerceAPI.Endpoints.ProductEndpoint.RequestResponse;
 using ECommerceAPI.Domain;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceAPI.Endpoints.ProductEndpoint
 {
