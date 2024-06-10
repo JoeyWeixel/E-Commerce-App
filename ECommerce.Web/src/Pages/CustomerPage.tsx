@@ -95,7 +95,7 @@ const CustomerPage: React.FC<CustomerPageProps> = () => {
 
     return (
 
-        <div className="flex flex-col justify-start items-start gap-4 h-full pt-20 w-1/2 self-center">
+        <div className="flex flex-col justify-start items-start gap-4 h-full pt-20 w-1/2 self-center overflow-hidden">
             <Label className="text-4xl w-9/12 mr-auto justify-self-start">Select User</Label>
             <ScrollArea className="w-full mx-auto h-1/2 border p-4 rounded-md">
                 {customers.map(customer => 
