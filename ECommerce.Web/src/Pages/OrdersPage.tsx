@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useCustomer } from '@/Contexts/CustomerContext';
+import OrderCard from '@/Components/OrderCard';
 
-type Order = {
+export type OrderType = {
     id: number;
-    cart: CartType | null;
-};
-
-type CartType = {
-    id: number;
+    orderDate: string;
     products: PurchaseProductType[];
 };
 
@@ -15,13 +12,14 @@ type PurchaseProductType = {
     productId: number;
     quantity: number;
     productName: string;
+    price: number;
 };
 
 type OrdersPageProps = Record<string, never>;
 
 export const OrdersPage: React.FC<OrdersPageProps> = () => {
     const { currentCustomer } = useCustomer();
-    const [orders, setOrders] = useState<Order[]>([]);
+    const [orders, setOrders] = useState<OrderType[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -44,7 +42,6 @@ export const OrdersPage: React.FC<OrdersPageProps> = () => {
                 })
                 .then(data => {
                     if (isMounted) {
-                        console.log('Fetched Orders Data:', data); 
                         setOrders(data);
                         setError(null);
                     }
@@ -64,24 +61,14 @@ export const OrdersPage: React.FC<OrdersPageProps> = () => {
     }, [currentCustomer?.id]);
 
     return (
-        <div>
-            <h1>Orders</h1>
-
-            {error ? (
-                <p style={{ color: "red" }}>{error}</p>
-            ) : orders.length === 0 ? (
-                <p>No orders found.</p>
-            ) : (
-                orders.map((order: Order, index: number) => (
-                    <div key={index}>
-                        <h1>Order:</h1>
-                        <h2>ID: {order.id}</h2>
-                        {order.cart && order.cart.products && order.cart.products.length > 0 && (
-                            <p>Products: {order.cart.products.map((product) => product.productName).join(', ')}</p>
-                        )}
-                    </div>
-                ))
-            )}
+        <div className='w-screen h-full'>
+            <h1 className='text-2xl font-bold'>Orders</h1>
+            {error && <p className='text-red-500'>{error}</p>}
+            <div className='flex flex-col space-y-4'>
+                {orders.map(order => (
+                    <OrderCard key={order.id} order={order}></OrderCard>
+                ))}
+            </div>
         </div>
     );
 };
