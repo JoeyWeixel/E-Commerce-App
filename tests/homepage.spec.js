@@ -1,31 +1,31 @@
 import { test, expect } from '@playwright/test';
 
-const baseURL = 'http://localhost:5173'; // Adjust this to match your local development server URL
+// URL of your local development server
+const baseURL = 'http://localhost:5173'; 
 
 test.describe('HomePage Tests', () => {
   
-  test('Test', async ({ page }) => {
-    await page.goto(baseURL);
-    await expect(page.locator('text=Our Products')).toBeVisible();
-  });
+    test('test basic button visability', async ({ page }) => {
+        await page.goto(baseURL);
+        await expect(page.getByText('Our Products')).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Orders' })).toBeVisible();
+        await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+        await expect(page.getByText('Cart', { exact: true })).toBeVisible();
+        await expect(page.getByRole('button', { name: 'List Your Product' })).toBeVisible();
+        await expect(page.getByRole('link', { name: 'Website Logo' })).toBeVisible();
+    });
 
-  test('opens product listing form', async ({ page }) => {
-    await page.goto(baseURL);
-    await page.click('button:has-text("List Your Product")');
-    await expect(page.locator('text=Create Listing')).toBeVisible();
-  });
+    test('test login button click', async ({ page }) => {
+        await page.goto(baseURL);
+        await page.getByRole('button', { name: 'Login' }).click();
+        await expect(page.url()).toBe(`${baseURL}/customers`);
+    });
 
-  test('submits product listing form', async ({ page }) => {
-    await page.goto(baseURL);
-    await page.click('button:has-text("List Your Product")');
-    await expect(page.locator('text=Create Listing')).toBeVisible();
-
-    await page.fill('input[placeholder="Name"]', 'Test Product');
-    await page.fill('input[placeholder="Description"]', 'This is a test product');
-    await page.fill('input[type="number"][name="price"]', '20');
-    await page.fill('input[type="number"][name="quantity"]', '5');
-
-    await page.click('button[type="submit"]');
-  });
-
+    test('test "Create Listing" modal popup', async ({ page }) => {
+        await page.goto(baseURL);
+        await page.getByRole('button', { name: 'List Your Product' }).click();
+        await expect(page.getByLabel('List your product')).toBeVisible();
+        await page.getByRole('button', { name: 'Create Listing' }).click();
+    });
+    
 });
