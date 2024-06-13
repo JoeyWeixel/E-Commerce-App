@@ -18,6 +18,7 @@ stages:
     steps:
     - task: NodeTool@0
     - script: |
-        npm --prefix $(System.DefaultWorkingDirectory)/ECommerce.Web/ install
-        npm run --prefix $(System.DefaultWorkingDirectory)/ECommerce.Web/ build
+        npm install
+        npm run build
+      workingDirectory: '$(build.sourcesdirectory)/ECommerce.Web/'
       displayName: 'Npm install and build'
