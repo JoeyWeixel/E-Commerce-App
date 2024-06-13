@@ -9,13 +9,15 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
-
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+stages:
+- stage: Web
+  displayName: 'Web Stage'
+  jobs:
+  - job: Web_Job
+    displayName: 'Web Job'
+    steps:
+    - task: NodeTool@0
+    - script: |
+        npm --prefix $(System.DefaultWorkingDirectory)/ECommerce.Web/ install
+        npm run --prefix $(System.DefaultWorkingDirectory)/ECommerce.Web/ build
+      displayName: 'Npm install and build'
