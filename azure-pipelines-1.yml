@@ -20,7 +20,7 @@ stages:
       inputs:
         versionspec: '20.14.0'
     - script: |
-        npm install
+        npm install --legacy-peer-deps
         npm run build
       workingDirectory: '$(build.sourcesdirectory)/ECommerce.Web/'
       displayName: 'Npm install and build'
