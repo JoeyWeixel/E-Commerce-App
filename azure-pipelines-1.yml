@@ -17,6 +17,8 @@ stages:
     displayName: 'Web Job'
     steps:
     - task: NodeTool@0
+      inputs:
+        versionspec: '20.14.0'
     - script: |
         npm install
         npm run build
