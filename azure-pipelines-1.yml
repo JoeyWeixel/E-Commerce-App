@@ -1,0 +1,24 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: windows-latest
+
+stages:
+- stage: Web
+  displayName: 'Web Stage'
+  jobs:
+  - job: Web_Job
+    displayName: 'Web Job'
+    steps:
+    - task: NodeTool@0
+    - script: |
+        npm install
+        npm run build
+      workingDirectory: '$(build.sourcesdirectory)/ECommerce.Web/'
+      displayName: 'Npm install and build'
