@@ -26,9 +26,6 @@ stages:
         npm run build
       workingDirectory: '$(build.sourcesdirectory)/ECommerce.Web/'
       displayName: 'Npm install and build'
-  - job: Test_Build
-    displayName: 'Test_Job'
-    steps: 
     - script: |
         npx playwright install
         npx playwright-test
