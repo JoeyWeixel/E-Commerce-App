@@ -27,11 +27,9 @@ stages:
     - script: |
         npm install --legacy-peer-deps
         npm run build
-      workingDirectory: '$(build.sourcesdirectory)/ECommerce.Web/'
-      displayName: 'Npm install and build'
-    - script: |
         npx playwright install
         npx playwright-test
       workingDirectory: '$(build.sourcesdirectory)/ECommerce.Web/'
-      displayName: 'Run Playwright Tests'
+      displayName: 'Npm install, build, and playwright test'
+
 
