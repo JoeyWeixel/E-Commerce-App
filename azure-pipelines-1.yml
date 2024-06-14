@@ -15,7 +15,7 @@ stages:
 - stage: Web
   displayName: 'Web Stage'
   jobs:
-  - job: Web_Job
+  - job: Web_Build_Job
     displayName: 'Web Job'
     steps:
     - task: NodeTool@0
@@ -26,3 +26,12 @@ stages:
         npm run build
       workingDirectory: '$(build.sourcesdirectory)/ECommerce.Web/'
       displayName: 'Npm install and build'
+  - job: Test_Build
+    displayName: 'Test_Job'
+    steps: 
+    - script: |
+        npx playwright install
+        npx playwright-test
+      workingDirectory: '$(build.sourcesdirectory)/ECommerce.Web/'
+      displayName: 'Run Playwright Tests'
+
