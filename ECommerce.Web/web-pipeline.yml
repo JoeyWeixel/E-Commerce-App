@@ -6,7 +6,10 @@
 trigger:
   branches:
     include:
-    - ECommerce.Web/*
+    - master
+  paths:
+    include:
+    - ./ECommerce.Web
 
 pool:
   vmImage: windows-latest
